@@ -29,6 +29,13 @@ along with The HLML Generator.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <assert.h>
 
+genOptionsTypes_t	g_optionsTypes	= {};
+genOptionsVector_t	g_optionsVector	= {};
+genOptionsMatrix_t	g_optionsMatrix	= {};
+
+genOptionFlags_t	g_optionFlags	= 0;
+
+
 static void GenerateOperatorIncrementInl( const genType_t type, const u32 numRows, const u32 numCols, const genOpIncrement_t op, stringBuilder_t* sb ) {
 	assert( sb );
 
@@ -172,6 +179,57 @@ static void InlGenerateOperatorBitwiseRhsType( const genType_t type, const u32 n
 	String_Append(  sb, "\n" );
 }
 
+
+void Gen_AddOptionType( genOptionsTypes_t* options, const genType_t type ) {
+	assert( options );
+	assert( type < GEN_TYPE_COUNT );
+
+	// don't add duplicates
+	for ( u32 i = 0; i < options->typesCount; i++ ) {
+		if ( options->types[i] == type ) {
+			return;
+		}
+	}
+
+	options->types[options->typesCount++] = type;
+}
+
+void Gen_AddOptionVector( genOptionsVector_t* options, const u32 numComponents ) {
+	assert( options );
+	assert( numComponents >= GEN_COMPONENT_COUNT_MIN );
+	assert( numComponents <= GEN_COMPONENT_COUNT_MAX );
+
+	for ( u32 i = 0; i < options->vectorSizesCount; i++ ) {
+		if ( options->vectorSizes[i] == numComponents ) {
+			return;
+		}
+	}
+
+	options->vectorSizes[options->vectorSizesCount++] = numComponents;
+}
+
+void Gen_AddOptionMatrix( genOptionsMatrix_t* options, const matrixSize_t size ) {
+	assert( options );
+	assert( size.numRows >= GEN_COMPONENT_COUNT_MIN );
+	assert( size.numRows <= GEN_COMPONENT_COUNT_MAX );
+	assert( size.numCols >= GEN_COMPONENT_COUNT_MIN );
+	assert( size.numCols <= GEN_COMPONENT_COUNT_MAX );
+
+	matrixSize_t* matSize = NULL;
+
+	for ( u32 i = 0; i < options->count; i++ ) {
+		matSize = &options->sizes[i];
+
+		if ( matSize->numRows == size.numRows && matSize->numCols == size.numCols ) {
+			return;
+		}
+	}
+
+	matSize = &options->sizes[options->count++];
+
+	matSize->numRows = size.numRows;
+	matSize->numCols = size.numCols;
+}
 
 void Gen_GetValuesArray1D( const genType_t type, const u32 numValues, const float* values, stringBuilder_t* sb ) {
 	String_Append(  sb, "\t{ " );

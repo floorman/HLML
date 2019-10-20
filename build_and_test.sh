@@ -29,7 +29,7 @@ echo ------- Done -------
 echo ""
 
 echo ------- Running generator -------
-build/${compiler_folder_name}/${config}/hlml-gen.exe
+build/${compiler_folder_name}/${config}/hlml-gen.exe --types=int,uint,float,double --vectors=2,3,4 --matrices=2x2,2x3,2x4,3x2,3x3,3x4,4x2,4x3,4x4 --zero-init --sse
 echo ------- Done -------
 echo ""
 

@@ -142,16 +142,18 @@ void GeneratorMatrix::GenerateConstructors() {
 
 		String_Appendf( &m_codeInl, "%s::%s()\n", m_fullTypeName, m_fullTypeName );
 		String_Append(  &m_codeInl, "{\n" );
-		for ( u32 row = 0; row < m_numRows; row++ ) {
-			String_Appendf( &m_codeInl, "\trows[%d] = { ", row );
-			for ( u32 col = 0; col < m_numCols; col++ ) {
-				String_Append( &m_codeInl, ( row == col ) ? "1" : "0" );
+		if ( g_optionFlags & GEN_OPTION_FLAG_ZERO_INIT ) {
+			for ( u32 row = 0; row < m_numRows; row++ ) {
+				String_Appendf( &m_codeInl, "\trows[%d] = { ", row );
+				for ( u32 col = 0; col < m_numCols; col++ ) {
+					String_Append( &m_codeInl, ( row == col ) ? "1" : "0" );
 
-				if ( col != m_numCols - 1 ) {
-					String_Append( &m_codeInl, ", " );
+					if ( col != m_numCols - 1 ) {
+						String_Append( &m_codeInl, ", " );
+					}
 				}
+				String_Append( &m_codeInl, " };\n" );
 			}
-			String_Append( &m_codeInl, " };\n" );
 		}
 		String_Append( &m_codeInl, "}\n\n" );
 	}

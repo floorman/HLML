@@ -36,12 +36,10 @@ SOFTWARE.
 
 #include "bool3.h"
 
-#include <stdint.h>
 #include "../hlml_types.h"
 
 #include "uint2.h"
 struct uint4;
-struct float3;
 
 // ignore prohibition of anymous structs for GCC
 #if defined( __clang__ ) || defined( __GNUC__ )

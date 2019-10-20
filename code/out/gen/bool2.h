@@ -34,7 +34,6 @@ SOFTWARE.
 
 #pragma once
 
-#include <stdint.h>
 #include "../hlml_types.h"
 
 struct bool3;

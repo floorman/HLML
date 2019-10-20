@@ -36,7 +36,6 @@ SOFTWARE.
 
 #include "bool2.h"
 
-#include <stdint.h>
 #include "../hlml_types.h"
 
 struct float3;

@@ -47,6 +47,8 @@ along with The HLML Generator.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "timer.h"
 
+#include "cmd_args.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -74,15 +76,17 @@ static void GenerateTypeHeader( void ) {
 static void GenerateVectors( void ) {
 	GeneratorVector gen;
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		const char* typeString = Gen_GetTypeString( type );
 
-		for ( u32 componentIndex = GEN_COMPONENT_COUNT_MIN; componentIndex <= GEN_COMPONENT_COUNT_MAX; componentIndex++ ) {
-			printf( "Generating %s%d...", typeString, componentIndex );
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
 
-			gen.Generate( type, componentIndex );
+			printf( "Generating %s%d...", typeString, numComponents );
+
+			gen.Generate( type, numComponents );
 
 			printf( "OK.\n" );
 		}
@@ -92,19 +96,22 @@ static void GenerateVectors( void ) {
 static void GenerateMatrices( void ) {
 	GeneratorMatrix gen;
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		const char* typeString = Gen_GetTypeString( type );
 
-		for ( u32 row = GEN_COMPONENT_COUNT_MIN; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				printf( "Generating %s%dx%d...", typeString, row, col );
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
 
-				gen.Generate( type, row, col );
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
 
-				printf( "OK.\n" );
-			}
+			printf( "Generating %s%dx%d...", typeString, numRows, numCols );
+
+			gen.Generate( type, numRows, numCols );
+
+			printf( "OK.\n" );
 		}
 	}
 }
@@ -125,8 +132,8 @@ static void GenerateFunctionsScalar( void ) {
 		"#include <stdint.h>\n"
 		"\n" );
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( type == GEN_TYPE_BOOL ) {
 			continue;
@@ -180,8 +187,8 @@ static void GenerateFunctionsVector( void ) {
 		"#pragma once\n"
 		"\n" );
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( type == GEN_TYPE_BOOL ) {
 			continue;
@@ -189,8 +196,10 @@ static void GenerateFunctionsVector( void ) {
 
 		const char* typeString = Gen_GetTypeString( type );
 
-		for ( u32 componentIndex = GEN_COMPONENT_COUNT_MIN; componentIndex <= GEN_COMPONENT_COUNT_MAX; componentIndex++ ) {
-			String_Appendf( &contentHeader, "#include \"%s%d.h\"\n", typeString, componentIndex );
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
+
+			String_Appendf( &contentHeader, "#include \"%s%d.h\"\n", typeString, numComponents );
 		}
 
 		String_Appendf( &contentHeader, "\n" );
@@ -200,8 +209,8 @@ static void GenerateFunctionsVector( void ) {
 	String_Appendf( &contentHeader, "#include \"" GEN_HEADER_OPERATORS_VECTOR "\"\n" );
 	String_Appendf( &contentHeader, "\n" );
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( type == GEN_TYPE_BOOL ) {
 			continue;
@@ -209,27 +218,29 @@ static void GenerateFunctionsVector( void ) {
 
 		const char* typeString = Gen_GetTypeString( type );
 
-		for ( u32 componentIndex = GEN_COMPONENT_COUNT_MIN; componentIndex <= GEN_COMPONENT_COUNT_MAX; componentIndex++ ) {
-			printf( "Algebra %s%d...", typeString, componentIndex );
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
 
-			String_Appendf( &contentHeader, "// %s%d\n", typeString, componentIndex );
+			printf( "Algebra %s%d...", typeString, numComponents );
+
+			String_Appendf( &contentHeader, "// %s%d\n", typeString, numComponents );
 
 			// generic/scalar funcs
-			Gen_Saturate( type, componentIndex, &contentHeader );
-			Gen_Lerp( type, componentIndex, &contentHeader );
+			Gen_Saturate( type, numComponents, &contentHeader );
+			Gen_Lerp( type, numComponents, &contentHeader );
 
-			Gen_Step( type, componentIndex, &contentHeader );
-			Gen_Smoothstep( type, componentIndex, &contentHeader );
+			Gen_Step( type, numComponents, &contentHeader );
+			Gen_Smoothstep( type, numComponents, &contentHeader );
 
 			// generic/scalar/vector funcs
-			Gen_VectorLength( type, componentIndex, &contentHeader );
-			Gen_VectorNormalize( type, componentIndex, &contentHeader );
-			Gen_VectorDot( type, componentIndex, &contentHeader );
-			Gen_VectorCross( type, componentIndex, &contentHeader );
-			Gen_VectorAngle( type, componentIndex, &contentHeader );
-			Gen_VectorDistance( type, componentIndex, &contentHeader );
-			Gen_VectorPack( type, componentIndex, &contentHeader );
-			Gen_VectorUnpack( type, componentIndex, &contentHeader );
+			Gen_VectorLength( type, numComponents, &contentHeader );
+			Gen_VectorNormalize( type, numComponents, &contentHeader );
+			Gen_VectorDot( type, numComponents, &contentHeader );
+			Gen_VectorCross( type, numComponents, &contentHeader );
+			Gen_VectorAngle( type, numComponents, &contentHeader );
+			Gen_VectorDistance( type, numComponents, &contentHeader );
+			Gen_VectorPack( type, numComponents, &contentHeader );
+			Gen_VectorUnpack( type, numComponents, &contentHeader );
 
 			String_Append( &contentHeader, "\n" );
 
@@ -252,15 +263,18 @@ static void GenerateFunctionsMatrix( void ) {
 		"#pragma once\n"
 		"\n" );
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		const char* typeString = Gen_GetTypeString( type );
 
-		for ( u32 row = GEN_COMPONENT_COUNT_MIN; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				String_Appendf( &contentHeader, "#include \"%s%dx%d.h\"\n", typeString, row, col );
-			}
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
+
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
+
+			String_Appendf( &contentHeader, "#include \"%s%dx%d.h\"\n", typeString, numRows, numCols );
 		}
 
 		String_Appendf( &contentHeader, "\n" );
@@ -270,38 +284,41 @@ static void GenerateFunctionsMatrix( void ) {
 	String_Appendf( &contentHeader, "#include \"" GEN_HEADER_OPERATORS_MATRIX "\"\n" );
 	String_Appendf( &contentHeader, "\n" );
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
-		for ( u32 row = GEN_COMPONENT_COUNT_MIN; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
-				Gen_GetFullTypeName( type, row, col, fullTypeName );
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
 
-				printf( "Basic functions %s...", fullTypeName );
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
 
-				String_Appendf( &contentHeader, "// %s\n", fullTypeName );
+			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+			Gen_GetFullTypeName( type, numRows, numCols, fullTypeName );
 
-				Gen_MatrixIdentity( type, row, col, &contentHeader );
-				Gen_MatrixTranspose( type, row, col, &contentHeader );
+			printf( "Basic functions %s...", fullTypeName );
 
-				Gen_MatrixDeterminant( type, row, col, &contentHeader );
-				Gen_MatrixInverse( type, row, col, &contentHeader );
+			String_Appendf( &contentHeader, "// %s\n", fullTypeName );
 
-				Gen_MatrixCompMulDiv( type, row, col, &contentHeader );
+			Gen_MatrixIdentity( type, numRows, numCols, &contentHeader );
+			Gen_MatrixTranspose( type, numRows, numCols, &contentHeader );
 
-				Gen_MatrixTranslate( type, row, col, &contentHeader );
-				Gen_MatrixRotate( type, row, col, &contentHeader );
-				Gen_MatrixScale( type, row, col, &contentHeader );
+			Gen_MatrixDeterminant( type, numRows, numCols, &contentHeader );
+			Gen_MatrixInverse( type, numRows, numCols, &contentHeader );
 
-				Gen_MatrixOrtho( type, row, col, &contentHeader );
-				Gen_MatrixPerspective( type, row, col, &contentHeader );
-				Gen_MatrixLookAt( type, row, col, &contentHeader );
+			Gen_MatrixCompMulDiv( type, numRows, numCols, &contentHeader );
 
-				String_Append( &contentHeader, "\n" );
+			Gen_MatrixTranslate( type, numRows, numCols, &contentHeader );
+			Gen_MatrixRotate( type, numRows, numCols, &contentHeader );
+			Gen_MatrixScale( type, numRows, numCols, &contentHeader );
 
-				printf( "OK.\n" );
-			}
+			Gen_MatrixOrtho( type, numRows, numCols, &contentHeader );
+			Gen_MatrixPerspective( type, numRows, numCols, &contentHeader );
+			Gen_MatrixLookAt( type, numRows, numCols, &contentHeader );
+
+			String_Append( &contentHeader, "\n" );
+
+			printf( "OK.\n" );
 		}
 	}
 
@@ -311,6 +328,10 @@ static void GenerateFunctionsMatrix( void ) {
 }
 
 static void GenerateFunctionsScalarSSE( void ) {
+	if ( ( g_optionFlags & GEN_OPTION_FLAG_SSE ) == 0 ) {
+		return;
+	}
+
 	char filePathHeader[64] = { 0 };
 	snprintf( filePathHeader, 64, "%s%s.h", GEN_OUT_GEN_FOLDER_PATH, GEN_FILENAME_FUNCTIONS_SCALAR_SSE );
 
@@ -328,8 +349,8 @@ static void GenerateFunctionsScalarSSE( void ) {
 		"\n"
 	);
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( !Gen_TypeSupportsSSE( type ) ) {
 			continue;
@@ -357,6 +378,10 @@ static void GenerateFunctionsScalarSSE( void ) {
 }
 
 static void GenerateFunctionsVectorSSE( void ) {
+	if ( ( g_optionFlags & GEN_OPTION_FLAG_SSE ) == 0 ) {
+		return;
+	}
+
 	char filePathHeader[64] = { 0 };
 	snprintf( filePathHeader, 64, "%s%s.h", GEN_OUT_GEN_FOLDER_PATH, GEN_FILENAME_FUNCTIONS_VECTOR_SSE );
 
@@ -374,8 +399,8 @@ static void GenerateFunctionsVectorSSE( void ) {
 		"\n"
 	);
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( !Gen_TypeSupportsSSE( type ) ) {
 			continue;
@@ -383,9 +408,11 @@ static void GenerateFunctionsVectorSSE( void ) {
 
 		const char* registerName = Gen_SSE_GetRegisterName( type );
 
-		for ( u32 componentIndex = GEN_COMPONENT_COUNT_MIN; componentIndex <= GEN_COMPONENT_COUNT_MAX; componentIndex++ ) {
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
+
 			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
-			Gen_GetFullTypeName( type, 1, componentIndex, fullTypeName );
+			Gen_GetFullTypeName( type, 1, numComponents, fullTypeName );
 
 			char sseTypeName[GEN_STRING_LENGTH_SSE_INPUT_NAME];
 			Gen_SSE_GetFullTypeName( fullTypeName, sseTypeName );
@@ -393,7 +420,7 @@ static void GenerateFunctionsVectorSSE( void ) {
 			String_Appendf( &contentHeader, "// %s\n", fullTypeName );
 			String_Appendf( &contentHeader, "struct %s\n", sseTypeName );
 			String_Append(  &contentHeader, "{\n" );
-			for ( u32 i = 0; i < componentIndex; i++ ) {
+			for ( u32 i = 0; i < numComponents; i++ ) {
 				String_Appendf( &contentHeader, "\t%s %c;\n", registerName, GEN_COMPONENT_NAMES_VECTOR[i] );
 			}
 			String_Append(  &contentHeader, "};\n" );
@@ -401,16 +428,18 @@ static void GenerateFunctionsVectorSSE( void ) {
 		}
 	}
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( !Gen_TypeSupportsSSE( type ) ) {
 			continue;
 		}
 
-		for ( u32 componentIndex = GEN_COMPONENT_COUNT_MIN; componentIndex <= GEN_COMPONENT_COUNT_MAX; componentIndex++ ) {
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
+
 			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
-			Gen_GetFullTypeName( type, 1, componentIndex, fullTypeName );
+			Gen_GetFullTypeName( type, 1, numComponents, fullTypeName );
 
 			printf( "SIMD vector functions %s...", fullTypeName );
 
@@ -418,12 +447,12 @@ static void GenerateFunctionsVectorSSE( void ) {
 			Gen_SSE_GetFullTypeName( fullTypeName, sseTypeName );
 
 			String_Appendf( &contentHeader, "// %s\n", fullTypeName );
-			Gen_SSE_VectorDot( type, componentIndex, &contentHeader );
-			Gen_SSE_VectorCross( type, componentIndex, &contentHeader );
-			Gen_SSE_VectorLength( type, componentIndex, &contentHeader );
-			Gen_SSE_VectorNormalize( type, componentIndex, &contentHeader );
-			Gen_SSE_VectorDistance( type, componentIndex, &contentHeader );
-			// Gen_SSE_VectorAngle( type, componentIndex, &contentHeader );
+			Gen_SSE_VectorDot( type, numComponents, &contentHeader );
+			Gen_SSE_VectorCross( type, numComponents, &contentHeader );
+			Gen_SSE_VectorLength( type, numComponents, &contentHeader );
+			Gen_SSE_VectorNormalize( type, numComponents, &contentHeader );
+			Gen_SSE_VectorDistance( type, numComponents, &contentHeader );
+			// Gen_SSE_VectorAngle( type, numComponents, &contentHeader );
 
 			String_Append( &contentHeader, "\n" );
 
@@ -437,6 +466,10 @@ static void GenerateFunctionsVectorSSE( void ) {
 }
 
 static void GenerateFunctionsMatrixSSE( void ) {
+	if ( ( g_optionFlags & GEN_OPTION_FLAG_SSE ) == 0 ) {
+		return;
+	}
+
 	char filePathHeader[64] = { 0 };
 	snprintf( filePathHeader, 64, "%s%s.h", GEN_OUT_GEN_FOLDER_PATH, GEN_FILENAME_FUNCTIONS_MATRIX_SSE );
 
@@ -455,8 +488,8 @@ static void GenerateFunctionsMatrixSSE( void ) {
 	Gen_SSE_MacroNegate( GEN_TYPE_FLOAT, &contentHeader );
 
 	// generate type forward declarations
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( !Gen_TypeSupportsSSE( type ) ) {
 			continue;
@@ -464,63 +497,69 @@ static void GenerateFunctionsMatrixSSE( void ) {
 
 		const char* registerName = Gen_SSE_GetRegisterName( type );
 
-		for ( u32 row = GEN_COMPONENT_COUNT_MIN; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
-				Gen_GetFullTypeName( type, row, col, fullTypeName );
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
 
-				char sseTypeName[GEN_STRING_LENGTH_SSE_INPUT_NAME];
-				Gen_SSE_GetFullTypeName( fullTypeName, sseTypeName );
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
 
-				String_Appendf( &contentHeader, "// %s\n", fullTypeName );
-				String_Appendf( &contentHeader, "struct %s\n", sseTypeName );
-				String_Append(  &contentHeader, "{\n" );
-				String_Appendf( &contentHeader, "\t%s m[%d][%d];\n", registerName, row, col );
-				String_Append(  &contentHeader, "};\n" );
-				String_Append(  &contentHeader, "\n" );
-			}
+			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+			Gen_GetFullTypeName( type, numRows, numCols, fullTypeName );
+
+			char sseTypeName[GEN_STRING_LENGTH_SSE_INPUT_NAME];
+			Gen_SSE_GetFullTypeName( fullTypeName, sseTypeName );
+
+			String_Appendf( &contentHeader, "// %s\n", fullTypeName );
+			String_Appendf( &contentHeader, "struct %s\n", sseTypeName );
+			String_Append(  &contentHeader, "{\n" );
+			String_Appendf( &contentHeader, "\t%s m[%d][%d];\n", registerName, numRows, numCols );
+			String_Append(  &contentHeader, "};\n" );
+			String_Append(  &contentHeader, "\n" );
 		}
 	}
 	String_Appendf( &contentHeader, "\n" );
 
 	// generate functions
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( !Gen_TypeSupportsSSE( type ) ) {
 			continue;
 		}
 
-		for ( u32 row = GEN_COMPONENT_COUNT_MIN; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
-				Gen_GetFullTypeName( type, row, col, fullTypeName );
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
 
-				printf( "SIMD matrix functions %s...", fullTypeName );
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
 
-				String_Appendf( &contentHeader, "// %s\n", fullTypeName );
+			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+			Gen_GetFullTypeName( type, numRows, numCols, fullTypeName );
 
-				Gen_SSE_MatrixIdentity( type, row, col, &contentHeader );
-				Gen_SSE_MatrixTranspose( type, row, col, &contentHeader );
+			printf( "SIMD matrix functions %s...", fullTypeName );
 
-				Gen_SSE_MatrixDeterminant( type, row, col, &contentHeader );
-				Gen_SSE_MatrixInverse( type, row, col, &contentHeader );
+			String_Appendf( &contentHeader, "// %s\n", fullTypeName );
 
-				for ( u32 opIndex = 0; opIndex < GEN_OP_ARITHMETIC_COUNT; opIndex++ ) {
-					genOpArithmetic_t op = (genOpArithmetic_t) opIndex;
-					Gen_SSE_MatrixArithmeticComponentWise( type, row, col, op, &contentHeader );
-				}
+			Gen_SSE_MatrixIdentity( type, numRows, numCols, &contentHeader );
+			Gen_SSE_MatrixTranspose( type, numRows, numCols, &contentHeader );
 
-				Gen_SSE_MatrixMultiply( type, row, col, &contentHeader );
+			Gen_SSE_MatrixDeterminant( type, numRows, numCols, &contentHeader );
+			Gen_SSE_MatrixInverse( type, numRows, numCols, &contentHeader );
 
-				Gen_SSE_MatrixTranslate( type, row, col, &contentHeader );
-				// Gen_SSE_MatrixRotate( type, row, col, &contentHeader );
-				Gen_SSE_MatrixScale( type, row, col, &contentHeader );
-
-				String_Append( &contentHeader, "\n" );
-
-				printf( "OK.\n" );
+			for ( u32 opIndex = 0; opIndex < GEN_OP_ARITHMETIC_COUNT; opIndex++ ) {
+				genOpArithmetic_t op = (genOpArithmetic_t) opIndex;
+				Gen_SSE_MatrixArithmeticComponentWise( type, numRows, numCols, op, &contentHeader );
 			}
+
+			Gen_SSE_MatrixMultiply( type, numRows, numCols, &contentHeader );
+
+			Gen_SSE_MatrixTranslate( type, numRows, numCols, &contentHeader );
+			// Gen_SSE_MatrixRotate( type, numRows, numCols, &contentHeader );
+			Gen_SSE_MatrixScale( type, numRows, numCols, &contentHeader );
+
+			String_Append( &contentHeader, "\n" );
+
+			printf( "OK.\n" );
 		}
 	}
 
@@ -538,37 +577,41 @@ static void GenerateOperatorsVector( void ) {
 	String_Append( &contentHeader, "#pragma once\n" );
 	String_Append( &contentHeader, "\n" );
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		const char* typeString = Gen_GetTypeString( type );
 
-		for ( u32 componentIndex = GEN_COMPONENT_COUNT_MIN; componentIndex <= GEN_COMPONENT_COUNT_MAX; componentIndex++ ) {
-			String_Appendf( &contentHeader, "#include \"%s%d.h\"\n", typeString, componentIndex );
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
+
+			String_Appendf( &contentHeader, "#include \"%s%d.h\"\n", typeString, numComponents );
 		}
 
 		String_Append( &contentHeader, "\n" );
 	}
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( type == GEN_TYPE_BOOL ) {
 			continue;
 		}
 
-		for ( u32 componentIndex = GEN_COMPONENT_COUNT_MIN; componentIndex <= GEN_COMPONENT_COUNT_MAX; componentIndex++ ) {
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
+
 			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
-			Gen_GetFullTypeName( type, 1, componentIndex, fullTypeName );
+			Gen_GetFullTypeName( type, 1, numComponents, fullTypeName );
 
 			printf( "Vector operators %s...", fullTypeName );
 
 			String_Appendf( &contentHeader, "// %s\n", fullTypeName );
 
-			Gen_VectorOperatorsArithmetic( type, componentIndex, &contentHeader );
-			Gen_OperatorsIncrement( type, 1, componentIndex, &contentHeader );
-			Gen_OperatorsRelational( type, 1, componentIndex, &contentHeader );
-			Gen_OperatorsBitwise( type, 1, componentIndex, &contentHeader );
+			Gen_VectorOperatorsArithmetic( type, numComponents, &contentHeader );
+			Gen_OperatorsIncrement( type, 1, numComponents, &contentHeader );
+			Gen_OperatorsRelational( type, 1, numComponents, &contentHeader );
+			Gen_OperatorsBitwise( type, 1, numComponents, &contentHeader );
 
 			String_Append( &contentHeader, "\n" );
 
@@ -590,15 +633,18 @@ static void GenerateOperatorsMatrix( void ) {
 	String_Append( &contentHeader, "#pragma once\n" );
 	String_Append( &contentHeader, "\n" );
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		const char* typeString = Gen_GetTypeString( type );
 
-		for ( u32 row = GEN_COMPONENT_COUNT_MIN; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				String_Appendf( &contentHeader, "#include \"%s%dx%d.h\"\n", typeString, row, col );
-			}
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
+
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
+
+			String_Appendf( &contentHeader, "#include \"%s%dx%d.h\"\n", typeString, numRows, numCols );
 		}
 
 		String_Append( &contentHeader, "\n" );
@@ -607,16 +653,25 @@ static void GenerateOperatorsMatrix( void ) {
 	String_Append( &contentHeader, "#include \"" GEN_HEADER_FUNCTIONS_VECTOR "\"\n" );
 	String_Append( &contentHeader, "\n" );
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( type == GEN_TYPE_BOOL ) {
 			continue;
 		}
 
-		for ( u32 components = GEN_COMPONENT_COUNT_MIN; components <= GEN_COMPONENT_COUNT_MAX; components++ ) {
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
+
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
+
+			if ( numRows != numCols ) {
+				continue;
+			}
+
 			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
-			Gen_GetFullTypeName( type, components, components, fullTypeName );
+			Gen_GetFullTypeName( type, numRows, numCols, fullTypeName );
 
 			String_Appendf( &contentHeader, "%s inverse( const %s& mat );\n", fullTypeName, fullTypeName );
 		}
@@ -625,31 +680,34 @@ static void GenerateOperatorsMatrix( void ) {
 	}
 
 	// header and inl code
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( type == GEN_TYPE_BOOL ) {
 			continue;
 		}
 
-		for ( u32 row = GEN_COMPONENT_COUNT_MIN; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				char fullTypeName[64];
-				Gen_GetFullTypeName( type, row, col, fullTypeName );
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
 
-				printf( "Matrix operators %s...", fullTypeName );
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
 
-				String_Appendf( &contentHeader, "// %s\n", fullTypeName );
+			char fullTypeName[64];
+			Gen_GetFullTypeName( type, numRows, numCols, fullTypeName );
 
-				Gen_MatrixOperatorsArithmetic( type, row, col, &contentHeader );
-				Gen_OperatorsIncrement( type, row, col, &contentHeader );
-				Gen_OperatorsRelational( type, row, col, &contentHeader );
-				Gen_OperatorsBitwise( type, row, col, &contentHeader );
+			printf( "Matrix operators %s...", fullTypeName );
 
-				String_Append( &contentHeader, "\n" );
+			String_Appendf( &contentHeader, "// %s\n", fullTypeName );
 
-				printf( "OK.\n" );
-			}
+			Gen_MatrixOperatorsArithmetic( type, numRows, numCols, &contentHeader );
+			Gen_OperatorsIncrement( type, numRows, numCols, &contentHeader );
+			Gen_OperatorsRelational( type, numRows, numCols, &contentHeader );
+			Gen_OperatorsBitwise( type, numRows, numCols, &contentHeader );
+
+			String_Append( &contentHeader, "\n" );
+
+			printf( "OK.\n" );
 		}
 	}
 
@@ -661,8 +719,8 @@ static void GenerateOperatorsMatrix( void ) {
 static void GenerateTestsScalar( void ) {
 	GeneratorScalarTest gen;
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( type == GEN_TYPE_BOOL ) {
 			continue;
@@ -681,15 +739,17 @@ static void GenerateTestsScalar( void ) {
 static void GenerateTestsVector( void ) {
 	GeneratorVectorTests gen;
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		const char* typeString = Gen_GetTypeString( type );
 
-		for ( u32 componentIndex = GEN_COMPONENT_COUNT_MIN; componentIndex <= GEN_COMPONENT_COUNT_MAX; componentIndex++ ) {
-			printf( "Generating test_%s%d.cpp...", typeString, componentIndex );
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
 
-			gen.Generate( type, componentIndex );
+			printf( "Generating test_%s%d.cpp...", typeString, numComponents );
+
+			gen.Generate( type, numComponents );
 
 			printf( "OK.\n" );
 		}
@@ -699,19 +759,22 @@ static void GenerateTestsVector( void ) {
 static void GenerateTestsMatrix( void ) {
 	GeneratorMatrixTests gen;
 
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		const char* typeString = Gen_GetTypeString( type );
 
-		for ( u32 row = GEN_COMPONENT_COUNT_MIN; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				printf( "Generating test_%s%dx%d.cpp...", typeString, row, col );
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
 
-				gen.Generate( type, row, col );
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
 
-				printf( "OK.\n" );
-			}
+			printf( "Generating test_%s%dx%d.cpp...", typeString, numRows, numCols );
+
+			gen.Generate( type, numRows, numCols );
+
+			printf( "OK.\n" );
 		}
 	}
 }
@@ -735,8 +798,8 @@ static void GenerateTestsMain( void ) {
 	String_Append( &sb, "\n" );
 
 	// scalar tests
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( type == GEN_TYPE_BOOL ) {
 			continue;
@@ -750,12 +813,14 @@ static void GenerateTestsMain( void ) {
 	String_Append( &sb, "\n" );
 
 	// vector tests
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
-		for ( u32 componentIndex = GEN_COMPONENT_COUNT_MIN; componentIndex <= GEN_COMPONENT_COUNT_MAX; componentIndex++ ) {
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
+
 			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME] = { 0 };
-			Gen_GetFullTypeName( type, 1, componentIndex, fullTypeName );
+			Gen_GetFullTypeName( type, 1, numComponents, fullTypeName );
 
 			String_Appendf( &sb, "#include \"test_%s.cpp\"\n", fullTypeName );
 		}
@@ -764,19 +829,22 @@ static void GenerateTestsMain( void ) {
 	}
 
 	// matrix tests
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
-		for ( u32 row = GEN_COMPONENT_COUNT_MIN; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME] = { 0 };
-				Gen_GetFullTypeName( type, row, col, fullTypeName );
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
 
-				String_Appendf( &sb, "#include \"test_%s.cpp\"\n", fullTypeName );
-			}
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
 
-			String_Append( &sb, "\n" );
+			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME] = { 0 };
+			Gen_GetFullTypeName( type, numRows, numCols, fullTypeName );
+
+			String_Appendf( &sb, "#include \"test_%s.cpp\"\n", fullTypeName );
 		}
+
+		String_Append( &sb, "\n" );
 	}
 
 	String_Append( &sb, "static void OnSuiteEnd( void* userdata )\n" );
@@ -800,8 +868,8 @@ static void GenerateTestsMain( void ) {
 	// the vector/matrix functions make heavy use of these per-component
 	// so if these fail, the problem might be easier to diagnose
 	String_Append( &sb, "\t// scalar tests\n" );
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
 		if ( type == GEN_TYPE_BOOL ) {
 			continue;
@@ -813,20 +881,41 @@ static void GenerateTestsMain( void ) {
 	String_Append( &sb, "\n" );
 
 	// now do vector and matrix types
-	String_Appendf( &sb, "\t// vector/matrix tests\n" );
-	for ( u32 typeIndex = 0; typeIndex < GEN_TYPE_COUNT; typeIndex++ ) {
-		genType_t type = (genType_t) typeIndex;
+	String_Appendf( &sb, "\t// vector tests\n" );
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
 
-		for ( u32 row = 1; row <= GEN_COMPONENT_COUNT_MAX; row++ ) {
-			for ( u32 col = GEN_COMPONENT_COUNT_MIN; col <= GEN_COMPONENT_COUNT_MAX; col++ ) {
-				char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME] = { 0 };
-				Gen_GetFullTypeName( type, row, col, fullTypeName );
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsVector.vectorSizesCount; sizeIndex++ ) {
+			u32 numComponents = g_optionsVector.vectorSizes[sizeIndex];
 
-				String_Appendf( &sb, "\tTEMPER_RUN_SUITE( Test_%s );\n", fullTypeName );
-			}
-			String_Appendf( &sb, "\n" );
+			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME] = { 0 };
+			Gen_GetFullTypeName( type, 1, numComponents, fullTypeName );
+
+			String_Appendf( &sb, "\tTEMPER_RUN_SUITE( Test_%s );\n", fullTypeName );
 		}
+
+		String_Appendf( &sb, "\n" );
 	}
+
+	String_Appendf( &sb, "\t// matrix tests\n" );
+	for ( u32 typeIndex = 0; typeIndex < g_optionsTypes.typesCount; typeIndex++ ) {
+		genType_t type = (genType_t) g_optionsTypes.types[typeIndex];
+
+		for ( u32 sizeIndex = 0; sizeIndex < g_optionsMatrix.count; sizeIndex++ ) {
+			matrixSize_t* size = &g_optionsMatrix.sizes[sizeIndex];
+
+			u32 numRows = size->numRows;
+			u32 numCols = size->numCols;
+
+			char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME] = { 0 };
+			Gen_GetFullTypeName( type, numRows, numCols, fullTypeName );
+
+			String_Appendf( &sb, "\tTEMPER_RUN_SUITE( Test_%s );\n", fullTypeName );
+		}
+
+		String_Appendf( &sb, "\n" );
+	}
+
 	String_Append( &sb, "\tTEMPER_SHOW_STATS();\n" );
 	String_Append( &sb, "\n" );
 	String_Append( &sb, "\treturn TEMPER_EXIT_CODE();\n" );
@@ -874,25 +963,39 @@ static bool32 GenerateDoxygenPages( void ) {
 #endif // _WIN32
 
 int main( int argc, char** argv ) {
-	UNUSED( argc );
-	UNUSED( argv );
-
 	printf( "HLML Generator.\n" );
 	printf( "(c) Dan Moody 2019 - Present.\n" );
 	printf( "\n" );
+
+	// init generator to default options
+	{
+		memset( &g_optionsTypes, 0, sizeof( g_optionsTypes ) );
+		// bool vectors/matrices are always generated
+		Gen_AddOptionType( &g_optionsTypes, GEN_TYPE_BOOL );
+
+		memset( &g_optionsVector, 0, sizeof( g_optionsVector ) );
+		memset( &g_optionsMatrix, 0, sizeof( g_optionsMatrix ) );
+
+		g_optionFlags = 0;
+	}
+
+	if ( Cmd_ParseArgs( argc, argv ) != 0 ) {
+		return EXIT_FAILURE;
+	}
+
 	printf( "Generating...\n" );
 	printf( "\n" );
 
 	FS_DeleteAllFilesInFolder( GEN_OUT_GEN_FOLDER_PATH );
+	FS_CreateFolder( GEN_OUT_GEN_FOLDER_PATH );
+
+	FS_CreateFolder( GEN_TESTS_FOLDER_PATH );
 
 	printf( "\n" );
 
 	Mem_Init( 2 * MB_TO_BYTES );
 
 	Time_Init();
-
-	FS_CreateFolder( GEN_OUT_GEN_FOLDER_PATH );
-	FS_CreateFolder( GEN_TESTS_FOLDER_PATH );
 
 	float64 start = Time_NowMS();
 

@@ -62,25 +62,26 @@ bool GeneratorVector::Generate( const genType_t type, const u32 numComponents ) 
 			String_Append(  &m_codeHeader, "\n" );
 		}
 
-		String_Append( &m_codeHeader, "#include <stdint.h>\n" );
 		String_Append( &m_codeHeader, "#include \"../" GEN_HEADER_TYPES "\"\n" );
 		String_Append( &m_codeHeader, "\n" );
 
 		// forward declarations & includes
-		for ( u32 i = GEN_COMPONENT_COUNT_MIN; i <= GEN_COMPONENT_COUNT_MAX; i++ ) {
+		for ( u32 i = 0; i < g_optionsVector.vectorSizesCount; i++ ) {
+			u32 vectorSize = g_optionsVector.vectorSizes[i];
+
 			// includes for smaller vectors due to swizzle functions
-			if (i < m_numComponents) {
-				String_Appendf( &m_codeHeader, "#include \"%s%d.h\"\n", m_typeString, i );
+			if ( vectorSize < m_numComponents ) {
+				String_Appendf( &m_codeHeader, "#include \"%s%d.h\"\n", m_typeString, vectorSize );
 			}
 			// dont forward declare ourself
-			else if ( i != m_numComponents ) {
-				String_Appendf( &m_codeHeader, "struct %s%d;\n", m_typeString, i );
+			else if ( vectorSize != m_numComponents ) {
+				String_Appendf( &m_codeHeader, "struct %s%d;\n", m_typeString, vectorSize );
 			}
 		}
 
-		if ( m_numComponents >= 3 ) {
-			String_Append( &m_codeHeader, "struct float3;\n" );
-		}
+		// if ( m_numComponents >= 3 ) {
+		// 	String_Append( &m_codeHeader, "struct float3;\n" );
+		// }
 
 		String_Append( &m_codeHeader, "\n" );
 
@@ -122,8 +123,10 @@ bool GeneratorVector::Generate( const genType_t type, const u32 numComponents ) 
 
 		String_Append( &m_codeInl, "// hlml includes\n" );
 
-		for ( u32 i = GEN_COMPONENT_COUNT_MIN; i <= GEN_COMPONENT_COUNT_MAX; i++ ) {
-			String_Appendf( &m_codeInl, "#include \"%s%d.h\"\n", m_typeString, i );
+		for ( u32 i = 0; i < g_optionsVector.vectorSizesCount; i++ ) {
+			u32 vectorSize = g_optionsVector.vectorSizes[i];
+
+			String_Appendf( &m_codeInl, "#include \"%s%d.h\"\n", m_typeString, vectorSize );
 		}
 		String_Append( &m_codeInl, "\n" );
 
@@ -207,8 +210,10 @@ void GeneratorVector::GenerateConstructors() {
 
 		String_Appendf( &m_codeInl, "%s::%s()\n", m_fullTypeName, m_fullTypeName );
 		String_Append(  &m_codeInl, "{\n" );
-		for ( u32 i = 0; i < m_numComponents; i++ ) {
-			String_Appendf( &m_codeInl, "\t%c = %s;\n", GEN_COMPONENT_NAMES_VECTOR[i], defaultValueStr );
+		if ( g_optionFlags & GEN_OPTION_FLAG_ZERO_INIT ) {
+			for ( u32 i = 0; i < m_numComponents; i++ ) {
+				String_Appendf( &m_codeInl, "\t%c = %s;\n", GEN_COMPONENT_NAMES_VECTOR[i], defaultValueStr );
+			}
 		}
 		String_Append(  &m_codeInl, "}\n" );
 		String_Append(  &m_codeInl, "\n" );
@@ -268,12 +273,14 @@ void GeneratorVector::GenerateConstructors() {
 
 	// copy ctors for all valid vector types
 	{
-		for ( u32 i = GEN_COMPONENT_COUNT_MIN; i <= GEN_COMPONENT_COUNT_MAX; i++ ) {
+		for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+			const u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
+
 			GenerateDocCtorCopy();
-			String_Appendf( &m_codeHeader, "\tinline %s( const %s%d& other );\n", m_fullTypeName, m_typeString, i );
+			String_Appendf( &m_codeHeader, "\tinline %s( const %s%d& other );\n", m_fullTypeName, m_typeString, numComponents );
 			String_Append(  &m_codeHeader, "\n" );
 
-			String_Appendf( &m_codeInl, "%s::%s( const %s%d& other )\n", m_fullTypeName, m_fullTypeName, m_typeString, i );
+			String_Appendf( &m_codeInl, "%s::%s( const %s%d& other )\n", m_fullTypeName, m_fullTypeName, m_typeString, numComponents );
 			String_Append(  &m_codeInl, "{\n" );
 			String_Append(  &m_codeInl, "\tmemcpy( data, other.data, sizeof( other.data ) );\n" );
 			String_Append(  &m_codeInl, "}\n" );
@@ -287,12 +294,14 @@ void GeneratorVector::GenerateConstructors() {
 }
 
 void GeneratorVector::GenerateOperatorsAssignment() {
-	for ( u32 i = GEN_COMPONENT_COUNT_MIN; i <= GEN_COMPONENT_COUNT_MAX; i++ ) {
+	for ( u32 componentIndex = 0; componentIndex < g_optionsVector.vectorSizesCount; componentIndex++ ) {
+		const u32 numComponents = g_optionsVector.vectorSizes[componentIndex];
+
 		GenerateDocOperatorAssignment();
-		String_Appendf( &m_codeHeader, "\tinline %s operator=( const %s%d& rhs );\n", m_fullTypeName, m_typeString, i );
+		String_Appendf( &m_codeHeader, "\tinline %s operator=( const %s%d& rhs );\n", m_fullTypeName, m_typeString, numComponents );
 		String_Append(  &m_codeHeader, "\n" );
 
-		String_Appendf( &m_codeInl, "%s %s::operator=( const %s%d& rhs )\n", m_fullTypeName, m_fullTypeName, m_typeString, i );
+		String_Appendf( &m_codeInl, "%s %s::operator=( const %s%d& rhs )\n", m_fullTypeName, m_fullTypeName, m_typeString, numComponents );
 		String_Append(  &m_codeInl, "{\n" );
 		String_Append(  &m_codeInl, "\tmemcpy( data, rhs.data, sizeof( rhs.data ) );\n" );
 		String_Append(  &m_codeInl, "\treturn *this;\n" );

@@ -53,10 +53,10 @@ struct float2x3_sse_t
 	__m128 m[2][3];
 };
 
-// float2x4
-struct float2x4_sse_t
+// float3x3
+struct float3x3_sse_t
 {
-	__m128 m[2][4];
+	__m128 m[3][3];
 };
 
 // float3x2
@@ -65,16 +65,16 @@ struct float3x2_sse_t
 	__m128 m[3][2];
 };
 
-// float3x3
-struct float3x3_sse_t
+// float2x4
+struct float2x4_sse_t
 {
-	__m128 m[3][3];
+	__m128 m[2][4];
 };
 
-// float3x4
-struct float3x4_sse_t
+// float4x4
+struct float4x4_sse_t
 {
-	__m128 m[3][4];
+	__m128 m[4][4];
 };
 
 // float4x2
@@ -83,16 +83,16 @@ struct float4x2_sse_t
 	__m128 m[4][2];
 };
 
+// float3x4
+struct float3x4_sse_t
+{
+	__m128 m[3][4];
+};
+
 // float4x3
 struct float4x3_sse_t
 {
 	__m128 m[4][3];
-};
-
-// float4x4
-struct float4x4_sse_t
-{
-	__m128 m[4][4];
 };
 
 
@@ -429,391 +429,6 @@ inline void mul_sse( const float2x3_sse_t* lhs, const float3x2_sse_t* rhs, float
 	dot_rhs.z = rhs->m[2][1];
 
 	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][1] );
-}
-
-
-// float2x4
-/// \relates float2x4
-/// \brief Sets a matrix of __m128 registers to identity.
-inline void identity_sse( float2x4_sse_t* mat )
-{
-	// row 0
-	mat->m[0][0] = _mm_set1_ps( 1.0f );
-	mat->m[0][1] = _mm_set1_ps( 0.0f );
-	mat->m[0][2] = _mm_set1_ps( 0.0f );
-	mat->m[0][3] = _mm_set1_ps( 0.0f );
-
-	// row 1
-	mat->m[1][0] = _mm_set1_ps( 0.0f );
-	mat->m[1][1] = _mm_set1_ps( 1.0f );
-	mat->m[1][2] = _mm_set1_ps( 0.0f );
-	mat->m[1][3] = _mm_set1_ps( 0.0f );
-}
-
-/// \relates float2x4
-/// \brief Stores a transposed matrix of 4 x 2 __m128 registers in the output given the input 2 x 4 register matrix.
-inline void transpose_sse( const float2x4_sse_t* in, float4x2_sse_t* out )
-{
-	assert( in );
-	assert( out );
-
-	out->m[0][0] = in->m[0][0];
-	out->m[1][0] = in->m[0][1];
-	out->m[2][0] = in->m[0][2];
-	out->m[3][0] = in->m[0][3];
-
-	out->m[0][1] = in->m[1][0];
-	out->m[1][1] = in->m[1][1];
-	out->m[2][1] = in->m[1][2];
-	out->m[3][1] = in->m[1][3];
-}
-
-/// \relates float2x4
-/// \brief Stores a matrix that is the result of the component-wise addition between the lhs and rhs __m128 registers of the input.
-inline void comp_add_sse( const float2x4_sse_t* lhs, const float2x4_sse_t* rhs, float2x4_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_add_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_add_ps( lhs->m[0][1], rhs->m[0][1] );
-	out->m[0][2] = _mm_add_ps( lhs->m[0][2], rhs->m[0][2] );
-	out->m[0][3] = _mm_add_ps( lhs->m[0][3], rhs->m[0][3] );
-
-	// row 1
-	out->m[1][0] = _mm_add_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_add_ps( lhs->m[1][1], rhs->m[1][1] );
-	out->m[1][2] = _mm_add_ps( lhs->m[1][2], rhs->m[1][2] );
-	out->m[1][3] = _mm_add_ps( lhs->m[1][3], rhs->m[1][3] );
-}
-
-/// \relates float2x4
-/// \brief Stores a matrix that is the result of the component-wise subtraction between the lhs and rhs __m128 registers of the input.
-inline void comp_sub_sse( const float2x4_sse_t* lhs, const float2x4_sse_t* rhs, float2x4_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_sub_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_sub_ps( lhs->m[0][1], rhs->m[0][1] );
-	out->m[0][2] = _mm_sub_ps( lhs->m[0][2], rhs->m[0][2] );
-	out->m[0][3] = _mm_sub_ps( lhs->m[0][3], rhs->m[0][3] );
-
-	// row 1
-	out->m[1][0] = _mm_sub_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_sub_ps( lhs->m[1][1], rhs->m[1][1] );
-	out->m[1][2] = _mm_sub_ps( lhs->m[1][2], rhs->m[1][2] );
-	out->m[1][3] = _mm_sub_ps( lhs->m[1][3], rhs->m[1][3] );
-}
-
-/// \relates float2x4
-/// \brief Stores a matrix that is the result of the component-wise multiplication between the lhs and rhs __m128 registers of the input.
-inline void comp_mul_sse( const float2x4_sse_t* lhs, const float2x4_sse_t* rhs, float2x4_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_mul_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_mul_ps( lhs->m[0][1], rhs->m[0][1] );
-	out->m[0][2] = _mm_mul_ps( lhs->m[0][2], rhs->m[0][2] );
-	out->m[0][3] = _mm_mul_ps( lhs->m[0][3], rhs->m[0][3] );
-
-	// row 1
-	out->m[1][0] = _mm_mul_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_mul_ps( lhs->m[1][1], rhs->m[1][1] );
-	out->m[1][2] = _mm_mul_ps( lhs->m[1][2], rhs->m[1][2] );
-	out->m[1][3] = _mm_mul_ps( lhs->m[1][3], rhs->m[1][3] );
-}
-
-/// \relates float2x4
-/// \brief Stores a matrix that is the result of the component-wise division between the lhs and rhs __m128 registers of the input.
-inline void comp_div_sse( const float2x4_sse_t* lhs, const float2x4_sse_t* rhs, float2x4_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_div_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_div_ps( lhs->m[0][1], rhs->m[0][1] );
-	out->m[0][2] = _mm_div_ps( lhs->m[0][2], rhs->m[0][2] );
-	out->m[0][3] = _mm_div_ps( lhs->m[0][3], rhs->m[0][3] );
-
-	// row 1
-	out->m[1][0] = _mm_div_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_div_ps( lhs->m[1][1], rhs->m[1][1] );
-	out->m[1][2] = _mm_div_ps( lhs->m[1][2], rhs->m[1][2] );
-	out->m[1][3] = _mm_div_ps( lhs->m[1][3], rhs->m[1][3] );
-}
-
-/// \relates float2x4
-/// \brief Performs a matrix-multiplication of 2 matrices of __m128 registers.
-inline void mul_sse( const float2x4_sse_t* lhs, const float4x2_sse_t* rhs, float2x2_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	float4_sse_t dot_lhs;
-	float4_sse_t dot_rhs;
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-	dot_lhs.z = lhs->m[0][2];
-	dot_lhs.w = lhs->m[0][3];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-	dot_rhs.z = rhs->m[2][0];
-	dot_rhs.w = rhs->m[3][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][0] );
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-	dot_lhs.z = lhs->m[0][2];
-	dot_lhs.w = lhs->m[0][3];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-	dot_rhs.z = rhs->m[2][1];
-	dot_rhs.w = rhs->m[3][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][1] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-	dot_lhs.z = lhs->m[1][2];
-	dot_lhs.w = lhs->m[1][3];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-	dot_rhs.z = rhs->m[2][0];
-	dot_rhs.w = rhs->m[3][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][0] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-	dot_lhs.z = lhs->m[1][2];
-	dot_lhs.w = lhs->m[1][3];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-	dot_rhs.z = rhs->m[2][1];
-	dot_rhs.w = rhs->m[3][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][1] );
-}
-
-
-// float3x2
-/// \relates float3x2
-/// \brief Sets a matrix of __m128 registers to identity.
-inline void identity_sse( float3x2_sse_t* mat )
-{
-	// row 0
-	mat->m[0][0] = _mm_set1_ps( 1.0f );
-	mat->m[0][1] = _mm_set1_ps( 0.0f );
-
-	// row 1
-	mat->m[1][0] = _mm_set1_ps( 0.0f );
-	mat->m[1][1] = _mm_set1_ps( 1.0f );
-
-	// row 2
-	mat->m[2][0] = _mm_set1_ps( 0.0f );
-	mat->m[2][1] = _mm_set1_ps( 0.0f );
-}
-
-/// \relates float3x2
-/// \brief Stores a transposed matrix of 2 x 3 __m128 registers in the output given the input 3 x 2 register matrix.
-inline void transpose_sse( const float3x2_sse_t* in, float2x3_sse_t* out )
-{
-	assert( in );
-	assert( out );
-
-	out->m[0][0] = in->m[0][0];
-	out->m[1][0] = in->m[0][1];
-
-	out->m[0][1] = in->m[1][0];
-	out->m[1][1] = in->m[1][1];
-
-	out->m[0][2] = in->m[2][0];
-	out->m[1][2] = in->m[2][1];
-}
-
-/// \relates float3x2
-/// \brief Stores a matrix that is the result of the component-wise addition between the lhs and rhs __m128 registers of the input.
-inline void comp_add_sse( const float3x2_sse_t* lhs, const float3x2_sse_t* rhs, float3x2_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_add_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_add_ps( lhs->m[0][1], rhs->m[0][1] );
-
-	// row 1
-	out->m[1][0] = _mm_add_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_add_ps( lhs->m[1][1], rhs->m[1][1] );
-
-	// row 2
-	out->m[2][0] = _mm_add_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_add_ps( lhs->m[2][1], rhs->m[2][1] );
-}
-
-/// \relates float3x2
-/// \brief Stores a matrix that is the result of the component-wise subtraction between the lhs and rhs __m128 registers of the input.
-inline void comp_sub_sse( const float3x2_sse_t* lhs, const float3x2_sse_t* rhs, float3x2_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_sub_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_sub_ps( lhs->m[0][1], rhs->m[0][1] );
-
-	// row 1
-	out->m[1][0] = _mm_sub_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_sub_ps( lhs->m[1][1], rhs->m[1][1] );
-
-	// row 2
-	out->m[2][0] = _mm_sub_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_sub_ps( lhs->m[2][1], rhs->m[2][1] );
-}
-
-/// \relates float3x2
-/// \brief Stores a matrix that is the result of the component-wise multiplication between the lhs and rhs __m128 registers of the input.
-inline void comp_mul_sse( const float3x2_sse_t* lhs, const float3x2_sse_t* rhs, float3x2_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_mul_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_mul_ps( lhs->m[0][1], rhs->m[0][1] );
-
-	// row 1
-	out->m[1][0] = _mm_mul_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_mul_ps( lhs->m[1][1], rhs->m[1][1] );
-
-	// row 2
-	out->m[2][0] = _mm_mul_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_mul_ps( lhs->m[2][1], rhs->m[2][1] );
-}
-
-/// \relates float3x2
-/// \brief Stores a matrix that is the result of the component-wise division between the lhs and rhs __m128 registers of the input.
-inline void comp_div_sse( const float3x2_sse_t* lhs, const float3x2_sse_t* rhs, float3x2_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_div_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_div_ps( lhs->m[0][1], rhs->m[0][1] );
-
-	// row 1
-	out->m[1][0] = _mm_div_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_div_ps( lhs->m[1][1], rhs->m[1][1] );
-
-	// row 2
-	out->m[2][0] = _mm_div_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_div_ps( lhs->m[2][1], rhs->m[2][1] );
-}
-
-/// \relates float3x2
-/// \brief Performs a matrix-multiplication of 2 matrices of __m128 registers.
-inline void mul_sse( const float3x2_sse_t* lhs, const float2x3_sse_t* rhs, float3x3_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	float2_sse_t dot_lhs;
-	float2_sse_t dot_rhs;
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][0] );
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][1] );
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][2] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][0] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][1] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][2] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][0] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][1] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][2] );
 }
 
 
@@ -1186,286 +801,10 @@ inline void scale_sse( const float2_sse_t* diagonal, const float2_sse_t* scale, 
 }
 
 
-// float3x4
-/// \relates float3x4
+// float3x2
+/// \relates float3x2
 /// \brief Sets a matrix of __m128 registers to identity.
-inline void identity_sse( float3x4_sse_t* mat )
-{
-	// row 0
-	mat->m[0][0] = _mm_set1_ps( 1.0f );
-	mat->m[0][1] = _mm_set1_ps( 0.0f );
-	mat->m[0][2] = _mm_set1_ps( 0.0f );
-	mat->m[0][3] = _mm_set1_ps( 0.0f );
-
-	// row 1
-	mat->m[1][0] = _mm_set1_ps( 0.0f );
-	mat->m[1][1] = _mm_set1_ps( 1.0f );
-	mat->m[1][2] = _mm_set1_ps( 0.0f );
-	mat->m[1][3] = _mm_set1_ps( 0.0f );
-
-	// row 2
-	mat->m[2][0] = _mm_set1_ps( 0.0f );
-	mat->m[2][1] = _mm_set1_ps( 0.0f );
-	mat->m[2][2] = _mm_set1_ps( 1.0f );
-	mat->m[2][3] = _mm_set1_ps( 0.0f );
-}
-
-/// \relates float3x4
-/// \brief Stores a transposed matrix of 4 x 3 __m128 registers in the output given the input 3 x 4 register matrix.
-inline void transpose_sse( const float3x4_sse_t* in, float4x3_sse_t* out )
-{
-	assert( in );
-	assert( out );
-
-	out->m[0][0] = in->m[0][0];
-	out->m[1][0] = in->m[0][1];
-	out->m[2][0] = in->m[0][2];
-	out->m[3][0] = in->m[0][3];
-
-	out->m[0][1] = in->m[1][0];
-	out->m[1][1] = in->m[1][1];
-	out->m[2][1] = in->m[1][2];
-	out->m[3][1] = in->m[1][3];
-
-	out->m[0][2] = in->m[2][0];
-	out->m[1][2] = in->m[2][1];
-	out->m[2][2] = in->m[2][2];
-	out->m[3][2] = in->m[2][3];
-}
-
-/// \relates float3x4
-/// \brief Stores a matrix that is the result of the component-wise addition between the lhs and rhs __m128 registers of the input.
-inline void comp_add_sse( const float3x4_sse_t* lhs, const float3x4_sse_t* rhs, float3x4_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_add_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_add_ps( lhs->m[0][1], rhs->m[0][1] );
-	out->m[0][2] = _mm_add_ps( lhs->m[0][2], rhs->m[0][2] );
-	out->m[0][3] = _mm_add_ps( lhs->m[0][3], rhs->m[0][3] );
-
-	// row 1
-	out->m[1][0] = _mm_add_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_add_ps( lhs->m[1][1], rhs->m[1][1] );
-	out->m[1][2] = _mm_add_ps( lhs->m[1][2], rhs->m[1][2] );
-	out->m[1][3] = _mm_add_ps( lhs->m[1][3], rhs->m[1][3] );
-
-	// row 2
-	out->m[2][0] = _mm_add_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_add_ps( lhs->m[2][1], rhs->m[2][1] );
-	out->m[2][2] = _mm_add_ps( lhs->m[2][2], rhs->m[2][2] );
-	out->m[2][3] = _mm_add_ps( lhs->m[2][3], rhs->m[2][3] );
-}
-
-/// \relates float3x4
-/// \brief Stores a matrix that is the result of the component-wise subtraction between the lhs and rhs __m128 registers of the input.
-inline void comp_sub_sse( const float3x4_sse_t* lhs, const float3x4_sse_t* rhs, float3x4_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_sub_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_sub_ps( lhs->m[0][1], rhs->m[0][1] );
-	out->m[0][2] = _mm_sub_ps( lhs->m[0][2], rhs->m[0][2] );
-	out->m[0][3] = _mm_sub_ps( lhs->m[0][3], rhs->m[0][3] );
-
-	// row 1
-	out->m[1][0] = _mm_sub_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_sub_ps( lhs->m[1][1], rhs->m[1][1] );
-	out->m[1][2] = _mm_sub_ps( lhs->m[1][2], rhs->m[1][2] );
-	out->m[1][3] = _mm_sub_ps( lhs->m[1][3], rhs->m[1][3] );
-
-	// row 2
-	out->m[2][0] = _mm_sub_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_sub_ps( lhs->m[2][1], rhs->m[2][1] );
-	out->m[2][2] = _mm_sub_ps( lhs->m[2][2], rhs->m[2][2] );
-	out->m[2][3] = _mm_sub_ps( lhs->m[2][3], rhs->m[2][3] );
-}
-
-/// \relates float3x4
-/// \brief Stores a matrix that is the result of the component-wise multiplication between the lhs and rhs __m128 registers of the input.
-inline void comp_mul_sse( const float3x4_sse_t* lhs, const float3x4_sse_t* rhs, float3x4_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_mul_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_mul_ps( lhs->m[0][1], rhs->m[0][1] );
-	out->m[0][2] = _mm_mul_ps( lhs->m[0][2], rhs->m[0][2] );
-	out->m[0][3] = _mm_mul_ps( lhs->m[0][3], rhs->m[0][3] );
-
-	// row 1
-	out->m[1][0] = _mm_mul_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_mul_ps( lhs->m[1][1], rhs->m[1][1] );
-	out->m[1][2] = _mm_mul_ps( lhs->m[1][2], rhs->m[1][2] );
-	out->m[1][3] = _mm_mul_ps( lhs->m[1][3], rhs->m[1][3] );
-
-	// row 2
-	out->m[2][0] = _mm_mul_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_mul_ps( lhs->m[2][1], rhs->m[2][1] );
-	out->m[2][2] = _mm_mul_ps( lhs->m[2][2], rhs->m[2][2] );
-	out->m[2][3] = _mm_mul_ps( lhs->m[2][3], rhs->m[2][3] );
-}
-
-/// \relates float3x4
-/// \brief Stores a matrix that is the result of the component-wise division between the lhs and rhs __m128 registers of the input.
-inline void comp_div_sse( const float3x4_sse_t* lhs, const float3x4_sse_t* rhs, float3x4_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	// row 0
-	out->m[0][0] = _mm_div_ps( lhs->m[0][0], rhs->m[0][0] );
-	out->m[0][1] = _mm_div_ps( lhs->m[0][1], rhs->m[0][1] );
-	out->m[0][2] = _mm_div_ps( lhs->m[0][2], rhs->m[0][2] );
-	out->m[0][3] = _mm_div_ps( lhs->m[0][3], rhs->m[0][3] );
-
-	// row 1
-	out->m[1][0] = _mm_div_ps( lhs->m[1][0], rhs->m[1][0] );
-	out->m[1][1] = _mm_div_ps( lhs->m[1][1], rhs->m[1][1] );
-	out->m[1][2] = _mm_div_ps( lhs->m[1][2], rhs->m[1][2] );
-	out->m[1][3] = _mm_div_ps( lhs->m[1][3], rhs->m[1][3] );
-
-	// row 2
-	out->m[2][0] = _mm_div_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_div_ps( lhs->m[2][1], rhs->m[2][1] );
-	out->m[2][2] = _mm_div_ps( lhs->m[2][2], rhs->m[2][2] );
-	out->m[2][3] = _mm_div_ps( lhs->m[2][3], rhs->m[2][3] );
-}
-
-/// \relates float3x4
-/// \brief Performs a matrix-multiplication of 2 matrices of __m128 registers.
-inline void mul_sse( const float3x4_sse_t* lhs, const float4x3_sse_t* rhs, float3x3_sse_t* out )
-{
-	assert( lhs );
-	assert( rhs );
-	assert( out );
-
-	float4_sse_t dot_lhs;
-	float4_sse_t dot_rhs;
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-	dot_lhs.z = lhs->m[0][2];
-	dot_lhs.w = lhs->m[0][3];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-	dot_rhs.z = rhs->m[2][0];
-	dot_rhs.w = rhs->m[3][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][0] );
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-	dot_lhs.z = lhs->m[0][2];
-	dot_lhs.w = lhs->m[0][3];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-	dot_rhs.z = rhs->m[2][1];
-	dot_rhs.w = rhs->m[3][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][1] );
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-	dot_lhs.z = lhs->m[0][2];
-	dot_lhs.w = lhs->m[0][3];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-	dot_rhs.z = rhs->m[2][2];
-	dot_rhs.w = rhs->m[3][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][2] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-	dot_lhs.z = lhs->m[1][2];
-	dot_lhs.w = lhs->m[1][3];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-	dot_rhs.z = rhs->m[2][0];
-	dot_rhs.w = rhs->m[3][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][0] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-	dot_lhs.z = lhs->m[1][2];
-	dot_lhs.w = lhs->m[1][3];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-	dot_rhs.z = rhs->m[2][1];
-	dot_rhs.w = rhs->m[3][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][1] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-	dot_lhs.z = lhs->m[1][2];
-	dot_lhs.w = lhs->m[1][3];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-	dot_rhs.z = rhs->m[2][2];
-	dot_rhs.w = rhs->m[3][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][2] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-	dot_lhs.z = lhs->m[2][2];
-	dot_lhs.w = lhs->m[2][3];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-	dot_rhs.z = rhs->m[2][0];
-	dot_rhs.w = rhs->m[3][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][0] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-	dot_lhs.z = lhs->m[2][2];
-	dot_lhs.w = lhs->m[2][3];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-	dot_rhs.z = rhs->m[2][1];
-	dot_rhs.w = rhs->m[3][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][1] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-	dot_lhs.z = lhs->m[2][2];
-	dot_lhs.w = lhs->m[2][3];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-	dot_rhs.z = rhs->m[2][2];
-	dot_rhs.w = rhs->m[3][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][2] );
-}
-
-
-// float4x2
-/// \relates float4x2
-/// \brief Sets a matrix of __m128 registers to identity.
-inline void identity_sse( float4x2_sse_t* mat )
+inline void identity_sse( float3x2_sse_t* mat )
 {
 	// row 0
 	mat->m[0][0] = _mm_set1_ps( 1.0f );
@@ -1478,15 +817,11 @@ inline void identity_sse( float4x2_sse_t* mat )
 	// row 2
 	mat->m[2][0] = _mm_set1_ps( 0.0f );
 	mat->m[2][1] = _mm_set1_ps( 0.0f );
-
-	// row 3
-	mat->m[3][0] = _mm_set1_ps( 0.0f );
-	mat->m[3][1] = _mm_set1_ps( 0.0f );
 }
 
-/// \relates float4x2
-/// \brief Stores a transposed matrix of 2 x 4 __m128 registers in the output given the input 4 x 2 register matrix.
-inline void transpose_sse( const float4x2_sse_t* in, float2x4_sse_t* out )
+/// \relates float3x2
+/// \brief Stores a transposed matrix of 2 x 3 __m128 registers in the output given the input 3 x 2 register matrix.
+inline void transpose_sse( const float3x2_sse_t* in, float2x3_sse_t* out )
 {
 	assert( in );
 	assert( out );
@@ -1499,14 +834,11 @@ inline void transpose_sse( const float4x2_sse_t* in, float2x4_sse_t* out )
 
 	out->m[0][2] = in->m[2][0];
 	out->m[1][2] = in->m[2][1];
-
-	out->m[0][3] = in->m[3][0];
-	out->m[1][3] = in->m[3][1];
 }
 
-/// \relates float4x2
+/// \relates float3x2
 /// \brief Stores a matrix that is the result of the component-wise addition between the lhs and rhs __m128 registers of the input.
-inline void comp_add_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, float4x2_sse_t* out )
+inline void comp_add_sse( const float3x2_sse_t* lhs, const float3x2_sse_t* rhs, float3x2_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
@@ -1523,15 +855,11 @@ inline void comp_add_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, 
 	// row 2
 	out->m[2][0] = _mm_add_ps( lhs->m[2][0], rhs->m[2][0] );
 	out->m[2][1] = _mm_add_ps( lhs->m[2][1], rhs->m[2][1] );
-
-	// row 3
-	out->m[3][0] = _mm_add_ps( lhs->m[3][0], rhs->m[3][0] );
-	out->m[3][1] = _mm_add_ps( lhs->m[3][1], rhs->m[3][1] );
 }
 
-/// \relates float4x2
+/// \relates float3x2
 /// \brief Stores a matrix that is the result of the component-wise subtraction between the lhs and rhs __m128 registers of the input.
-inline void comp_sub_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, float4x2_sse_t* out )
+inline void comp_sub_sse( const float3x2_sse_t* lhs, const float3x2_sse_t* rhs, float3x2_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
@@ -1548,15 +876,11 @@ inline void comp_sub_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, 
 	// row 2
 	out->m[2][0] = _mm_sub_ps( lhs->m[2][0], rhs->m[2][0] );
 	out->m[2][1] = _mm_sub_ps( lhs->m[2][1], rhs->m[2][1] );
-
-	// row 3
-	out->m[3][0] = _mm_sub_ps( lhs->m[3][0], rhs->m[3][0] );
-	out->m[3][1] = _mm_sub_ps( lhs->m[3][1], rhs->m[3][1] );
 }
 
-/// \relates float4x2
+/// \relates float3x2
 /// \brief Stores a matrix that is the result of the component-wise multiplication between the lhs and rhs __m128 registers of the input.
-inline void comp_mul_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, float4x2_sse_t* out )
+inline void comp_mul_sse( const float3x2_sse_t* lhs, const float3x2_sse_t* rhs, float3x2_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
@@ -1573,15 +897,11 @@ inline void comp_mul_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, 
 	// row 2
 	out->m[2][0] = _mm_mul_ps( lhs->m[2][0], rhs->m[2][0] );
 	out->m[2][1] = _mm_mul_ps( lhs->m[2][1], rhs->m[2][1] );
-
-	// row 3
-	out->m[3][0] = _mm_mul_ps( lhs->m[3][0], rhs->m[3][0] );
-	out->m[3][1] = _mm_mul_ps( lhs->m[3][1], rhs->m[3][1] );
 }
 
-/// \relates float4x2
+/// \relates float3x2
 /// \brief Stores a matrix that is the result of the component-wise division between the lhs and rhs __m128 registers of the input.
-inline void comp_div_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, float4x2_sse_t* out )
+inline void comp_div_sse( const float3x2_sse_t* lhs, const float3x2_sse_t* rhs, float3x2_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
@@ -1598,15 +918,11 @@ inline void comp_div_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, 
 	// row 2
 	out->m[2][0] = _mm_div_ps( lhs->m[2][0], rhs->m[2][0] );
 	out->m[2][1] = _mm_div_ps( lhs->m[2][1], rhs->m[2][1] );
-
-	// row 3
-	out->m[3][0] = _mm_div_ps( lhs->m[3][0], rhs->m[3][0] );
-	out->m[3][1] = _mm_div_ps( lhs->m[3][1], rhs->m[3][1] );
 }
 
-/// \relates float4x2
+/// \relates float3x2
 /// \brief Performs a matrix-multiplication of 2 matrices of __m128 registers.
-inline void mul_sse( const float4x2_sse_t* lhs, const float2x4_sse_t* rhs, float4x4_sse_t* out )
+inline void mul_sse( const float3x2_sse_t* lhs, const float2x3_sse_t* rhs, float3x3_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
@@ -1639,14 +955,6 @@ inline void mul_sse( const float4x2_sse_t* lhs, const float2x4_sse_t* rhs, float
 
 	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][2] );
 
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-
-	dot_rhs.x = rhs->m[0][3];
-	dot_rhs.y = rhs->m[1][3];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][3] );
-
 	dot_lhs.x = lhs->m[1][0];
 	dot_lhs.y = lhs->m[1][1];
 
@@ -1671,14 +979,6 @@ inline void mul_sse( const float4x2_sse_t* lhs, const float2x4_sse_t* rhs, float
 
 	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][2] );
 
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-
-	dot_rhs.x = rhs->m[0][3];
-	dot_rhs.y = rhs->m[1][3];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][3] );
-
 	dot_lhs.x = lhs->m[2][0];
 	dot_lhs.y = lhs->m[2][1];
 
@@ -1702,78 +1002,30 @@ inline void mul_sse( const float4x2_sse_t* lhs, const float2x4_sse_t* rhs, float
 	dot_rhs.y = rhs->m[1][2];
 
 	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][2] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-
-	dot_rhs.x = rhs->m[0][3];
-	dot_rhs.y = rhs->m[1][3];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][3] );
-
-	dot_lhs.x = lhs->m[3][0];
-	dot_lhs.y = lhs->m[3][1];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][0] );
-
-	dot_lhs.x = lhs->m[3][0];
-	dot_lhs.y = lhs->m[3][1];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][1] );
-
-	dot_lhs.x = lhs->m[3][0];
-	dot_lhs.y = lhs->m[3][1];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][2] );
-
-	dot_lhs.x = lhs->m[3][0];
-	dot_lhs.y = lhs->m[3][1];
-
-	dot_rhs.x = rhs->m[0][3];
-	dot_rhs.y = rhs->m[1][3];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][3] );
 }
 
 
-// float4x3
-/// \relates float4x3
+// float2x4
+/// \relates float2x4
 /// \brief Sets a matrix of __m128 registers to identity.
-inline void identity_sse( float4x3_sse_t* mat )
+inline void identity_sse( float2x4_sse_t* mat )
 {
 	// row 0
 	mat->m[0][0] = _mm_set1_ps( 1.0f );
 	mat->m[0][1] = _mm_set1_ps( 0.0f );
 	mat->m[0][2] = _mm_set1_ps( 0.0f );
+	mat->m[0][3] = _mm_set1_ps( 0.0f );
 
 	// row 1
 	mat->m[1][0] = _mm_set1_ps( 0.0f );
 	mat->m[1][1] = _mm_set1_ps( 1.0f );
 	mat->m[1][2] = _mm_set1_ps( 0.0f );
-
-	// row 2
-	mat->m[2][0] = _mm_set1_ps( 0.0f );
-	mat->m[2][1] = _mm_set1_ps( 0.0f );
-	mat->m[2][2] = _mm_set1_ps( 1.0f );
-
-	// row 3
-	mat->m[3][0] = _mm_set1_ps( 0.0f );
-	mat->m[3][1] = _mm_set1_ps( 0.0f );
-	mat->m[3][2] = _mm_set1_ps( 0.0f );
+	mat->m[1][3] = _mm_set1_ps( 0.0f );
 }
 
-/// \relates float4x3
-/// \brief Stores a transposed matrix of 3 x 4 __m128 registers in the output given the input 4 x 3 register matrix.
-inline void transpose_sse( const float4x3_sse_t* in, float3x4_sse_t* out )
+/// \relates float2x4
+/// \brief Stores a transposed matrix of 4 x 2 __m128 registers in the output given the input 2 x 4 register matrix.
+inline void transpose_sse( const float2x4_sse_t* in, float4x2_sse_t* out )
 {
 	assert( in );
 	assert( out );
@@ -1781,23 +1033,17 @@ inline void transpose_sse( const float4x3_sse_t* in, float3x4_sse_t* out )
 	out->m[0][0] = in->m[0][0];
 	out->m[1][0] = in->m[0][1];
 	out->m[2][0] = in->m[0][2];
+	out->m[3][0] = in->m[0][3];
 
 	out->m[0][1] = in->m[1][0];
 	out->m[1][1] = in->m[1][1];
 	out->m[2][1] = in->m[1][2];
-
-	out->m[0][2] = in->m[2][0];
-	out->m[1][2] = in->m[2][1];
-	out->m[2][2] = in->m[2][2];
-
-	out->m[0][3] = in->m[3][0];
-	out->m[1][3] = in->m[3][1];
-	out->m[2][3] = in->m[3][2];
+	out->m[3][1] = in->m[1][3];
 }
 
-/// \relates float4x3
+/// \relates float2x4
 /// \brief Stores a matrix that is the result of the component-wise addition between the lhs and rhs __m128 registers of the input.
-inline void comp_add_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, float4x3_sse_t* out )
+inline void comp_add_sse( const float2x4_sse_t* lhs, const float2x4_sse_t* rhs, float2x4_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
@@ -1807,26 +1053,18 @@ inline void comp_add_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, 
 	out->m[0][0] = _mm_add_ps( lhs->m[0][0], rhs->m[0][0] );
 	out->m[0][1] = _mm_add_ps( lhs->m[0][1], rhs->m[0][1] );
 	out->m[0][2] = _mm_add_ps( lhs->m[0][2], rhs->m[0][2] );
+	out->m[0][3] = _mm_add_ps( lhs->m[0][3], rhs->m[0][3] );
 
 	// row 1
 	out->m[1][0] = _mm_add_ps( lhs->m[1][0], rhs->m[1][0] );
 	out->m[1][1] = _mm_add_ps( lhs->m[1][1], rhs->m[1][1] );
 	out->m[1][2] = _mm_add_ps( lhs->m[1][2], rhs->m[1][2] );
-
-	// row 2
-	out->m[2][0] = _mm_add_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_add_ps( lhs->m[2][1], rhs->m[2][1] );
-	out->m[2][2] = _mm_add_ps( lhs->m[2][2], rhs->m[2][2] );
-
-	// row 3
-	out->m[3][0] = _mm_add_ps( lhs->m[3][0], rhs->m[3][0] );
-	out->m[3][1] = _mm_add_ps( lhs->m[3][1], rhs->m[3][1] );
-	out->m[3][2] = _mm_add_ps( lhs->m[3][2], rhs->m[3][2] );
+	out->m[1][3] = _mm_add_ps( lhs->m[1][3], rhs->m[1][3] );
 }
 
-/// \relates float4x3
+/// \relates float2x4
 /// \brief Stores a matrix that is the result of the component-wise subtraction between the lhs and rhs __m128 registers of the input.
-inline void comp_sub_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, float4x3_sse_t* out )
+inline void comp_sub_sse( const float2x4_sse_t* lhs, const float2x4_sse_t* rhs, float2x4_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
@@ -1836,26 +1074,18 @@ inline void comp_sub_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, 
 	out->m[0][0] = _mm_sub_ps( lhs->m[0][0], rhs->m[0][0] );
 	out->m[0][1] = _mm_sub_ps( lhs->m[0][1], rhs->m[0][1] );
 	out->m[0][2] = _mm_sub_ps( lhs->m[0][2], rhs->m[0][2] );
+	out->m[0][3] = _mm_sub_ps( lhs->m[0][3], rhs->m[0][3] );
 
 	// row 1
 	out->m[1][0] = _mm_sub_ps( lhs->m[1][0], rhs->m[1][0] );
 	out->m[1][1] = _mm_sub_ps( lhs->m[1][1], rhs->m[1][1] );
 	out->m[1][2] = _mm_sub_ps( lhs->m[1][2], rhs->m[1][2] );
-
-	// row 2
-	out->m[2][0] = _mm_sub_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_sub_ps( lhs->m[2][1], rhs->m[2][1] );
-	out->m[2][2] = _mm_sub_ps( lhs->m[2][2], rhs->m[2][2] );
-
-	// row 3
-	out->m[3][0] = _mm_sub_ps( lhs->m[3][0], rhs->m[3][0] );
-	out->m[3][1] = _mm_sub_ps( lhs->m[3][1], rhs->m[3][1] );
-	out->m[3][2] = _mm_sub_ps( lhs->m[3][2], rhs->m[3][2] );
+	out->m[1][3] = _mm_sub_ps( lhs->m[1][3], rhs->m[1][3] );
 }
 
-/// \relates float4x3
+/// \relates float2x4
 /// \brief Stores a matrix that is the result of the component-wise multiplication between the lhs and rhs __m128 registers of the input.
-inline void comp_mul_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, float4x3_sse_t* out )
+inline void comp_mul_sse( const float2x4_sse_t* lhs, const float2x4_sse_t* rhs, float2x4_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
@@ -1865,26 +1095,18 @@ inline void comp_mul_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, 
 	out->m[0][0] = _mm_mul_ps( lhs->m[0][0], rhs->m[0][0] );
 	out->m[0][1] = _mm_mul_ps( lhs->m[0][1], rhs->m[0][1] );
 	out->m[0][2] = _mm_mul_ps( lhs->m[0][2], rhs->m[0][2] );
+	out->m[0][3] = _mm_mul_ps( lhs->m[0][3], rhs->m[0][3] );
 
 	// row 1
 	out->m[1][0] = _mm_mul_ps( lhs->m[1][0], rhs->m[1][0] );
 	out->m[1][1] = _mm_mul_ps( lhs->m[1][1], rhs->m[1][1] );
 	out->m[1][2] = _mm_mul_ps( lhs->m[1][2], rhs->m[1][2] );
-
-	// row 2
-	out->m[2][0] = _mm_mul_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_mul_ps( lhs->m[2][1], rhs->m[2][1] );
-	out->m[2][2] = _mm_mul_ps( lhs->m[2][2], rhs->m[2][2] );
-
-	// row 3
-	out->m[3][0] = _mm_mul_ps( lhs->m[3][0], rhs->m[3][0] );
-	out->m[3][1] = _mm_mul_ps( lhs->m[3][1], rhs->m[3][1] );
-	out->m[3][2] = _mm_mul_ps( lhs->m[3][2], rhs->m[3][2] );
+	out->m[1][3] = _mm_mul_ps( lhs->m[1][3], rhs->m[1][3] );
 }
 
-/// \relates float4x3
+/// \relates float2x4
 /// \brief Stores a matrix that is the result of the component-wise division between the lhs and rhs __m128 registers of the input.
-inline void comp_div_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, float4x3_sse_t* out )
+inline void comp_div_sse( const float2x4_sse_t* lhs, const float2x4_sse_t* rhs, float2x4_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
@@ -1894,193 +1116,73 @@ inline void comp_div_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, 
 	out->m[0][0] = _mm_div_ps( lhs->m[0][0], rhs->m[0][0] );
 	out->m[0][1] = _mm_div_ps( lhs->m[0][1], rhs->m[0][1] );
 	out->m[0][2] = _mm_div_ps( lhs->m[0][2], rhs->m[0][2] );
+	out->m[0][3] = _mm_div_ps( lhs->m[0][3], rhs->m[0][3] );
 
 	// row 1
 	out->m[1][0] = _mm_div_ps( lhs->m[1][0], rhs->m[1][0] );
 	out->m[1][1] = _mm_div_ps( lhs->m[1][1], rhs->m[1][1] );
 	out->m[1][2] = _mm_div_ps( lhs->m[1][2], rhs->m[1][2] );
-
-	// row 2
-	out->m[2][0] = _mm_div_ps( lhs->m[2][0], rhs->m[2][0] );
-	out->m[2][1] = _mm_div_ps( lhs->m[2][1], rhs->m[2][1] );
-	out->m[2][2] = _mm_div_ps( lhs->m[2][2], rhs->m[2][2] );
-
-	// row 3
-	out->m[3][0] = _mm_div_ps( lhs->m[3][0], rhs->m[3][0] );
-	out->m[3][1] = _mm_div_ps( lhs->m[3][1], rhs->m[3][1] );
-	out->m[3][2] = _mm_div_ps( lhs->m[3][2], rhs->m[3][2] );
+	out->m[1][3] = _mm_div_ps( lhs->m[1][3], rhs->m[1][3] );
 }
 
-/// \relates float4x3
+/// \relates float2x4
 /// \brief Performs a matrix-multiplication of 2 matrices of __m128 registers.
-inline void mul_sse( const float4x3_sse_t* lhs, const float3x4_sse_t* rhs, float4x4_sse_t* out )
+inline void mul_sse( const float2x4_sse_t* lhs, const float4x2_sse_t* rhs, float2x2_sse_t* out )
 {
 	assert( lhs );
 	assert( rhs );
 	assert( out );
 
-	float3_sse_t dot_lhs;
-	float3_sse_t dot_rhs;
+	float4_sse_t dot_lhs;
+	float4_sse_t dot_rhs;
 
 	dot_lhs.x = lhs->m[0][0];
 	dot_lhs.y = lhs->m[0][1];
 	dot_lhs.z = lhs->m[0][2];
+	dot_lhs.w = lhs->m[0][3];
 
 	dot_rhs.x = rhs->m[0][0];
 	dot_rhs.y = rhs->m[1][0];
 	dot_rhs.z = rhs->m[2][0];
+	dot_rhs.w = rhs->m[3][0];
 
 	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][0] );
 
 	dot_lhs.x = lhs->m[0][0];
 	dot_lhs.y = lhs->m[0][1];
 	dot_lhs.z = lhs->m[0][2];
+	dot_lhs.w = lhs->m[0][3];
 
 	dot_rhs.x = rhs->m[0][1];
 	dot_rhs.y = rhs->m[1][1];
 	dot_rhs.z = rhs->m[2][1];
+	dot_rhs.w = rhs->m[3][1];
 
 	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][1] );
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-	dot_lhs.z = lhs->m[0][2];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-	dot_rhs.z = rhs->m[2][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][2] );
-
-	dot_lhs.x = lhs->m[0][0];
-	dot_lhs.y = lhs->m[0][1];
-	dot_lhs.z = lhs->m[0][2];
-
-	dot_rhs.x = rhs->m[0][3];
-	dot_rhs.y = rhs->m[1][3];
-	dot_rhs.z = rhs->m[2][3];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][3] );
 
 	dot_lhs.x = lhs->m[1][0];
 	dot_lhs.y = lhs->m[1][1];
 	dot_lhs.z = lhs->m[1][2];
+	dot_lhs.w = lhs->m[1][3];
 
 	dot_rhs.x = rhs->m[0][0];
 	dot_rhs.y = rhs->m[1][0];
 	dot_rhs.z = rhs->m[2][0];
+	dot_rhs.w = rhs->m[3][0];
 
 	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][0] );
 
 	dot_lhs.x = lhs->m[1][0];
 	dot_lhs.y = lhs->m[1][1];
 	dot_lhs.z = lhs->m[1][2];
+	dot_lhs.w = lhs->m[1][3];
 
 	dot_rhs.x = rhs->m[0][1];
 	dot_rhs.y = rhs->m[1][1];
 	dot_rhs.z = rhs->m[2][1];
+	dot_rhs.w = rhs->m[3][1];
 
 	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][1] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-	dot_lhs.z = lhs->m[1][2];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-	dot_rhs.z = rhs->m[2][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][2] );
-
-	dot_lhs.x = lhs->m[1][0];
-	dot_lhs.y = lhs->m[1][1];
-	dot_lhs.z = lhs->m[1][2];
-
-	dot_rhs.x = rhs->m[0][3];
-	dot_rhs.y = rhs->m[1][3];
-	dot_rhs.z = rhs->m[2][3];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][3] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-	dot_lhs.z = lhs->m[2][2];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-	dot_rhs.z = rhs->m[2][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][0] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-	dot_lhs.z = lhs->m[2][2];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-	dot_rhs.z = rhs->m[2][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][1] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-	dot_lhs.z = lhs->m[2][2];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-	dot_rhs.z = rhs->m[2][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][2] );
-
-	dot_lhs.x = lhs->m[2][0];
-	dot_lhs.y = lhs->m[2][1];
-	dot_lhs.z = lhs->m[2][2];
-
-	dot_rhs.x = rhs->m[0][3];
-	dot_rhs.y = rhs->m[1][3];
-	dot_rhs.z = rhs->m[2][3];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][3] );
-
-	dot_lhs.x = lhs->m[3][0];
-	dot_lhs.y = lhs->m[3][1];
-	dot_lhs.z = lhs->m[3][2];
-
-	dot_rhs.x = rhs->m[0][0];
-	dot_rhs.y = rhs->m[1][0];
-	dot_rhs.z = rhs->m[2][0];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][0] );
-
-	dot_lhs.x = lhs->m[3][0];
-	dot_lhs.y = lhs->m[3][1];
-	dot_lhs.z = lhs->m[3][2];
-
-	dot_rhs.x = rhs->m[0][1];
-	dot_rhs.y = rhs->m[1][1];
-	dot_rhs.z = rhs->m[2][1];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][1] );
-
-	dot_lhs.x = lhs->m[3][0];
-	dot_lhs.y = lhs->m[3][1];
-	dot_lhs.z = lhs->m[3][2];
-
-	dot_rhs.x = rhs->m[0][2];
-	dot_rhs.y = rhs->m[1][2];
-	dot_rhs.z = rhs->m[2][2];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][2] );
-
-	dot_lhs.x = lhs->m[3][0];
-	dot_lhs.y = lhs->m[3][1];
-	dot_lhs.z = lhs->m[3][2];
-
-	dot_rhs.x = rhs->m[0][3];
-	dot_rhs.y = rhs->m[1][3];
-	dot_rhs.z = rhs->m[2][3];
-
-	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][3] );
 }
 
 
@@ -2757,6 +1859,904 @@ inline void scale_sse( const float3_sse_t* diagonal, const float3_sse_t* scale, 
 	out_diagonal->x = _mm_mul_ps( diagonal->x, scale->x );
 	out_diagonal->y = _mm_mul_ps( diagonal->y, scale->y );
 	out_diagonal->z = _mm_mul_ps( diagonal->z, scale->z );
+}
+
+
+// float4x2
+/// \relates float4x2
+/// \brief Sets a matrix of __m128 registers to identity.
+inline void identity_sse( float4x2_sse_t* mat )
+{
+	// row 0
+	mat->m[0][0] = _mm_set1_ps( 1.0f );
+	mat->m[0][1] = _mm_set1_ps( 0.0f );
+
+	// row 1
+	mat->m[1][0] = _mm_set1_ps( 0.0f );
+	mat->m[1][1] = _mm_set1_ps( 1.0f );
+
+	// row 2
+	mat->m[2][0] = _mm_set1_ps( 0.0f );
+	mat->m[2][1] = _mm_set1_ps( 0.0f );
+
+	// row 3
+	mat->m[3][0] = _mm_set1_ps( 0.0f );
+	mat->m[3][1] = _mm_set1_ps( 0.0f );
+}
+
+/// \relates float4x2
+/// \brief Stores a transposed matrix of 2 x 4 __m128 registers in the output given the input 4 x 2 register matrix.
+inline void transpose_sse( const float4x2_sse_t* in, float2x4_sse_t* out )
+{
+	assert( in );
+	assert( out );
+
+	out->m[0][0] = in->m[0][0];
+	out->m[1][0] = in->m[0][1];
+
+	out->m[0][1] = in->m[1][0];
+	out->m[1][1] = in->m[1][1];
+
+	out->m[0][2] = in->m[2][0];
+	out->m[1][2] = in->m[2][1];
+
+	out->m[0][3] = in->m[3][0];
+	out->m[1][3] = in->m[3][1];
+}
+
+/// \relates float4x2
+/// \brief Stores a matrix that is the result of the component-wise addition between the lhs and rhs __m128 registers of the input.
+inline void comp_add_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, float4x2_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_add_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_add_ps( lhs->m[0][1], rhs->m[0][1] );
+
+	// row 1
+	out->m[1][0] = _mm_add_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_add_ps( lhs->m[1][1], rhs->m[1][1] );
+
+	// row 2
+	out->m[2][0] = _mm_add_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_add_ps( lhs->m[2][1], rhs->m[2][1] );
+
+	// row 3
+	out->m[3][0] = _mm_add_ps( lhs->m[3][0], rhs->m[3][0] );
+	out->m[3][1] = _mm_add_ps( lhs->m[3][1], rhs->m[3][1] );
+}
+
+/// \relates float4x2
+/// \brief Stores a matrix that is the result of the component-wise subtraction between the lhs and rhs __m128 registers of the input.
+inline void comp_sub_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, float4x2_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_sub_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_sub_ps( lhs->m[0][1], rhs->m[0][1] );
+
+	// row 1
+	out->m[1][0] = _mm_sub_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_sub_ps( lhs->m[1][1], rhs->m[1][1] );
+
+	// row 2
+	out->m[2][0] = _mm_sub_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_sub_ps( lhs->m[2][1], rhs->m[2][1] );
+
+	// row 3
+	out->m[3][0] = _mm_sub_ps( lhs->m[3][0], rhs->m[3][0] );
+	out->m[3][1] = _mm_sub_ps( lhs->m[3][1], rhs->m[3][1] );
+}
+
+/// \relates float4x2
+/// \brief Stores a matrix that is the result of the component-wise multiplication between the lhs and rhs __m128 registers of the input.
+inline void comp_mul_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, float4x2_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_mul_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_mul_ps( lhs->m[0][1], rhs->m[0][1] );
+
+	// row 1
+	out->m[1][0] = _mm_mul_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_mul_ps( lhs->m[1][1], rhs->m[1][1] );
+
+	// row 2
+	out->m[2][0] = _mm_mul_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_mul_ps( lhs->m[2][1], rhs->m[2][1] );
+
+	// row 3
+	out->m[3][0] = _mm_mul_ps( lhs->m[3][0], rhs->m[3][0] );
+	out->m[3][1] = _mm_mul_ps( lhs->m[3][1], rhs->m[3][1] );
+}
+
+/// \relates float4x2
+/// \brief Stores a matrix that is the result of the component-wise division between the lhs and rhs __m128 registers of the input.
+inline void comp_div_sse( const float4x2_sse_t* lhs, const float4x2_sse_t* rhs, float4x2_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_div_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_div_ps( lhs->m[0][1], rhs->m[0][1] );
+
+	// row 1
+	out->m[1][0] = _mm_div_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_div_ps( lhs->m[1][1], rhs->m[1][1] );
+
+	// row 2
+	out->m[2][0] = _mm_div_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_div_ps( lhs->m[2][1], rhs->m[2][1] );
+
+	// row 3
+	out->m[3][0] = _mm_div_ps( lhs->m[3][0], rhs->m[3][0] );
+	out->m[3][1] = _mm_div_ps( lhs->m[3][1], rhs->m[3][1] );
+}
+
+/// \relates float4x2
+/// \brief Performs a matrix-multiplication of 2 matrices of __m128 registers.
+inline void mul_sse( const float4x2_sse_t* lhs, const float2x4_sse_t* rhs, float4x4_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	float2_sse_t dot_lhs;
+	float2_sse_t dot_rhs;
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][0] );
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][1] );
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][2] );
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+
+	dot_rhs.x = rhs->m[0][3];
+	dot_rhs.y = rhs->m[1][3];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][3] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][0] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][1] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][2] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+
+	dot_rhs.x = rhs->m[0][3];
+	dot_rhs.y = rhs->m[1][3];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][3] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][0] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][1] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][2] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+
+	dot_rhs.x = rhs->m[0][3];
+	dot_rhs.y = rhs->m[1][3];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][3] );
+
+	dot_lhs.x = lhs->m[3][0];
+	dot_lhs.y = lhs->m[3][1];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][0] );
+
+	dot_lhs.x = lhs->m[3][0];
+	dot_lhs.y = lhs->m[3][1];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][1] );
+
+	dot_lhs.x = lhs->m[3][0];
+	dot_lhs.y = lhs->m[3][1];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][2] );
+
+	dot_lhs.x = lhs->m[3][0];
+	dot_lhs.y = lhs->m[3][1];
+
+	dot_rhs.x = rhs->m[0][3];
+	dot_rhs.y = rhs->m[1][3];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][3] );
+}
+
+
+// float3x4
+/// \relates float3x4
+/// \brief Sets a matrix of __m128 registers to identity.
+inline void identity_sse( float3x4_sse_t* mat )
+{
+	// row 0
+	mat->m[0][0] = _mm_set1_ps( 1.0f );
+	mat->m[0][1] = _mm_set1_ps( 0.0f );
+	mat->m[0][2] = _mm_set1_ps( 0.0f );
+	mat->m[0][3] = _mm_set1_ps( 0.0f );
+
+	// row 1
+	mat->m[1][0] = _mm_set1_ps( 0.0f );
+	mat->m[1][1] = _mm_set1_ps( 1.0f );
+	mat->m[1][2] = _mm_set1_ps( 0.0f );
+	mat->m[1][3] = _mm_set1_ps( 0.0f );
+
+	// row 2
+	mat->m[2][0] = _mm_set1_ps( 0.0f );
+	mat->m[2][1] = _mm_set1_ps( 0.0f );
+	mat->m[2][2] = _mm_set1_ps( 1.0f );
+	mat->m[2][3] = _mm_set1_ps( 0.0f );
+}
+
+/// \relates float3x4
+/// \brief Stores a transposed matrix of 4 x 3 __m128 registers in the output given the input 3 x 4 register matrix.
+inline void transpose_sse( const float3x4_sse_t* in, float4x3_sse_t* out )
+{
+	assert( in );
+	assert( out );
+
+	out->m[0][0] = in->m[0][0];
+	out->m[1][0] = in->m[0][1];
+	out->m[2][0] = in->m[0][2];
+	out->m[3][0] = in->m[0][3];
+
+	out->m[0][1] = in->m[1][0];
+	out->m[1][1] = in->m[1][1];
+	out->m[2][1] = in->m[1][2];
+	out->m[3][1] = in->m[1][3];
+
+	out->m[0][2] = in->m[2][0];
+	out->m[1][2] = in->m[2][1];
+	out->m[2][2] = in->m[2][2];
+	out->m[3][2] = in->m[2][3];
+}
+
+/// \relates float3x4
+/// \brief Stores a matrix that is the result of the component-wise addition between the lhs and rhs __m128 registers of the input.
+inline void comp_add_sse( const float3x4_sse_t* lhs, const float3x4_sse_t* rhs, float3x4_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_add_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_add_ps( lhs->m[0][1], rhs->m[0][1] );
+	out->m[0][2] = _mm_add_ps( lhs->m[0][2], rhs->m[0][2] );
+	out->m[0][3] = _mm_add_ps( lhs->m[0][3], rhs->m[0][3] );
+
+	// row 1
+	out->m[1][0] = _mm_add_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_add_ps( lhs->m[1][1], rhs->m[1][1] );
+	out->m[1][2] = _mm_add_ps( lhs->m[1][2], rhs->m[1][2] );
+	out->m[1][3] = _mm_add_ps( lhs->m[1][3], rhs->m[1][3] );
+
+	// row 2
+	out->m[2][0] = _mm_add_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_add_ps( lhs->m[2][1], rhs->m[2][1] );
+	out->m[2][2] = _mm_add_ps( lhs->m[2][2], rhs->m[2][2] );
+	out->m[2][3] = _mm_add_ps( lhs->m[2][3], rhs->m[2][3] );
+}
+
+/// \relates float3x4
+/// \brief Stores a matrix that is the result of the component-wise subtraction between the lhs and rhs __m128 registers of the input.
+inline void comp_sub_sse( const float3x4_sse_t* lhs, const float3x4_sse_t* rhs, float3x4_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_sub_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_sub_ps( lhs->m[0][1], rhs->m[0][1] );
+	out->m[0][2] = _mm_sub_ps( lhs->m[0][2], rhs->m[0][2] );
+	out->m[0][3] = _mm_sub_ps( lhs->m[0][3], rhs->m[0][3] );
+
+	// row 1
+	out->m[1][0] = _mm_sub_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_sub_ps( lhs->m[1][1], rhs->m[1][1] );
+	out->m[1][2] = _mm_sub_ps( lhs->m[1][2], rhs->m[1][2] );
+	out->m[1][3] = _mm_sub_ps( lhs->m[1][3], rhs->m[1][3] );
+
+	// row 2
+	out->m[2][0] = _mm_sub_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_sub_ps( lhs->m[2][1], rhs->m[2][1] );
+	out->m[2][2] = _mm_sub_ps( lhs->m[2][2], rhs->m[2][2] );
+	out->m[2][3] = _mm_sub_ps( lhs->m[2][3], rhs->m[2][3] );
+}
+
+/// \relates float3x4
+/// \brief Stores a matrix that is the result of the component-wise multiplication between the lhs and rhs __m128 registers of the input.
+inline void comp_mul_sse( const float3x4_sse_t* lhs, const float3x4_sse_t* rhs, float3x4_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_mul_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_mul_ps( lhs->m[0][1], rhs->m[0][1] );
+	out->m[0][2] = _mm_mul_ps( lhs->m[0][2], rhs->m[0][2] );
+	out->m[0][3] = _mm_mul_ps( lhs->m[0][3], rhs->m[0][3] );
+
+	// row 1
+	out->m[1][0] = _mm_mul_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_mul_ps( lhs->m[1][1], rhs->m[1][1] );
+	out->m[1][2] = _mm_mul_ps( lhs->m[1][2], rhs->m[1][2] );
+	out->m[1][3] = _mm_mul_ps( lhs->m[1][3], rhs->m[1][3] );
+
+	// row 2
+	out->m[2][0] = _mm_mul_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_mul_ps( lhs->m[2][1], rhs->m[2][1] );
+	out->m[2][2] = _mm_mul_ps( lhs->m[2][2], rhs->m[2][2] );
+	out->m[2][3] = _mm_mul_ps( lhs->m[2][3], rhs->m[2][3] );
+}
+
+/// \relates float3x4
+/// \brief Stores a matrix that is the result of the component-wise division between the lhs and rhs __m128 registers of the input.
+inline void comp_div_sse( const float3x4_sse_t* lhs, const float3x4_sse_t* rhs, float3x4_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_div_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_div_ps( lhs->m[0][1], rhs->m[0][1] );
+	out->m[0][2] = _mm_div_ps( lhs->m[0][2], rhs->m[0][2] );
+	out->m[0][3] = _mm_div_ps( lhs->m[0][3], rhs->m[0][3] );
+
+	// row 1
+	out->m[1][0] = _mm_div_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_div_ps( lhs->m[1][1], rhs->m[1][1] );
+	out->m[1][2] = _mm_div_ps( lhs->m[1][2], rhs->m[1][2] );
+	out->m[1][3] = _mm_div_ps( lhs->m[1][3], rhs->m[1][3] );
+
+	// row 2
+	out->m[2][0] = _mm_div_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_div_ps( lhs->m[2][1], rhs->m[2][1] );
+	out->m[2][2] = _mm_div_ps( lhs->m[2][2], rhs->m[2][2] );
+	out->m[2][3] = _mm_div_ps( lhs->m[2][3], rhs->m[2][3] );
+}
+
+/// \relates float3x4
+/// \brief Performs a matrix-multiplication of 2 matrices of __m128 registers.
+inline void mul_sse( const float3x4_sse_t* lhs, const float4x3_sse_t* rhs, float3x3_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	float4_sse_t dot_lhs;
+	float4_sse_t dot_rhs;
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+	dot_lhs.z = lhs->m[0][2];
+	dot_lhs.w = lhs->m[0][3];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+	dot_rhs.z = rhs->m[2][0];
+	dot_rhs.w = rhs->m[3][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][0] );
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+	dot_lhs.z = lhs->m[0][2];
+	dot_lhs.w = lhs->m[0][3];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+	dot_rhs.z = rhs->m[2][1];
+	dot_rhs.w = rhs->m[3][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][1] );
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+	dot_lhs.z = lhs->m[0][2];
+	dot_lhs.w = lhs->m[0][3];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+	dot_rhs.z = rhs->m[2][2];
+	dot_rhs.w = rhs->m[3][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][2] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+	dot_lhs.z = lhs->m[1][2];
+	dot_lhs.w = lhs->m[1][3];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+	dot_rhs.z = rhs->m[2][0];
+	dot_rhs.w = rhs->m[3][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][0] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+	dot_lhs.z = lhs->m[1][2];
+	dot_lhs.w = lhs->m[1][3];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+	dot_rhs.z = rhs->m[2][1];
+	dot_rhs.w = rhs->m[3][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][1] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+	dot_lhs.z = lhs->m[1][2];
+	dot_lhs.w = lhs->m[1][3];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+	dot_rhs.z = rhs->m[2][2];
+	dot_rhs.w = rhs->m[3][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][2] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+	dot_lhs.z = lhs->m[2][2];
+	dot_lhs.w = lhs->m[2][3];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+	dot_rhs.z = rhs->m[2][0];
+	dot_rhs.w = rhs->m[3][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][0] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+	dot_lhs.z = lhs->m[2][2];
+	dot_lhs.w = lhs->m[2][3];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+	dot_rhs.z = rhs->m[2][1];
+	dot_rhs.w = rhs->m[3][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][1] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+	dot_lhs.z = lhs->m[2][2];
+	dot_lhs.w = lhs->m[2][3];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+	dot_rhs.z = rhs->m[2][2];
+	dot_rhs.w = rhs->m[3][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][2] );
+}
+
+
+// float4x3
+/// \relates float4x3
+/// \brief Sets a matrix of __m128 registers to identity.
+inline void identity_sse( float4x3_sse_t* mat )
+{
+	// row 0
+	mat->m[0][0] = _mm_set1_ps( 1.0f );
+	mat->m[0][1] = _mm_set1_ps( 0.0f );
+	mat->m[0][2] = _mm_set1_ps( 0.0f );
+
+	// row 1
+	mat->m[1][0] = _mm_set1_ps( 0.0f );
+	mat->m[1][1] = _mm_set1_ps( 1.0f );
+	mat->m[1][2] = _mm_set1_ps( 0.0f );
+
+	// row 2
+	mat->m[2][0] = _mm_set1_ps( 0.0f );
+	mat->m[2][1] = _mm_set1_ps( 0.0f );
+	mat->m[2][2] = _mm_set1_ps( 1.0f );
+
+	// row 3
+	mat->m[3][0] = _mm_set1_ps( 0.0f );
+	mat->m[3][1] = _mm_set1_ps( 0.0f );
+	mat->m[3][2] = _mm_set1_ps( 0.0f );
+}
+
+/// \relates float4x3
+/// \brief Stores a transposed matrix of 3 x 4 __m128 registers in the output given the input 4 x 3 register matrix.
+inline void transpose_sse( const float4x3_sse_t* in, float3x4_sse_t* out )
+{
+	assert( in );
+	assert( out );
+
+	out->m[0][0] = in->m[0][0];
+	out->m[1][0] = in->m[0][1];
+	out->m[2][0] = in->m[0][2];
+
+	out->m[0][1] = in->m[1][0];
+	out->m[1][1] = in->m[1][1];
+	out->m[2][1] = in->m[1][2];
+
+	out->m[0][2] = in->m[2][0];
+	out->m[1][2] = in->m[2][1];
+	out->m[2][2] = in->m[2][2];
+
+	out->m[0][3] = in->m[3][0];
+	out->m[1][3] = in->m[3][1];
+	out->m[2][3] = in->m[3][2];
+}
+
+/// \relates float4x3
+/// \brief Stores a matrix that is the result of the component-wise addition between the lhs and rhs __m128 registers of the input.
+inline void comp_add_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, float4x3_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_add_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_add_ps( lhs->m[0][1], rhs->m[0][1] );
+	out->m[0][2] = _mm_add_ps( lhs->m[0][2], rhs->m[0][2] );
+
+	// row 1
+	out->m[1][0] = _mm_add_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_add_ps( lhs->m[1][1], rhs->m[1][1] );
+	out->m[1][2] = _mm_add_ps( lhs->m[1][2], rhs->m[1][2] );
+
+	// row 2
+	out->m[2][0] = _mm_add_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_add_ps( lhs->m[2][1], rhs->m[2][1] );
+	out->m[2][2] = _mm_add_ps( lhs->m[2][2], rhs->m[2][2] );
+
+	// row 3
+	out->m[3][0] = _mm_add_ps( lhs->m[3][0], rhs->m[3][0] );
+	out->m[3][1] = _mm_add_ps( lhs->m[3][1], rhs->m[3][1] );
+	out->m[3][2] = _mm_add_ps( lhs->m[3][2], rhs->m[3][2] );
+}
+
+/// \relates float4x3
+/// \brief Stores a matrix that is the result of the component-wise subtraction between the lhs and rhs __m128 registers of the input.
+inline void comp_sub_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, float4x3_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_sub_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_sub_ps( lhs->m[0][1], rhs->m[0][1] );
+	out->m[0][2] = _mm_sub_ps( lhs->m[0][2], rhs->m[0][2] );
+
+	// row 1
+	out->m[1][0] = _mm_sub_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_sub_ps( lhs->m[1][1], rhs->m[1][1] );
+	out->m[1][2] = _mm_sub_ps( lhs->m[1][2], rhs->m[1][2] );
+
+	// row 2
+	out->m[2][0] = _mm_sub_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_sub_ps( lhs->m[2][1], rhs->m[2][1] );
+	out->m[2][2] = _mm_sub_ps( lhs->m[2][2], rhs->m[2][2] );
+
+	// row 3
+	out->m[3][0] = _mm_sub_ps( lhs->m[3][0], rhs->m[3][0] );
+	out->m[3][1] = _mm_sub_ps( lhs->m[3][1], rhs->m[3][1] );
+	out->m[3][2] = _mm_sub_ps( lhs->m[3][2], rhs->m[3][2] );
+}
+
+/// \relates float4x3
+/// \brief Stores a matrix that is the result of the component-wise multiplication between the lhs and rhs __m128 registers of the input.
+inline void comp_mul_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, float4x3_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_mul_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_mul_ps( lhs->m[0][1], rhs->m[0][1] );
+	out->m[0][2] = _mm_mul_ps( lhs->m[0][2], rhs->m[0][2] );
+
+	// row 1
+	out->m[1][0] = _mm_mul_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_mul_ps( lhs->m[1][1], rhs->m[1][1] );
+	out->m[1][2] = _mm_mul_ps( lhs->m[1][2], rhs->m[1][2] );
+
+	// row 2
+	out->m[2][0] = _mm_mul_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_mul_ps( lhs->m[2][1], rhs->m[2][1] );
+	out->m[2][2] = _mm_mul_ps( lhs->m[2][2], rhs->m[2][2] );
+
+	// row 3
+	out->m[3][0] = _mm_mul_ps( lhs->m[3][0], rhs->m[3][0] );
+	out->m[3][1] = _mm_mul_ps( lhs->m[3][1], rhs->m[3][1] );
+	out->m[3][2] = _mm_mul_ps( lhs->m[3][2], rhs->m[3][2] );
+}
+
+/// \relates float4x3
+/// \brief Stores a matrix that is the result of the component-wise division between the lhs and rhs __m128 registers of the input.
+inline void comp_div_sse( const float4x3_sse_t* lhs, const float4x3_sse_t* rhs, float4x3_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	// row 0
+	out->m[0][0] = _mm_div_ps( lhs->m[0][0], rhs->m[0][0] );
+	out->m[0][1] = _mm_div_ps( lhs->m[0][1], rhs->m[0][1] );
+	out->m[0][2] = _mm_div_ps( lhs->m[0][2], rhs->m[0][2] );
+
+	// row 1
+	out->m[1][0] = _mm_div_ps( lhs->m[1][0], rhs->m[1][0] );
+	out->m[1][1] = _mm_div_ps( lhs->m[1][1], rhs->m[1][1] );
+	out->m[1][2] = _mm_div_ps( lhs->m[1][2], rhs->m[1][2] );
+
+	// row 2
+	out->m[2][0] = _mm_div_ps( lhs->m[2][0], rhs->m[2][0] );
+	out->m[2][1] = _mm_div_ps( lhs->m[2][1], rhs->m[2][1] );
+	out->m[2][2] = _mm_div_ps( lhs->m[2][2], rhs->m[2][2] );
+
+	// row 3
+	out->m[3][0] = _mm_div_ps( lhs->m[3][0], rhs->m[3][0] );
+	out->m[3][1] = _mm_div_ps( lhs->m[3][1], rhs->m[3][1] );
+	out->m[3][2] = _mm_div_ps( lhs->m[3][2], rhs->m[3][2] );
+}
+
+/// \relates float4x3
+/// \brief Performs a matrix-multiplication of 2 matrices of __m128 registers.
+inline void mul_sse( const float4x3_sse_t* lhs, const float3x4_sse_t* rhs, float4x4_sse_t* out )
+{
+	assert( lhs );
+	assert( rhs );
+	assert( out );
+
+	float3_sse_t dot_lhs;
+	float3_sse_t dot_rhs;
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+	dot_lhs.z = lhs->m[0][2];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+	dot_rhs.z = rhs->m[2][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][0] );
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+	dot_lhs.z = lhs->m[0][2];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+	dot_rhs.z = rhs->m[2][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][1] );
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+	dot_lhs.z = lhs->m[0][2];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+	dot_rhs.z = rhs->m[2][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][2] );
+
+	dot_lhs.x = lhs->m[0][0];
+	dot_lhs.y = lhs->m[0][1];
+	dot_lhs.z = lhs->m[0][2];
+
+	dot_rhs.x = rhs->m[0][3];
+	dot_rhs.y = rhs->m[1][3];
+	dot_rhs.z = rhs->m[2][3];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[0][3] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+	dot_lhs.z = lhs->m[1][2];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+	dot_rhs.z = rhs->m[2][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][0] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+	dot_lhs.z = lhs->m[1][2];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+	dot_rhs.z = rhs->m[2][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][1] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+	dot_lhs.z = lhs->m[1][2];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+	dot_rhs.z = rhs->m[2][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][2] );
+
+	dot_lhs.x = lhs->m[1][0];
+	dot_lhs.y = lhs->m[1][1];
+	dot_lhs.z = lhs->m[1][2];
+
+	dot_rhs.x = rhs->m[0][3];
+	dot_rhs.y = rhs->m[1][3];
+	dot_rhs.z = rhs->m[2][3];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[1][3] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+	dot_lhs.z = lhs->m[2][2];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+	dot_rhs.z = rhs->m[2][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][0] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+	dot_lhs.z = lhs->m[2][2];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+	dot_rhs.z = rhs->m[2][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][1] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+	dot_lhs.z = lhs->m[2][2];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+	dot_rhs.z = rhs->m[2][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][2] );
+
+	dot_lhs.x = lhs->m[2][0];
+	dot_lhs.y = lhs->m[2][1];
+	dot_lhs.z = lhs->m[2][2];
+
+	dot_rhs.x = rhs->m[0][3];
+	dot_rhs.y = rhs->m[1][3];
+	dot_rhs.z = rhs->m[2][3];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[2][3] );
+
+	dot_lhs.x = lhs->m[3][0];
+	dot_lhs.y = lhs->m[3][1];
+	dot_lhs.z = lhs->m[3][2];
+
+	dot_rhs.x = rhs->m[0][0];
+	dot_rhs.y = rhs->m[1][0];
+	dot_rhs.z = rhs->m[2][0];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][0] );
+
+	dot_lhs.x = lhs->m[3][0];
+	dot_lhs.y = lhs->m[3][1];
+	dot_lhs.z = lhs->m[3][2];
+
+	dot_rhs.x = rhs->m[0][1];
+	dot_rhs.y = rhs->m[1][1];
+	dot_rhs.z = rhs->m[2][1];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][1] );
+
+	dot_lhs.x = lhs->m[3][0];
+	dot_lhs.y = lhs->m[3][1];
+	dot_lhs.z = lhs->m[3][2];
+
+	dot_rhs.x = rhs->m[0][2];
+	dot_rhs.y = rhs->m[1][2];
+	dot_rhs.z = rhs->m[2][2];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][2] );
+
+	dot_lhs.x = lhs->m[3][0];
+	dot_lhs.y = lhs->m[3][1];
+	dot_lhs.z = lhs->m[3][2];
+
+	dot_rhs.x = rhs->m[0][3];
+	dot_rhs.y = rhs->m[1][3];
+	dot_rhs.z = rhs->m[2][3];
+
+	dot_sse( &dot_lhs, &dot_rhs, &out->m[3][3] );
 }
 
 

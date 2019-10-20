@@ -29,6 +29,8 @@ along with The HLML Generator.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "int_types.h"
 
+#include "defines.h"
+
 #include <stdint.h>
 #include <assert.h>
 
@@ -42,6 +44,7 @@ along with The HLML Generator.  If not, see <http://www.gnu.org/licenses/>.
 
 #define GEN_COMPONENT_COUNT_MIN				2
 #define GEN_COMPONENT_COUNT_MAX				4
+#define GEN_COMPONENT_COUNT_RANGE			( ( GEN_COMPONENT_COUNT_MAX - GEN_COMPONENT_COUNT_MIN ) + 1 )
 
 // filenames
 #define GEN_OUT_FOLDER_PATH					"code/out/"
@@ -205,6 +208,46 @@ static const char* GEN_OPERATOR_STRINGS_ARITHMETIC[GEN_OP_ARITHMETIC_COUNT] = {
 	"div"
 };
 
+// generator options, passed in from the command line
+struct genOptionsTypes_t {
+	genType_t							types[GEN_TYPE_COUNT];
+	u32									typesCount;
+};
+
+struct genOptionsVector_t {
+	u32									vectorSizes[16];
+	u32									vectorSizesCount;
+};
+
+struct matrixSize_t {
+	u32									numRows;
+	u32									numCols;
+};
+
+struct genOptionsMatrix_t {
+	matrixSize_t						sizes[GEN_COMPONENT_COUNT_MAX * GEN_COMPONENT_COUNT_MAX];
+	u32									count;
+};
+
+extern genOptionsTypes_t				g_optionsTypes;
+extern genOptionsVector_t				g_optionsVector;
+extern genOptionsMatrix_t				g_optionsMatrix;
+
+enum genOptionFlagBits_t {
+	GEN_OPTION_FLAG_ZERO_INIT			= BIT( 0 ),
+	GEN_OPTION_FLAG_SSE					= BIT( 1 ),
+
+	ARG_FLAG_ALL						= S32_MAX
+};
+typedef u32 genOptionFlags_t;
+
+extern genOptionFlags_t					g_optionFlags;
+
+
+// option config functions
+extern void			Gen_AddOptionType( genOptionsTypes_t* options, const genType_t type );
+extern void			Gen_AddOptionVector( genOptionsVector_t* options, const u32 numComponents );
+extern void			Gen_AddOptionMatrix( genOptionsMatrix_t* options, const matrixSize_t size );
 
 // type helper functions
 inline genType_t	Gen_GetSupportedFloatingPointType( const genType_t type ) { return ( type == GEN_TYPE_DOUBLE ) ? GEN_TYPE_DOUBLE : GEN_TYPE_FLOAT; }

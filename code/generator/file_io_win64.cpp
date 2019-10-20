@@ -36,16 +36,16 @@ along with The HLML Generator.  If not, see <http://www.gnu.org/licenses/>.
 #include <Windows.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
-static HANDLE OpenOrCreateFileInternal( const char* filename ) {
+static HANDLE OpenOrCreateFileInternal( const char* filename, const u32 creationDisposition ) {
 	assert( filename );
 
-	DWORD disposition = CREATE_ALWAYS;
 	// DWORD flagsAndAttributes = FILE_FLAG_OVERLAPPED;
 	DWORD flagsAndAttributes = 0;
 
-	HANDLE handle = CreateFileA( filename, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, NULL, disposition, flagsAndAttributes, NULL );
+	HANDLE handle = CreateFileA( filename, GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, NULL, creationDisposition, flagsAndAttributes, NULL );
 	WIN64_ASSERT( handle != NULL );
 
 	return handle;
@@ -62,7 +62,7 @@ void FS_WriteEntireFile( const char* filename, const char* data, const size_t le
 	assert( data );
 	assert( length );
 
-	HANDLE file = OpenOrCreateFileInternal( filename );
+	HANDLE file = OpenOrCreateFileInternal( filename, CREATE_ALWAYS );
 
 	DWORD bytesWritten = 0;
 	bool32 result = WriteFile( file, data, (DWORD) length, &bytesWritten, NULL );
@@ -81,7 +81,7 @@ void FS_CreateFolder( const char* name ) {
 	}
 
 	SECURITY_ATTRIBUTES secattr = {};
-	bool32 result = CreateDirectory( name, &secattr );
+	bool32 result = CreateDirectoryA( name, &secattr );
 	WIN64_ASSERT( result );
 }
 
@@ -91,14 +91,14 @@ void FS_DeleteFolder( const char* name ) {
 	FS_DeleteAllFilesInFolder( name );
 
 	// actually delete the folder
-	bool32 result = RemoveDirectory( name );
+	bool32 result = RemoveDirectoryA( name );
 	WIN64_ASSERT( result );
 }
 
 bool32 FS_FolderExists( const char* name ) {
 	assert( name );
 
-	DWORD attribs = GetFileAttributes( name );
+	DWORD attribs = GetFileAttributesA( name );
 
 	return ( attribs != INVALID_FILE_ATTRIBUTES ) && ( ( attribs & FILE_ATTRIBUTE_DIRECTORY ) != 0 );
 }
@@ -112,18 +112,18 @@ void FS_DeleteAllFilesInFolder( const char* name ) {
 	char filename[128] = {};
 	snprintf( filename, 128, "%s\\*", name );
 
-	WIN32_FIND_DATA info = {};
-	HANDLE handle = FindFirstFile( filename, &info );
+	WIN32_FIND_DATAA info = {};
+	HANDLE handle = FindFirstFileA( filename, &info );
 	do {
 		if ( info.cFileName[0] != 0 && info.cFileName[0] != '.' ) {
 			snprintf( filename, 128, "%s\\%s", name, info.cFileName );
 
-			bool32 result = DeleteFile( filename );
+			bool32 result = DeleteFileA( filename );
 			WIN64_ASSERT( result );
 
 			shouldClose = true;
 		}
-	} while ( FindNextFile( handle, &info ) );
+	} while ( FindNextFileA( handle, &info ) );
 
 	if ( shouldClose ) {
 		bool32 result = FindClose( handle );

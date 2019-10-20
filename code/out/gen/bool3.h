@@ -34,12 +34,10 @@ SOFTWARE.
 
 #pragma once
 
-#include <stdint.h>
 #include "../hlml_types.h"
 
 #include "bool2.h"
 struct bool4;
-struct float3;
 
 // ignore prohibition of anymous structs for GCC
 #if defined( __clang__ ) || defined( __GNUC__ )
