@@ -24,6 +24,7 @@ along with The HLML Generator.  If not, see <http://www.gnu.org/licenses/>.
 #include "gen_common.h"
 #include "gen_doc_common.h"
 #include "gen_common_sse.h"
+#include "gen_doc_common_sse.h"
 #include "gen_scalar_cpp.h"
 #include "gen_vector_cpp.h"
 #include "gen_matrix_cpp.h"
@@ -616,6 +617,7 @@ void Gen_FunctionsVectorSSE( const genLanguage_t language ) {
 			char sseTypeName[GEN_STRING_LENGTH_SSE_INPUT_NAME];
 			Gen_SSE_GetFullTypeName( type, 1, componentIndex, sseTypeName );
 
+			Doc_SSE_Vector( &contentFwdDec, componentIndex, registerName );
 			String_Appendf( &contentFwdDec, "typedef struct %s\n", sseTypeName );
 			String_Append(  &contentFwdDec, "{\n" );
 			for ( u32 i = 0; i < componentIndex; i++ ) {
@@ -692,6 +694,7 @@ void Gen_FunctionsMatrixSSE( const genLanguage_t language ) {
 				char sseTypeName[GEN_STRING_LENGTH_SSE_INPUT_NAME];
 				Gen_SSE_GetFullTypeName( type, row, col, sseTypeName );
 
+				Doc_SSE_Matrix( &contentFwdDec, row, col, registerName );
 				String_Appendf( &contentFwdDec, "typedef struct %s\n", sseTypeName );
 				String_Append(  &contentFwdDec, "{\n" );
 				String_Appendf( &contentFwdDec, "\t%s m[%d][%d];\n", registerName, row, col );
@@ -991,7 +994,7 @@ void Gen_TestsMain( const genLanguage_t language ) {
 // DM: running doxygen on MacOS isn't supported yet because I don't have access to a Mac
 // when I get access to one, I'll get it working
 #ifdef _WIN32
-bool32 Gen_DoxygenPages( const char* configPath ) {
+bool32 Gen_DocumentationPages( const char* configPath ) {
 	assert( configPath );
 
 	printf( "Generating doxygen documentation..." );
@@ -1622,6 +1625,7 @@ void Gen_NotEquals( const genLanguage_t language, const genType_t type, const u3
 
 	Doc_OperatorNotEquals( sbFwdDec, fullTypeName );
 	String_Appendf( sbFwdDec, "inline bool %s( const %s lhs, const %s rhs );\n", notEqualsFuncStr, parmTypeName, parmTypeName );
+	String_Append(  sbFwdDec, "\n" );
 
 	String_Appendf( sbImpl, "bool %s( const %s lhs, const %s rhs )\n", notEqualsFuncStr, parmTypeName, parmTypeName );
 	String_Append(  sbImpl, "{\n" );
