@@ -1342,9 +1342,6 @@ void Gen_MatrixRotationRollPitchYaw( const genLanguage_t language, const genType
 
 	stringBuilder_t parmListStr = String_Create( 128 );
 	String_Appendf( &parmListStr, "const %s%c mat, const %s pitch, const %s yaw, const %s roll", fullTypeName, parmTypeModifierStr, typeString, typeString, typeString );
-	if ( numCols > 3 ) {
-		String_Appendf( &parmListStr, ", const %s%c axis", vectorTypeName, parmTypeModifierStr );
-	}
 
 	const char* cosFuncStr = Gen_GetFuncNameCos( type );
 	const char* sinFuncStr = Gen_GetFuncNameSin( type );

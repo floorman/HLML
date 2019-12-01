@@ -2760,7 +2760,7 @@ inline float4x4 rotate( const float4x4& mat, const float rad, const float3& axis
 
 /// \relates float4x4
 /// \brief Returns a matrix based on the provided pitch, yaw and roll angles (in radians).
-inline float4x4 rotation_roll_pitch_yaw( const float4x4& mat, const float pitch, const float yaw, const float roll, const float3& axis );
+inline float4x4 rotation_roll_pitch_yaw( const float4x4& mat, const float pitch, const float yaw, const float roll );
 
 /// \relates float4x4
 /// \brief Returns a copy of the matrix that has had a non-uniform scale applied to it.
@@ -3521,7 +3521,7 @@ inline double4x4 rotate( const double4x4& mat, const double rad, const double3& 
 
 /// \relates double4x4
 /// \brief Returns a matrix based on the provided pitch, yaw and roll angles (in radians).
-inline double4x4 rotation_roll_pitch_yaw( const double4x4& mat, const double pitch, const double yaw, const double roll, const double3& axis );
+inline double4x4 rotation_roll_pitch_yaw( const double4x4& mat, const double pitch, const double yaw, const double roll );
 
 /// \relates double4x4
 /// \brief Returns a copy of the matrix that has had a non-uniform scale applied to it.
@@ -10019,7 +10019,7 @@ float4x4 rotate( const float4x4& mat, const float rad, const float3& axis )
 	return mul( mat, rotation );
 }
 
-float4x4 rotation_roll_pitch_yaw( const float4x4& mat, const float pitch, const float yaw, const float roll, const float3& axis )
+float4x4 rotation_roll_pitch_yaw( const float4x4& mat, const float pitch, const float yaw, const float roll )
 {
 	const float cosYaw = cosf( yaw );
 	const float cosPitch = cosf( pitch );
@@ -11995,7 +11995,7 @@ double4x4 rotate( const double4x4& mat, const double rad, const double3& axis )
 	return mul( mat, rotation );
 }
 
-double4x4 rotation_roll_pitch_yaw( const double4x4& mat, const double pitch, const double yaw, const double roll, const double3& axis )
+double4x4 rotation_roll_pitch_yaw( const double4x4& mat, const double pitch, const double yaw, const double roll )
 {
 	const double cosYaw = cos( yaw );
 	const double cosPitch = cos( pitch );
