@@ -976,3 +976,9 @@ inline void Gen_GetFuncNameQuaternionSlerp( const genLanguage_t language, const 
 	
 	Gen_GetFuncNameInternal( language, type, 1, 4, "quaternion_slerp", outString );
 }
+
+inline void Gen_GetFuncNameQuaternionToMatrix( const genLanguage_t language, const genType_t type, char* outString ) {
+	assert( outString );
+	
+	Gen_GetFuncNameInternal( language, type, 1, 4, "quaternion_to_matrix", outString );
+}

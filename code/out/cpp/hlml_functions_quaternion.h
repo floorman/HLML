@@ -103,6 +103,8 @@ inline float4 quaternion_lerp( const float4& lhs, const float4& rhs, const float
 
 inline float4 quaternion_slerp( const float4& lhs, const float4& rhs, const float percent );
 
+inline float4x4 quaternion_to_matrix( const float4& quat );
+
 
 // double4
 inline double4 quaternion_mul( const double4& lhs, const double4& rhs );
@@ -122,6 +124,8 @@ inline double3 quaternion_rotate( const double3& vect, const double angle, const
 inline double4 quaternion_lerp( const double4& lhs, const double4& rhs, const double percent );
 
 inline double4 quaternion_slerp( const double4& lhs, const double4& rhs, const double percent );
+
+inline double4x4 quaternion_to_matrix( const double4& quat );
 
 
 #ifdef HLML_IMPLEMENTATION
@@ -232,6 +236,25 @@ inline float4 quaternion_slerp( const float4& lhs, const float4& rhs, const floa
 	return quat;
 }
 
+inline float4x4 quaternion_to_matrix( const float4& quat )
+{
+	return HLML_CONSTRUCT( float4x4 ) {
+		HLML_CONSTRUCT( float4 ) { 1.0f - 2.0f * quat.y * quat.y - 2.0f * quat.z * quat.z,
+			2.0f * quat.x * quat.y - 2.0f * quat.z * quat.w,
+			2.0f * quat.x * quat.z + 2.0f * quat.y * quat.w,
+			0.0f },
+		HLML_CONSTRUCT( float4 ) { 2.0f * quat.x * quat.y + 2.0f * quat.z * quat.w,
+			1.0f - 2.0f * quat.x * quat.x - 2.0f * quat.z * quat.z,
+			2.0f * quat.y * quat.z - 2.0f * quat.x * quat.w,
+			0.0f },
+		HLML_CONSTRUCT( float4 ) { 2.0f * quat.x * quat.z - 2.0f * quat.y * quat.w,
+			2.0f * quat.y * quat.z + 2.0f * quat.x * quat.w,
+			1.0f - 2.0f * quat.x * quat.x - 2.0f * quat.y * quat.y,
+			0.0f },
+		HLML_CONSTRUCT( float4 ) { 0.0f, 0.0f, 0.0f, 1.0f }
+	};
+}
+
 inline double4 quaternion_mul( const double4& lhs, const double4& rhs )
 {
 	double4 quat;
@@ -328,6 +351,25 @@ inline double4 quaternion_slerp( const double4& lhs, const double4& rhs, const d
 	quat.z = Wa * rhs.z + Wb * lhs.z;
 	quat.w = Wa * rhs.w + Wb * lhs.w;
 	return quat;
+}
+
+inline double4x4 quaternion_to_matrix( const double4& quat )
+{
+	return HLML_CONSTRUCT( double4x4 ) {
+		HLML_CONSTRUCT( double4 ) { 1.0 - 2.0 * quat.y * quat.y - 2.0 * quat.z * quat.z,
+			2.0 * quat.x * quat.y - 2.0 * quat.z * quat.w,
+			2.0 * quat.x * quat.z + 2.0 * quat.y * quat.w,
+			0.0 },
+		HLML_CONSTRUCT( double4 ) { 2.0 * quat.x * quat.y + 2.0 * quat.z * quat.w,
+			1.0 - 2.0 * quat.x * quat.x - 2.0 * quat.z * quat.z,
+			2.0 * quat.y * quat.z - 2.0 * quat.x * quat.w,
+			0.0 },
+		HLML_CONSTRUCT( double4 ) { 2.0 * quat.x * quat.z - 2.0 * quat.y * quat.w,
+			2.0 * quat.y * quat.z + 2.0 * quat.x * quat.w,
+			1.0 - 2.0 * quat.x * quat.x - 2.0 * quat.y * quat.y,
+			0.0 },
+		HLML_CONSTRUCT( double4 ) { 0.0, 0.0, 0.0, 1.0 }
+	};
 }
 
 #if defined( __GNUC__ ) || defined( __clang__ )

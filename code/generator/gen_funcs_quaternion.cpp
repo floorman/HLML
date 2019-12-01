@@ -487,3 +487,58 @@ void Gen_QuaternionSlerp( const genLanguage_t language, const genType_t type, st
 	String_Append( sbImpl, "}\n" );
 	String_Append( sbImpl, "\n" );
 }
+
+void Gen_QuaternionToMatrix( const genLanguage_t language, const genType_t type, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl ) {
+	if (Gen_TypeIsFloatingPoint(type) == false) {
+		return;
+	}
+
+	const char* returnTypeString = Gen_GetMemberTypeString(type);
+
+	const char* parmAccessStr = GEN_TYPE_ACCESS_OPERATORS[language];
+	
+	char zeroStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char oneStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char twoStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	
+	Gen_GetNumericLiteral( type, 0, zeroStr, 1 );
+	Gen_GetNumericLiteral( type, 1, oneStr, 1 );
+	Gen_GetNumericLiteral( type, 2, twoStr, 1 );
+
+	char typeName[GEN_STRING_LENGTH_TYPE_NAME];
+	Gen_GetFullTypeName(type, 1, 1, typeName);
+	
+	char quatToMatrixFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
+	Gen_GetFuncNameQuaternionToMatrix( language, type, quatToMatrixFuncStr );
+
+	char parmTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+	Gen_GetParmTypeName( language, type, 1, 4, parmTypeName );
+	
+	String_Appendf( sbFwdDec, "inline %s4x4 %s( const %s quat );\n", returnTypeString, quatToMatrixFuncStr, parmTypeName );
+	String_Append(  sbFwdDec, "\n" );
+
+	String_Appendf( sbImpl, "inline %s4x4 %s( const %s quat )\n", returnTypeString, quatToMatrixFuncStr, parmTypeName );
+	String_Append(  sbImpl, "{\n" );
+
+	String_Appendf( sbImpl, "\treturn HLML_CONSTRUCT( %s4x4 ) {\n", typeName );
+	String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s4 ) { %s - %s * quat%sy * quat%sy - %s * quat%sz * quat%sz,\n", typeName, oneStr, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
+	String_Appendf( sbImpl, "\t\t\t%s * quat%sx * quat%sy - %s * quat%sz * quat%sw,\n", twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
+	String_Appendf( sbImpl, "\t\t\t%s * quat%sx * quat%sz + %s * quat%sy * quat%sw,\n", twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
+	String_Appendf( sbImpl, "\t\t\t%s },\n", zeroStr );
+
+	String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s4 ) { %s * quat%sx * quat%sy + %s * quat%sz * quat%sw,\n", typeName, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
+	String_Appendf( sbImpl, "\t\t\t%s - %s * quat%sx * quat%sx - %s * quat%sz * quat%sz,\n", oneStr, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
+	String_Appendf( sbImpl, "\t\t\t%s * quat%sy * quat%sz - %s * quat%sx * quat%sw,\n", twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
+	String_Appendf( sbImpl, "\t\t\t%s },\n", zeroStr );
+
+	String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s4 ) { %s * quat%sx * quat%sz - %s * quat%sy * quat%sw,\n", typeName, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
+	String_Appendf( sbImpl, "\t\t\t%s * quat%sy * quat%sz + %s * quat%sx * quat%sw,\n", twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
+	String_Appendf( sbImpl, "\t\t\t%s - %s * quat%sx * quat%sx - %s * quat%sy * quat%sy,\n", oneStr, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
+	String_Appendf( sbImpl, "\t\t\t%s },\n", zeroStr );
+
+	String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s4 ) { %s, %s, %s, %s }\n", typeName, zeroStr, zeroStr, zeroStr, oneStr );
+	String_Append(  sbImpl, "\t};\n" );
+
+	String_Append( sbImpl, "}\n" );
+	String_Append( sbImpl, "\n" );
+}
