@@ -2439,7 +2439,7 @@ inline float3x3 float3x3_rotate( const float3x3* mat, const float rad );
 
 /// \relates float3x3
 /// \brief Returns a matrix based on the provided pitch, yaw and roll angles (in radians).
-inline float3x3 float3x3_rotation_roll_pitch_yaw( const float3x3* mat, const float pitch, const float yaw, const float roll );
+inline float3x3 float3x3_rotation_roll_pitch_yaw( const float pitch, const float yaw, const float roll );
 
 /// \relates float3x3
 /// \brief Returns a copy of the matrix that has had a non-uniform scale applied to it.
@@ -2760,7 +2760,7 @@ inline float4x4 float4x4_rotate( const float4x4* mat, const float rad, const flo
 
 /// \relates float4x4
 /// \brief Returns a matrix based on the provided pitch, yaw and roll angles (in radians).
-inline float4x4 float4x4_rotation_roll_pitch_yaw( const float4x4* mat, const float pitch, const float yaw, const float roll );
+inline float4x4 float4x4_rotation_roll_pitch_yaw( const float pitch, const float yaw, const float roll );
 
 /// \relates float4x4
 /// \brief Returns a copy of the matrix that has had a non-uniform scale applied to it.
@@ -3200,7 +3200,7 @@ inline double3x3 double3x3_rotate( const double3x3* mat, const double rad );
 
 /// \relates double3x3
 /// \brief Returns a matrix based on the provided pitch, yaw and roll angles (in radians).
-inline double3x3 double3x3_rotation_roll_pitch_yaw( const double3x3* mat, const double pitch, const double yaw, const double roll );
+inline double3x3 double3x3_rotation_roll_pitch_yaw( const double pitch, const double yaw, const double roll );
 
 /// \relates double3x3
 /// \brief Returns a copy of the matrix that has had a non-uniform scale applied to it.
@@ -3521,7 +3521,7 @@ inline double4x4 double4x4_rotate( const double4x4* mat, const double rad, const
 
 /// \relates double4x4
 /// \brief Returns a matrix based on the provided pitch, yaw and roll angles (in radians).
-inline double4x4 double4x4_rotation_roll_pitch_yaw( const double4x4* mat, const double pitch, const double yaw, const double roll );
+inline double4x4 double4x4_rotation_roll_pitch_yaw( const double pitch, const double yaw, const double roll );
 
 /// \relates double4x4
 /// \brief Returns a copy of the matrix that has had a non-uniform scale applied to it.
@@ -9090,7 +9090,7 @@ float3x3 float3x3_rotate( const float3x3* mat, const float rad )
 	};
 }
 
-float3x3 float3x3_rotation_roll_pitch_yaw( const float3x3* mat, const float pitch, const float yaw, const float roll )
+float3x3 float3x3_rotation_roll_pitch_yaw( const float pitch, const float yaw, const float roll )
 {
 	const float cosYaw = cosf( yaw );
 	const float cosPitch = cosf( pitch );
@@ -10039,7 +10039,7 @@ float4x4 float4x4_rotate( const float4x4* mat, const float rad, const float3* ax
 	return float4x4_mulm( mat, &rotation );
 }
 
-float4x4 float4x4_rotation_roll_pitch_yaw( const float4x4* mat, const float pitch, const float yaw, const float roll )
+float4x4 float4x4_rotation_roll_pitch_yaw( const float pitch, const float yaw, const float roll )
 {
 	const float cosYaw = cosf( yaw );
 	const float cosPitch = cosf( pitch );
@@ -10048,10 +10048,10 @@ float4x4 float4x4_rotation_roll_pitch_yaw( const float4x4* mat, const float pitc
 	const float sinPitch = sinf( pitch );
 	const float sinRoll = sinf( roll );
 
-	float3 row0  = HLML_CONSTRUCT ( float3 ) { cosYaw * cosPitch, cosYaw * sinPitch * sinRoll - sinYaw * cosRoll, cosYaw * sinPitch * cosRoll + sinYaw * sinRoll, 0.0f };
-	float3 row1  = HLML_CONSTRUCT ( float3 ) { sinYaw * cosPitch, sinYaw * sinPitch * sinRoll + cosYaw * cosRoll, sinYaw * sinPitch * cosRoll - cosYaw * sinRoll, 0.0f };
-	float3 row2  = HLML_CONSTRUCT ( float3 ) { -sinPitch, cosPitch * sinRoll, cosPitch * cosRoll, 0.0f };
-	float3 row3  = HLML_CONSTRUCT ( float3 ) { 0.0f, 0.0f, 0.0f, 1.0f};
+	float4 row0  = HLML_CONSTRUCT ( float4 ) { cosYaw * cosPitch, cosYaw * sinPitch * sinRoll - sinYaw * cosRoll, cosYaw * sinPitch * cosRoll + sinYaw * sinRoll, 0.0f };
+	float4 row1  = HLML_CONSTRUCT ( float4 ) { sinYaw * cosPitch, sinYaw * sinPitch * sinRoll + cosYaw * cosRoll, sinYaw * sinPitch * cosRoll - cosYaw * sinRoll, 0.0f };
+	float4 row2  = HLML_CONSTRUCT ( float4 ) { -sinPitch, cosPitch * sinRoll, cosPitch * cosRoll, 0.0f };
+	float4 row3  = HLML_CONSTRUCT ( float4 ) { 0.0f, 0.0f, 0.0f, 1.0f};
 	return HLML_CONSTRUCT( float4x4 ) { row0, row1, row2, row3 };
 }
 
@@ -11090,7 +11090,7 @@ double3x3 double3x3_rotate( const double3x3* mat, const double rad )
 	};
 }
 
-double3x3 double3x3_rotation_roll_pitch_yaw( const double3x3* mat, const double pitch, const double yaw, const double roll )
+double3x3 double3x3_rotation_roll_pitch_yaw( const double pitch, const double yaw, const double roll )
 {
 	const double cosYaw = cos( yaw );
 	const double cosPitch = cos( pitch );
@@ -12039,7 +12039,7 @@ double4x4 double4x4_rotate( const double4x4* mat, const double rad, const double
 	return double4x4_mulm( mat, &rotation );
 }
 
-double4x4 double4x4_rotation_roll_pitch_yaw( const double4x4* mat, const double pitch, const double yaw, const double roll )
+double4x4 double4x4_rotation_roll_pitch_yaw( const double pitch, const double yaw, const double roll )
 {
 	const double cosYaw = cos( yaw );
 	const double cosPitch = cos( pitch );
@@ -12048,10 +12048,10 @@ double4x4 double4x4_rotation_roll_pitch_yaw( const double4x4* mat, const double 
 	const double sinPitch = sin( pitch );
 	const double sinRoll = sin( roll );
 
-	double3 row0  = HLML_CONSTRUCT ( double3 ) { cosYaw * cosPitch, cosYaw * sinPitch * sinRoll - sinYaw * cosRoll, cosYaw * sinPitch * cosRoll + sinYaw * sinRoll, 0.0 };
-	double3 row1  = HLML_CONSTRUCT ( double3 ) { sinYaw * cosPitch, sinYaw * sinPitch * sinRoll + cosYaw * cosRoll, sinYaw * sinPitch * cosRoll - cosYaw * sinRoll, 0.0 };
-	double3 row2  = HLML_CONSTRUCT ( double3 ) { -sinPitch, cosPitch * sinRoll, cosPitch * cosRoll, 0.0 };
-	double3 row3  = HLML_CONSTRUCT ( double3 ) { 0.0, 0.0, 0.0, 1.0};
+	double4 row0  = HLML_CONSTRUCT ( double4 ) { cosYaw * cosPitch, cosYaw * sinPitch * sinRoll - sinYaw * cosRoll, cosYaw * sinPitch * cosRoll + sinYaw * sinRoll, 0.0 };
+	double4 row1  = HLML_CONSTRUCT ( double4 ) { sinYaw * cosPitch, sinYaw * sinPitch * sinRoll + cosYaw * cosRoll, sinYaw * sinPitch * cosRoll - cosYaw * sinRoll, 0.0 };
+	double4 row2  = HLML_CONSTRUCT ( double4 ) { -sinPitch, cosPitch * sinRoll, cosPitch * cosRoll, 0.0 };
+	double4 row3  = HLML_CONSTRUCT ( double4 ) { 0.0, 0.0, 0.0, 1.0};
 	return HLML_CONSTRUCT( double4x4 ) { row0, row1, row2, row3 };
 }
 

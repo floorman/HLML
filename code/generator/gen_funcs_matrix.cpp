@@ -1303,7 +1303,7 @@ void Gen_MatrixRotate( const genLanguage_t language, const genType_t type, const
 	String_Append( sbImpl, "\n" );
 }
 
-void Gen_MatrixRotationRollPitchYaw( const genLanguage_t language, const genType_t type, const u32 numRows, const u32 numCols, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl ) {
+void Gen_MatrixRotationRollPitchYaw( const genType_t type, const u32 numRows, const u32 numCols, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl ) {
 	assert( numRows >= GEN_COMPONENT_COUNT_MIN );
 	assert( numRows <= GEN_COMPONENT_COUNT_MAX );
 	assert( numCols >= GEN_COMPONENT_COUNT_MIN );
@@ -1323,7 +1323,7 @@ void Gen_MatrixRotationRollPitchYaw( const genLanguage_t language, const genType
 		return;
 	}
 
-	u32 numRotateVectorComponents = 3;
+	u32 numRotateVectorComponents = numCols;
 
 	const char* typeString = Gen_GetTypeString( type );
 
@@ -1338,16 +1338,14 @@ void Gen_MatrixRotationRollPitchYaw( const genLanguage_t language, const genType
 	Gen_GetNumericLiteral( type, 0, zeroStr, 1 );
 	Gen_GetNumericLiteral( type, 1, oneStr, 1 );
 
-	const char parmTypeModifierStr = GEN_TYPE_PARM_MODIFIERS[language];
-
 	stringBuilder_t parmListStr = String_Create( 128 );
-	String_Appendf( &parmListStr, "const %s%c mat, const %s pitch, const %s yaw, const %s roll", fullTypeName, parmTypeModifierStr, typeString, typeString, typeString );
+	String_Appendf( &parmListStr, "const %s pitch, const %s yaw, const %s roll", typeString, typeString, typeString );
 
 	const char* cosFuncStr = Gen_GetFuncNameCos( type );
 	const char* sinFuncStr = Gen_GetFuncNameSin( type );
 
 	char rotateFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
-	Gen_GetFuncNameRotationRollPitchYaw( language, type, numRows, numCols, rotateFuncStr );
+	Gen_GetFuncNameRotationRollPitchYaw( GEN_LANGUAGE_C, type, numRows, numCols, rotateFuncStr );
 
 	Doc_MatrixRotationRollPitchYaw( sbFwdDec, fullTypeName );
 	String_Appendf( sbFwdDec, "inline %s %s( %s );\n", fullTypeName, rotateFuncStr, parmListStr.str );
