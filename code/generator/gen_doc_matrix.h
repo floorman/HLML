@@ -104,6 +104,13 @@ inline void Doc_MatrixRotate( stringBuilder_t* sb, const char* fullTypeName ) {
 	);
 }
 
+inline void Doc_MatrixRotationRollPitchYaw( stringBuilder_t* sb, const char* fullTypeName ) {
+	String_Appendf( sb,
+		"/// \\relates %s\n" \
+		"/// \\brief Returns a matrix based on the provided pitch, yaw and roll angles (in radians).\n", fullTypeName
+	);
+}
+
 inline void Doc_MatrixScaleUniform( stringBuilder_t* sb, const char* fullTypeName ) {
 	String_Appendf( sb,
 		"/// \\relates %s\n" \

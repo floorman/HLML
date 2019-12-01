@@ -836,6 +836,15 @@ inline void Gen_GetFuncNameRotate( const genLanguage_t language, const genType_t
 	Gen_GetFuncNameInternal( language, type, numRows, numCols, "rotate", outString );
 }
 
+inline void Gen_GetFuncNameRotationRollPitchYaw( const genLanguage_t language, const genType_t type, const u32 numRows, const u32 numCols, char* outString ) {
+	assert( numRows >= GEN_COMPONENT_COUNT_MIN );
+	assert( numRows <= GEN_COMPONENT_COUNT_MAX );
+	assert( numCols >= GEN_COMPONENT_COUNT_MIN );
+	assert( numCols <= GEN_COMPONENT_COUNT_MAX );
+
+	Gen_GetFuncNameInternal( language, type, numRows, numCols, "rotation_roll_pitch_yaw", outString );
+}
+
 inline void Gen_GetFuncNameScale( const genLanguage_t language, const genType_t type, const u32 numRows, const u32 numCols, char* outString ) {
 	assert( numRows >= GEN_COMPONENT_COUNT_MIN );
 	assert( numRows <= GEN_COMPONENT_COUNT_MAX );

@@ -1303,6 +1303,95 @@ void Gen_MatrixRotate( const genLanguage_t language, const genType_t type, const
 	String_Append( sbImpl, "\n" );
 }
 
+void Gen_MatrixRotationRollPitchYaw( const genLanguage_t language, const genType_t type, const u32 numRows, const u32 numCols, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl ) {
+	assert( numRows >= GEN_COMPONENT_COUNT_MIN );
+	assert( numRows <= GEN_COMPONENT_COUNT_MAX );
+	assert( numCols >= GEN_COMPONENT_COUNT_MIN );
+	assert( numCols <= GEN_COMPONENT_COUNT_MAX );
+	assert( sbFwdDec );
+	assert( sbImpl );
+
+	if ( !Gen_TypeIsFloatingPoint( type ) ) {
+		return;
+	}
+
+	if ( numRows < 3 ) {
+		return;
+	}
+
+	if ( numRows != numCols ) {
+		return;
+	}
+
+	u32 numRotateVectorComponents = 3;
+
+	const char* typeString = Gen_GetTypeString( type );
+
+	char vectorTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+	snprintf( vectorTypeName, GEN_STRING_LENGTH_TYPE_NAME, "%s%d", typeString, numRotateVectorComponents );
+
+	char fullTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+	snprintf( fullTypeName, GEN_STRING_LENGTH_TYPE_NAME, "%s%dx%d", typeString, numRows, numCols );
+
+	char zeroStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char oneStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	Gen_GetNumericLiteral( type, 0, zeroStr, 1 );
+	Gen_GetNumericLiteral( type, 1, oneStr, 1 );
+
+	const char parmTypeModifierStr = GEN_TYPE_PARM_MODIFIERS[language];
+
+	stringBuilder_t parmListStr = String_Create( 128 );
+	String_Appendf( &parmListStr, "const %s%c mat, const %s pitch, const %s yaw, const %s roll", fullTypeName, parmTypeModifierStr, typeString, typeString, typeString );
+	if ( numCols > 3 ) {
+		String_Appendf( &parmListStr, ", const %s%c axis", vectorTypeName, parmTypeModifierStr );
+	}
+
+	const char* cosFuncStr = Gen_GetFuncNameCos( type );
+	const char* sinFuncStr = Gen_GetFuncNameSin( type );
+
+	char rotateFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
+	Gen_GetFuncNameRotationRollPitchYaw( language, type, numRows, numCols, rotateFuncStr );
+
+	Doc_MatrixRotationRollPitchYaw( sbFwdDec, fullTypeName );
+	String_Appendf( sbFwdDec, "inline %s %s( %s );\n", fullTypeName, rotateFuncStr, parmListStr.str );
+	String_Append(  sbFwdDec, "\n" );
+
+	String_Appendf( sbImpl, "%s %s( %s )\n", fullTypeName, rotateFuncStr, parmListStr.str );
+	String_Append(  sbImpl, "{\n" );
+	String_Appendf( sbImpl, "\tconst %s cosYaw = %s( yaw );\n", typeString, cosFuncStr );
+	String_Appendf( sbImpl, "\tconst %s cosPitch = %s( pitch );\n", typeString, cosFuncStr );
+	String_Appendf( sbImpl, "\tconst %s cosRoll = %s( roll );\n", typeString, cosFuncStr );
+	String_Appendf( sbImpl, "\tconst %s sinYaw = %s( yaw );\n", typeString, sinFuncStr );
+	String_Appendf( sbImpl, "\tconst %s sinPitch = %s( pitch );\n", typeString, sinFuncStr );
+	String_Appendf( sbImpl, "\tconst %s sinRoll = %s( roll );\n", typeString, sinFuncStr );
+	String_Append(  sbImpl, "\n" );
+
+	switch ( numCols ) {
+		case 3: {
+			String_Appendf( sbImpl, "\t%s row0  = HLML_CONSTRUCT ( %s ) { cosYaw * cosPitch, cosYaw * sinPitch * sinRoll - sinYaw * cosRoll, cosYaw * sinPitch * cosRoll + sinYaw * sinRoll };\n",  vectorTypeName, vectorTypeName );
+			String_Appendf( sbImpl, "\t%s row1  = HLML_CONSTRUCT ( %s ) { sinYaw * cosPitch, sinYaw * sinPitch * sinRoll + cosYaw * cosRoll, sinYaw * sinPitch * cosRoll - cosYaw * sinRoll };\n",  vectorTypeName, vectorTypeName );
+			String_Appendf( sbImpl, "\t%s row2  = HLML_CONSTRUCT ( %s ) { -sinPitch, cosPitch * sinRoll, cosPitch * cosRoll };\n",  vectorTypeName, vectorTypeName );
+			String_Appendf( sbImpl, "\treturn HLML_CONSTRUCT( %s ) { row0, row1, row2 };\n", fullTypeName );
+			break;
+		}
+
+		case 4: {
+			String_Appendf( sbImpl, "\t%s row0  = HLML_CONSTRUCT ( %s ) { cosYaw * cosPitch, cosYaw * sinPitch * sinRoll - sinYaw * cosRoll, cosYaw * sinPitch * cosRoll + sinYaw * sinRoll, %s };\n",  vectorTypeName, vectorTypeName, zeroStr );
+			String_Appendf( sbImpl, "\t%s row1  = HLML_CONSTRUCT ( %s ) { sinYaw * cosPitch, sinYaw * sinPitch * sinRoll + cosYaw * cosRoll, sinYaw * sinPitch * cosRoll - cosYaw * sinRoll, %s };\n",  vectorTypeName, vectorTypeName, zeroStr );
+			String_Appendf( sbImpl, "\t%s row2  = HLML_CONSTRUCT ( %s ) { -sinPitch, cosPitch * sinRoll, cosPitch * cosRoll, %s };\n",  vectorTypeName, vectorTypeName, zeroStr );
+			String_Appendf( sbImpl, "\t%s row3  = HLML_CONSTRUCT ( %s ) { %s, %s, %s, %s};\n",  vectorTypeName, vectorTypeName, zeroStr, zeroStr, zeroStr, oneStr );
+			String_Appendf( sbImpl, "\treturn HLML_CONSTRUCT( %s ) { row0, row1, row2, row3 };\n", fullTypeName );
+			break;
+		}
+
+		default:
+			assert( false );	// should never make it here!
+			break;
+	}
+	String_Append( sbImpl, "}\n" );
+	String_Append( sbImpl, "\n" );
+}
+
 void Gen_MatrixScale( const genLanguage_t language, const genType_t type, const u32 numRows, const u32 numCols, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl ) {
 	assert( numRows >= GEN_COMPONENT_COUNT_MIN );
 	assert( numRows <= GEN_COMPONENT_COUNT_MAX );

@@ -414,6 +414,7 @@ void Gen_FunctionsMatrix( const genLanguage_t language ) {
 
 				Gen_MatrixTranslate( language, type, row, col, &contentFwdDec, &contentImpl );
 				Gen_MatrixRotate( language, type, row, col, &contentFwdDec, &contentImpl );
+				Gen_MatrixRotationRollPitchYaw( language, type, row, col, &contentFwdDec, &contentImpl );
 				Gen_MatrixScale( language, type, row, col, &contentFwdDec, &contentImpl );
 
 				Gen_MatrixOrtho( language, type, row, col, &contentFwdDec, &contentImpl );
