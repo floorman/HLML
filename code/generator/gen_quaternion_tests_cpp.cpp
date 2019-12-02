@@ -518,7 +518,7 @@ static void GenerateTestQuaternionVectorRotationByAngleAxis(  stringBuilder_t* c
 	snprintf( parmListAnswers[2], 64, "( %s )", oneStr );
 
 	char rotateQuaternionFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
-	Gen_GetFuncNameQuaternionRotate( language, type, rotateQuaternionFuncStr );
+	Gen_GetFuncNameQuaternionRotateVector( language, type, rotateQuaternionFuncStr );
 
 	char testName[GEN_STRING_LENGTH_TEST_NAME] = { 0 };
 	snprintf( testName, GEN_STRING_LENGTH_TEST_NAME, "TestArithmetic%s_%s", "VectorRotationByAngleAxis", fullTypeName );

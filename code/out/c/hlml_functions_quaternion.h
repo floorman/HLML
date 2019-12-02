@@ -97,13 +97,15 @@ inline float4 float4_quaternion_conjugate( const float4* quat );
 
 inline float4 float4_quaternion_inverse( const float4* quat );
 
-inline float3 float4_quaternion_rotate( const float3* vect, const float angle, const float3* axis );
+inline float3 float4_quaternion_rotate_vector( const float3* vect, const float angle, const float3* axis );
 
 inline float4 float4_quaternion_lerp( const float4* lhs, const float4* rhs, const float percent );
 
 inline float4 float4_quaternion_slerp( const float4* lhs, const float4* rhs, const float percent );
 
-inline float4x4 float4_quaternion_to_matrix( const float4* quat );
+inline float3x3 float4_quaternion_rotate_matrix( const float3x3* mat, const float4* quat );
+
+inline float4x4 float4_quaternion_rotate_matrix( const float4x4* mat, const float4* quat );
 
 
 // double4
@@ -119,13 +121,15 @@ inline double4 double4_quaternion_conjugate( const double4* quat );
 
 inline double4 double4_quaternion_inverse( const double4* quat );
 
-inline double3 double4_quaternion_rotate( const double3* vect, const double angle, const double3* axis );
+inline double3 double4_quaternion_rotate_vector( const double3* vect, const double angle, const double3* axis );
 
 inline double4 double4_quaternion_lerp( const double4* lhs, const double4* rhs, const double percent );
 
 inline double4 double4_quaternion_slerp( const double4* lhs, const double4* rhs, const double percent );
 
-inline double4x4 double4_quaternion_to_matrix( const double4* quat );
+inline double3x3 double4_quaternion_rotate_matrix( const double3x3* mat, const double4* quat );
+
+inline double4x4 double4_quaternion_rotate_matrix( const double4x4* mat, const double4* quat );
 
 
 #ifdef HLML_IMPLEMENTATION
@@ -191,7 +195,7 @@ inline float4 float4_quaternion_inverse( const float4* quat )
 	return HLML_CONSTRUCT (float4) { imaginary.x, imaginary.y, imaginary.z, scalar };
 }
 
-inline float3 float4_quaternion_rotate( const float3* vect, const float angle, const float3* axis )
+inline float3 float4_quaternion_rotate_vector( const float3* vect, const float angle, const float3* axis )
 {
 	float4 pureQuat = HLML_CONSTRUCT( float4 ) { vect->x, vect->y, vect->z, 0 };
 	float3 normalizedAxis = *axis;
@@ -239,23 +243,42 @@ inline float4 float4_quaternion_slerp( const float4* lhs, const float4* rhs, con
 	return quat;
 }
 
-inline float4x4 float4_quaternion_to_matrix( const float4* quat )
+inline float3x3 float4_quaternion_rotate_matrix( const float3x3* mat, const float4* quat )
 {
-	return HLML_CONSTRUCT( float4x4 ) {
-		HLML_CONSTRUCT( float4 ) { 1.0f - 2.0f * quat->y * quat->y - 2.0f * quat->z * quat->z,
-			2.0f * quat->x * quat->y - 2.0f * quat->z * quat->w,
-			2.0f * quat->x * quat->z + 2.0f * quat->y * quat->w,
+	float3x3 quatMat = HLML_CONSTRUCT( float3x3 ) {
+		HLML_CONSTRUCT( float3 ) { 1.0f - 2.0f * ( quat->y * quat->y - quat->z * quat->z ),
+			2.0f * ( quat->x * quat->y - quat->z * quat->w ),
+			2.0f * ( quat->x * quat->z + quat->y * quat->w ) },
+		HLML_CONSTRUCT( float3 ) { 2.0f * ( quat->x * quat->y + quat->z * quat->w ),
+			1.0f - 2.0f * ( quat->x * quat->x - quat->z * quat->z ),
+			2.0f * ( quat->y * quat->z - quat->x * quat->w ) },
+		HLML_CONSTRUCT( float3 ) { 2.0f * ( quat->x * quat->z - quat->y * quat->w ),
+			2.0f * ( quat->y * quat->z + quat->x * quat->w ),
+			1.0f - 2.0f * ( quat->x * quat->x - quat->y * quat->y ) }
+	};
+
+	return mul( mat, quatMat );
+}
+
+inline float4x4 float4_quaternion_rotate_matrix( const float4x4* mat, const float4* quat )
+{
+	float4x4 quatMat = HLML_CONSTRUCT( float4x4 ) {
+		HLML_CONSTRUCT( float4 ) { 1.0f - 2.0f * ( quat->y * quat->y - quat->z * quat->z ),
+			2.0f * ( quat->x * quat->y - quat->z * quat->w ),
+			2.0f * ( quat->x * quat->z + quat->y * quat->w ),
 			0.0f },
-		HLML_CONSTRUCT( float4 ) { 2.0f * quat->x * quat->y + 2.0f * quat->z * quat->w,
-			1.0f - 2.0f * quat->x * quat->x - 2.0f * quat->z * quat->z,
-			2.0f * quat->y * quat->z - 2.0f * quat->x * quat->w,
+		HLML_CONSTRUCT( float4 ) { 2.0f * ( quat->x * quat->y + quat->z * quat->w ),
+			1.0f - 2.0f * ( quat->x * quat->x - quat->z * quat->z ),
+			2.0f * ( quat->y * quat->z - quat->x * quat->w ),
 			0.0f },
-		HLML_CONSTRUCT( float4 ) { 2.0f * quat->x * quat->z - 2.0f * quat->y * quat->w,
-			2.0f * quat->y * quat->z + 2.0f * quat->x * quat->w,
-			1.0f - 2.0f * quat->x * quat->x - 2.0f * quat->y * quat->y,
+		HLML_CONSTRUCT( float4 ) { 2.0f * ( quat->x * quat->z - quat->y * quat->w ),
+			2.0f * ( quat->y * quat->z + quat->x * quat->w ),
+			1.0f - 2.0f * ( quat->x * quat->x - quat->y * quat->y ),
 			0.0f },
 		HLML_CONSTRUCT( float4 ) { 0.0f, 0.0f, 0.0f, 1.0f }
 	};
+
+	return mul( mat, quatMat );
 }
 
 inline double4 double4_quaternion_mulq( const double4* lhs, const double4* rhs )
@@ -311,7 +334,7 @@ inline double4 double4_quaternion_inverse( const double4* quat )
 	return HLML_CONSTRUCT (double4) { imaginary.x, imaginary.y, imaginary.z, scalar };
 }
 
-inline double3 double4_quaternion_rotate( const double3* vect, const double angle, const double3* axis )
+inline double3 double4_quaternion_rotate_vector( const double3* vect, const double angle, const double3* axis )
 {
 	double4 pureQuat = HLML_CONSTRUCT( double4 ) { vect->x, vect->y, vect->z, 0 };
 	double3 normalizedAxis = *axis;
@@ -359,23 +382,42 @@ inline double4 double4_quaternion_slerp( const double4* lhs, const double4* rhs,
 	return quat;
 }
 
-inline double4x4 double4_quaternion_to_matrix( const double4* quat )
+inline double3x3 double4_quaternion_rotate_matrix( const double3x3* mat, const double4* quat )
 {
-	return HLML_CONSTRUCT( double4x4 ) {
-		HLML_CONSTRUCT( double4 ) { 1.0 - 2.0 * quat->y * quat->y - 2.0 * quat->z * quat->z,
-			2.0 * quat->x * quat->y - 2.0 * quat->z * quat->w,
-			2.0 * quat->x * quat->z + 2.0 * quat->y * quat->w,
+	double3x3 quatMat = HLML_CONSTRUCT( double3x3 ) {
+		HLML_CONSTRUCT( double3 ) { 1.0 - 2.0 * ( quat->y * quat->y - quat->z * quat->z ),
+			2.0 * ( quat->x * quat->y - quat->z * quat->w ),
+			2.0 * ( quat->x * quat->z + quat->y * quat->w ) },
+		HLML_CONSTRUCT( double3 ) { 2.0 * ( quat->x * quat->y + quat->z * quat->w ),
+			1.0 - 2.0 * ( quat->x * quat->x - quat->z * quat->z ),
+			2.0 * ( quat->y * quat->z - quat->x * quat->w ) },
+		HLML_CONSTRUCT( double3 ) { 2.0 * ( quat->x * quat->z - quat->y * quat->w ),
+			2.0 * ( quat->y * quat->z + quat->x * quat->w ),
+			1.0 - 2.0 * ( quat->x * quat->x - quat->y * quat->y ) }
+	};
+
+	return mul( mat, quatMat );
+}
+
+inline double4x4 double4_quaternion_rotate_matrix( const double4x4* mat, const double4* quat )
+{
+	double4x4 quatMat = HLML_CONSTRUCT( double4x4 ) {
+		HLML_CONSTRUCT( double4 ) { 1.0 - 2.0 * ( quat->y * quat->y - quat->z * quat->z ),
+			2.0 * ( quat->x * quat->y - quat->z * quat->w ),
+			2.0 * ( quat->x * quat->z + quat->y * quat->w ),
 			0.0 },
-		HLML_CONSTRUCT( double4 ) { 2.0 * quat->x * quat->y + 2.0 * quat->z * quat->w,
-			1.0 - 2.0 * quat->x * quat->x - 2.0 * quat->z * quat->z,
-			2.0 * quat->y * quat->z - 2.0 * quat->x * quat->w,
+		HLML_CONSTRUCT( double4 ) { 2.0 * ( quat->x * quat->y + quat->z * quat->w ),
+			1.0 - 2.0 * ( quat->x * quat->x - quat->z * quat->z ),
+			2.0 * ( quat->y * quat->z - quat->x * quat->w ),
 			0.0 },
-		HLML_CONSTRUCT( double4 ) { 2.0 * quat->x * quat->z - 2.0 * quat->y * quat->w,
-			2.0 * quat->y * quat->z + 2.0 * quat->x * quat->w,
-			1.0 - 2.0 * quat->x * quat->x - 2.0 * quat->y * quat->y,
+		HLML_CONSTRUCT( double4 ) { 2.0 * ( quat->x * quat->z - quat->y * quat->w ),
+			2.0 * ( quat->y * quat->z + quat->x * quat->w ),
+			1.0 - 2.0 * ( quat->x * quat->x - quat->y * quat->y ),
 			0.0 },
 		HLML_CONSTRUCT( double4 ) { 0.0, 0.0, 0.0, 1.0 }
 	};
+
+	return mul( mat, quatMat );
 }
 
 #if defined( __GNUC__ ) || defined( __clang__ )

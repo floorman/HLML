@@ -33,7 +33,6 @@ extern void		Gen_QuaternionConjugate( const genLanguage_t language, const genTyp
 extern void		Gen_QuaternionInverse( const genLanguage_t language, const genType_t type, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl );
 
 extern void		Gen_QuaternionRotationAxis( const genLanguage_t language, const genType_t type, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl );
+extern void		Gen_QuaternionRotateMatrix( const genLanguage_t language, const genType_t type, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl );
 extern void		Gen_QuaternionLerp( const genLanguage_t language, const genType_t type, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl );
 extern void		Gen_QuaternionSlerp( const genLanguage_t language, const genType_t type, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl );
-
-extern void		Gen_QuaternionToMatrix( const genLanguage_t language, const genType_t type, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl );

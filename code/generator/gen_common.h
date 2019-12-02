@@ -959,10 +959,10 @@ inline void Gen_GetFuncNameQuaternionInverse( const genLanguage_t language, cons
 	Gen_GetFuncNameInternal( language, type, 1, 4, "quaternion_inverse", outString );
 }
 
-inline void Gen_GetFuncNameQuaternionRotate( const genLanguage_t language, const genType_t type, char* outString ) {
+inline void Gen_GetFuncNameQuaternionRotateVector( const genLanguage_t language, const genType_t type, char* outString ) {
 	assert( outString );
 	
-	Gen_GetFuncNameInternal( language, type, 1, 4, "quaternion_rotate", outString );
+	Gen_GetFuncNameInternal( language, type, 1, 4, "quaternion_rotate_vector", outString );
 }
 
 inline void Gen_GetFuncNameQuaternionLerp( const genLanguage_t language, const genType_t type, char* outString ) {
@@ -977,8 +977,8 @@ inline void Gen_GetFuncNameQuaternionSlerp( const genLanguage_t language, const 
 	Gen_GetFuncNameInternal( language, type, 1, 4, "quaternion_slerp", outString );
 }
 
-inline void Gen_GetFuncNameQuaternionToMatrix( const genLanguage_t language, const genType_t type, char* outString ) {
+inline void Gen_GetFuncNameQuaternionRotateMatrix( const genLanguage_t language, const genType_t type, char* outString ) {
 	assert( outString );
 	
-	Gen_GetFuncNameInternal( language, type, 1, 4, "quaternion_to_matrix", outString );
+	Gen_GetFuncNameInternal( language, type, 1, 4, "quaternion_rotate_matrix", outString );
 }

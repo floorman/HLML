@@ -311,7 +311,7 @@ void Gen_QuaternionRotationAxis( const genLanguage_t language, const genType_t t
 	Gen_GetFuncNameQuaternionMultiplyQuaternion( language, type, mulQuaternionFuncStr );
 	
 	char rotateQuaternionFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
-	Gen_GetFuncNameQuaternionRotate( language, type, rotateQuaternionFuncStr );
+	Gen_GetFuncNameQuaternionRotateVector( language, type, rotateQuaternionFuncStr );
 
 	char normVectorFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameNormalize( language, type, 3, normVectorFuncStr );
@@ -488,12 +488,10 @@ void Gen_QuaternionSlerp( const genLanguage_t language, const genType_t type, st
 	String_Append( sbImpl, "\n" );
 }
 
-void Gen_QuaternionToMatrix( const genLanguage_t language, const genType_t type, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl ) {
+void Gen_QuaternionRotateMatrix( const genLanguage_t language, const genType_t type, stringBuilder_t* sbFwdDec, stringBuilder_t* sbImpl ) {
 	if (Gen_TypeIsFloatingPoint(type) == false) {
 		return;
 	}
-
-	const char* returnTypeString = Gen_GetMemberTypeString(type);
 
 	const char* parmAccessStr = GEN_TYPE_ACCESS_OPERATORS[language];
 	
@@ -509,36 +507,59 @@ void Gen_QuaternionToMatrix( const genLanguage_t language, const genType_t type,
 	Gen_GetFullTypeName(type, 1, 1, typeName);
 	
 	char quatToMatrixFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
-	Gen_GetFuncNameQuaternionToMatrix( language, type, quatToMatrixFuncStr );
+	Gen_GetFuncNameQuaternionRotateMatrix( language, type, quatToMatrixFuncStr );
 
-	char parmTypeName[GEN_STRING_LENGTH_TYPE_NAME];
-	Gen_GetParmTypeName( language, type, 1, 4, parmTypeName );
+	char quatParmTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+	Gen_GetParmTypeName( language, type, 1, 4, quatParmTypeName );
 	
-	String_Appendf( sbFwdDec, "inline %s4x4 %s( const %s quat );\n", returnTypeString, quatToMatrixFuncStr, parmTypeName );
-	String_Append(  sbFwdDec, "\n" );
+	for ( u32 matrixSize = 3; matrixSize <= GEN_COMPONENT_COUNT_MAX; matrixSize++ ) {
+		char matTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+		Gen_GetFullTypeName(type, matrixSize, matrixSize, matTypeName);
+	
+		char matParmTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+		Gen_GetParmTypeName( language, type, matrixSize, matrixSize, matParmTypeName );
 
-	String_Appendf( sbImpl, "inline %s4x4 %s( const %s quat )\n", returnTypeString, quatToMatrixFuncStr, parmTypeName );
-	String_Append(  sbImpl, "{\n" );
+		char vectorTypeName[GEN_STRING_LENGTH_TYPE_NAME];
+		Gen_GetFullTypeName(type, 1, matrixSize, vectorTypeName);
 
-	String_Appendf( sbImpl, "\treturn HLML_CONSTRUCT( %s4x4 ) {\n", typeName );
-	String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s4 ) { %s - %s * quat%sy * quat%sy - %s * quat%sz * quat%sz,\n", typeName, oneStr, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
-	String_Appendf( sbImpl, "\t\t\t%s * quat%sx * quat%sy - %s * quat%sz * quat%sw,\n", twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
-	String_Appendf( sbImpl, "\t\t\t%s * quat%sx * quat%sz + %s * quat%sy * quat%sw,\n", twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
-	String_Appendf( sbImpl, "\t\t\t%s },\n", zeroStr );
+		String_Appendf( sbFwdDec, "inline %s %s( const %s mat, const %s quat );\n", matTypeName, quatToMatrixFuncStr, matParmTypeName, quatParmTypeName );
+		String_Append(  sbFwdDec, "\n" );
 
-	String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s4 ) { %s * quat%sx * quat%sy + %s * quat%sz * quat%sw,\n", typeName, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
-	String_Appendf( sbImpl, "\t\t\t%s - %s * quat%sx * quat%sx - %s * quat%sz * quat%sz,\n", oneStr, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
-	String_Appendf( sbImpl, "\t\t\t%s * quat%sy * quat%sz - %s * quat%sx * quat%sw,\n", twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
-	String_Appendf( sbImpl, "\t\t\t%s },\n", zeroStr );
+		String_Appendf( sbImpl, "inline %s %s( const %s mat, const %s quat )\n", matTypeName, quatToMatrixFuncStr, matParmTypeName, quatParmTypeName );
+		String_Append(  sbImpl, "{\n" );
 
-	String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s4 ) { %s * quat%sx * quat%sz - %s * quat%sy * quat%sw,\n", typeName, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
-	String_Appendf( sbImpl, "\t\t\t%s * quat%sy * quat%sz + %s * quat%sx * quat%sw,\n", twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
-	String_Appendf( sbImpl, "\t\t\t%s - %s * quat%sx * quat%sx - %s * quat%sy * quat%sy,\n", oneStr, twoStr, parmAccessStr, parmAccessStr, twoStr, parmAccessStr, parmAccessStr );
-	String_Appendf( sbImpl, "\t\t\t%s },\n", zeroStr );
+		String_Appendf( sbImpl, "\t%s quatMat = HLML_CONSTRUCT( %s ) {\n", matTypeName, matTypeName );
+		String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s ) { %s - %s * ( quat%sy * quat%sy - quat%sz * quat%sz ),\n", vectorTypeName, oneStr, twoStr, parmAccessStr, parmAccessStr, parmAccessStr, parmAccessStr );
+		String_Appendf( sbImpl, "\t\t\t%s * ( quat%sx * quat%sy - quat%sz * quat%sw ),\n", twoStr, parmAccessStr, parmAccessStr, parmAccessStr, parmAccessStr );
+		String_Appendf( sbImpl, "\t\t\t%s * ( quat%sx * quat%sz + quat%sy * quat%sw )", twoStr, parmAccessStr, parmAccessStr, parmAccessStr, parmAccessStr );
+		if ( matrixSize == GEN_COMPONENT_COUNT_MAX ) {
+			String_Appendf( sbImpl, ",\n\t\t\t%s", zeroStr );
+		}
+		String_Append( sbImpl, " },\n" );
 
-	String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s4 ) { %s, %s, %s, %s }\n", typeName, zeroStr, zeroStr, zeroStr, oneStr );
-	String_Append(  sbImpl, "\t};\n" );
+		String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s ) { %s * ( quat%sx * quat%sy + quat%sz * quat%sw ),\n", vectorTypeName, twoStr, parmAccessStr, parmAccessStr, parmAccessStr, parmAccessStr );
+		String_Appendf( sbImpl, "\t\t\t%s - %s * ( quat%sx * quat%sx - quat%sz * quat%sz ),\n", oneStr, twoStr, parmAccessStr, parmAccessStr, parmAccessStr, parmAccessStr );
+		String_Appendf( sbImpl, "\t\t\t%s * ( quat%sy * quat%sz - quat%sx * quat%sw )", twoStr, parmAccessStr, parmAccessStr, parmAccessStr, parmAccessStr );
+		if ( matrixSize == GEN_COMPONENT_COUNT_MAX ) {
+			String_Appendf( sbImpl, ",\n\t\t\t%s", zeroStr );
+		}
+		String_Append( sbImpl, " },\n" );
 
-	String_Append( sbImpl, "}\n" );
-	String_Append( sbImpl, "\n" );
+		String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s ) { %s * ( quat%sx * quat%sz - quat%sy * quat%sw ),\n", vectorTypeName, twoStr, parmAccessStr, parmAccessStr, parmAccessStr, parmAccessStr );
+		String_Appendf( sbImpl, "\t\t\t%s * ( quat%sy * quat%sz + quat%sx * quat%sw ),\n", twoStr, parmAccessStr, parmAccessStr, parmAccessStr, parmAccessStr );
+		String_Appendf( sbImpl, "\t\t\t%s - %s * ( quat%sx * quat%sx - quat%sy * quat%sy )", oneStr, twoStr, parmAccessStr, parmAccessStr, parmAccessStr, parmAccessStr );
+		if ( matrixSize == GEN_COMPONENT_COUNT_MAX ) {
+			String_Appendf( sbImpl, ",\n\t\t\t%s },\n", zeroStr );
+			String_Appendf( sbImpl, "\t\tHLML_CONSTRUCT( %s ) { %s, %s, %s, %s", vectorTypeName, zeroStr, zeroStr, zeroStr, oneStr );
+		}
+
+		String_Append( sbImpl, " }\n" );
+		String_Append( sbImpl, "\t};\n" );
+		String_Append( sbImpl, "\n" );
+
+		String_Append( sbImpl, "\treturn mul( mat, quatMat );\n" );
+
+		String_Append( sbImpl, "}\n" );
+		String_Append( sbImpl, "\n" );
+	}
 }

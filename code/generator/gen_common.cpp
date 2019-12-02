@@ -504,7 +504,7 @@ void Gen_FunctionsQuaternion( const genLanguage_t language ) {
 		Gen_QuaternionRotationAxis( language, type, &contentFwdDec, &contentImpl );
 		Gen_QuaternionLerp( language, type, &contentFwdDec, &contentImpl );
 		Gen_QuaternionSlerp( language, type, &contentFwdDec, &contentImpl );
-		Gen_QuaternionToMatrix( language, type, &contentFwdDec, &contentImpl );
+		Gen_QuaternionRotateMatrix( language, type, &contentFwdDec, &contentImpl );
 
 		String_Append(&contentFwdDec, "\n");
 		printf("OK.\n");
