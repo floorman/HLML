@@ -522,6 +522,9 @@ void Gen_QuaternionRotateMatrix( const genLanguage_t language, const genType_t t
 		char vectorTypeName[GEN_STRING_LENGTH_TYPE_NAME];
 		Gen_GetFullTypeName(type, 1, matrixSize, vectorTypeName);
 
+		char mulFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
+		Gen_GetFuncNameMatrixMultiply( language, type, matrixSize, matrixSize, mulFuncStr );
+
 		String_Appendf( sbFwdDec, "inline %s %s( const %s mat, const %s quat );\n", matTypeName, quatToMatrixFuncStr, matParmTypeName, quatParmTypeName );
 		String_Append(  sbFwdDec, "\n" );
 
@@ -557,7 +560,7 @@ void Gen_QuaternionRotateMatrix( const genLanguage_t language, const genType_t t
 		String_Append( sbImpl, "\t};\n" );
 		String_Append( sbImpl, "\n" );
 
-		String_Append( sbImpl, "\treturn mul( mat, quatMat );\n" );
+		String_Appendf( sbImpl, "\treturn %s( mat, quatMat );\n", mulFuncStr );
 
 		String_Append( sbImpl, "}\n" );
 		String_Append( sbImpl, "\n" );

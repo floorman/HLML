@@ -257,7 +257,7 @@ inline float3x3 float4_quaternion_rotate_matrix( const float3x3* mat, const floa
 			1.0f - 2.0f * ( quat->x * quat->x - quat->y * quat->y ) }
 	};
 
-	return mul( mat, quatMat );
+	return float3x3_mulm( mat, quatMat );
 }
 
 inline float4x4 float4_quaternion_rotate_matrix( const float4x4* mat, const float4* quat )
@@ -278,7 +278,7 @@ inline float4x4 float4_quaternion_rotate_matrix( const float4x4* mat, const floa
 		HLML_CONSTRUCT( float4 ) { 0.0f, 0.0f, 0.0f, 1.0f }
 	};
 
-	return mul( mat, quatMat );
+	return float4x4_mulm( mat, quatMat );
 }
 
 inline double4 double4_quaternion_mulq( const double4* lhs, const double4* rhs )
@@ -396,7 +396,7 @@ inline double3x3 double4_quaternion_rotate_matrix( const double3x3* mat, const d
 			1.0 - 2.0 * ( quat->x * quat->x - quat->y * quat->y ) }
 	};
 
-	return mul( mat, quatMat );
+	return double3x3_mulm( mat, quatMat );
 }
 
 inline double4x4 double4_quaternion_rotate_matrix( const double4x4* mat, const double4* quat )
@@ -417,7 +417,7 @@ inline double4x4 double4_quaternion_rotate_matrix( const double4x4* mat, const d
 		HLML_CONSTRUCT( double4 ) { 0.0, 0.0, 0.0, 1.0 }
 	};
 
-	return mul( mat, quatMat );
+	return double4x4_mulm( mat, quatMat );
 }
 
 #if defined( __GNUC__ ) || defined( __clang__ )
