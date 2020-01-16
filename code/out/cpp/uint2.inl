@@ -44,12 +44,6 @@ SOFTWARE.
 #include <memory.h>
 #include <assert.h>
 
-uint2::uint2()
-{
-	x = 0;
-	y = 0;
-}
-
 uint2::uint2( const uint32_t x )
 {
 	this->x = this->y = x;
@@ -68,12 +62,12 @@ uint2::uint2( const uint2& other )
 
 uint2::uint2( const uint3& other )
 {
-	memcpy( data, other.data, sizeof( other.data ) );
+	memcpy( data, other.data, sizeof( data ) );
 }
 
 uint2::uint2( const uint4& other )
 {
-	memcpy( data, other.data, sizeof( other.data ) );
+	memcpy( data, other.data, sizeof( data ) );
 }
 
 uint2 uint2::operator=( const uint2& rhs )

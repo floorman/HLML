@@ -44,12 +44,6 @@ SOFTWARE.
 #include <memory.h>
 #include <assert.h>
 
-int2::int2()
-{
-	x = 0;
-	y = 0;
-}
-
 int2::int2( const int32_t x )
 {
 	this->x = this->y = x;
@@ -68,12 +62,12 @@ int2::int2( const int2& other )
 
 int2::int2( const int3& other )
 {
-	memcpy( data, other.data, sizeof( other.data ) );
+	memcpy( data, other.data, sizeof( data ) );
 }
 
 int2::int2( const int4& other )
 {
-	memcpy( data, other.data, sizeof( other.data ) );
+	memcpy( data, other.data, sizeof( data ) );
 }
 
 int2 int2::operator=( const int2& rhs )

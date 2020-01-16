@@ -46,13 +46,6 @@ SOFTWARE.
 #include <memory.h>
 #include <assert.h>
 
-float3::float3()
-{
-	x = 0.0f;
-	y = 0.0f;
-	z = 0.0f;
-}
-
 float3::float3( const float x )
 {
 	this->x = this->y = this->z = x;
@@ -77,7 +70,7 @@ float3::float3( const float3& other )
 
 float3::float3( const float4& other )
 {
-	memcpy( data, other.data, sizeof( other.data ) );
+	memcpy( data, other.data, sizeof( data ) );
 }
 
 float3 float3::operator=( const float2& rhs )

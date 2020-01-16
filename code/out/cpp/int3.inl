@@ -44,13 +44,6 @@ SOFTWARE.
 #include <memory.h>
 #include <assert.h>
 
-int3::int3()
-{
-	x = 0;
-	y = 0;
-	z = 0;
-}
-
 int3::int3( const int32_t x )
 {
 	this->x = this->y = this->z = x;
@@ -75,7 +68,7 @@ int3::int3( const int3& other )
 
 int3::int3( const int4& other )
 {
-	memcpy( data, other.data, sizeof( other.data ) );
+	memcpy( data, other.data, sizeof( data ) );
 }
 
 int3 int3::operator=( const int2& rhs )

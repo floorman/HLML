@@ -44,13 +44,6 @@ SOFTWARE.
 #include <memory.h>
 #include <assert.h>
 
-bool3::bool3()
-{
-	x = false;
-	y = false;
-	z = false;
-}
-
 bool3::bool3( const bool32_t x )
 {
 	this->x = this->y = this->z = x;
@@ -75,7 +68,7 @@ bool3::bool3( const bool3& other )
 
 bool3::bool3( const bool4& other )
 {
-	memcpy( data, other.data, sizeof( other.data ) );
+	memcpy( data, other.data, sizeof( data ) );
 }
 
 bool3 bool3::operator=( const bool2& rhs )

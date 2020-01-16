@@ -85,22 +85,40 @@ SOFTWARE.
 #include "hlml_functions_vector.h"
 
 // float4
+/// \relates float4
+/// \brief Performs a quaternion multiplication of the two given quaternions.
 inline float4 quaternion_mul( const float4& lhs, const float4& rhs );
 
+/// \relates float4
+/// \brief Multiplies the given quaternion by the given scalar.
 inline float4 quaternion_mul( const float4& lhs, const float rhs );
 
+/// \relates float4
+/// \brief Returns the length of the quaternion.
 inline float quaternion_length( const float4& quat );
 
+/// \relates float4
+/// \brief Normalizes the quaternion.
 inline float4 quaternion_normalize( const float4& quat );
 
+/// \relates float4
+/// \brief Returns the conjugate of the quaternion.
 inline float4 quaternion_conjugate( const float4& quat );
 
+/// \relates float4
+/// \brief Returns the inverse of the quaternion.
 inline float4 quaternion_inverse( const float4& quat );
 
-inline float3 quaternion_rotate_vector( const float3& vect, const float angle, const float3& axis );
+/// \relates float4
+/// \brief Performs a rotation on the quaternion by the given axis-angle and angle (in radians).
+inline float3 quaternion_rotate( const float3& vect, const float angle, const float3& axis );
 
+/// \relates float4
+/// \brief Returns a linearly interpolated float4 between types "a" and "b".
 inline float4 quaternion_lerp( const float4& lhs, const float4& rhs, const float percent );
 
+/// \relates float4
+/// \brief Returns a spherically interpolated float4 between "a" and "b".
 inline float4 quaternion_slerp( const float4& lhs, const float4& rhs, const float percent );
 
 inline float3x3 quaternion_rotate_matrix( const float3x3& mat, const float4& quat );
@@ -109,30 +127,45 @@ inline float4x4 quaternion_rotate_matrix( const float4x4& mat, const float4& qua
 
 
 // double4
+/// \relates double4
+/// \brief Performs a quaternion multiplication of the two given quaternions.
 inline double4 quaternion_mul( const double4& lhs, const double4& rhs );
 
+/// \relates double4
+/// \brief Multiplies the given quaternion by the given scalar.
 inline double4 quaternion_mul( const double4& lhs, const double rhs );
 
+/// \relates double4
+/// \brief Returns the length of the quaternion.
 inline double quaternion_length( const double4& quat );
 
+/// \relates double4
+/// \brief Normalizes the quaternion.
 inline double4 quaternion_normalize( const double4& quat );
 
+/// \relates double4
+/// \brief Returns the conjugate of the quaternion.
 inline double4 quaternion_conjugate( const double4& quat );
 
+/// \relates double4
+/// \brief Returns the inverse of the quaternion.
 inline double4 quaternion_inverse( const double4& quat );
 
-inline double3 quaternion_rotate_vector( const double3& vect, const double angle, const double3& axis );
+/// \relates double4
+/// \brief Performs a rotation on the quaternion by the given axis-angle and angle (in radians).
+inline double3 quaternion_rotate( const double3& vect, const double angle, const double3& axis );
 
+/// \relates double4
+/// \brief Returns a linearly interpolated double4 between types "a" and "b".
 inline double4 quaternion_lerp( const double4& lhs, const double4& rhs, const double percent );
 
+/// \relates double4
+/// \brief Returns a spherically interpolated double4 between "a" and "b".
 inline double4 quaternion_slerp( const double4& lhs, const double4& rhs, const double percent );
 
 inline double3x3 quaternion_rotate_matrix( const double3x3& mat, const double4& quat );
 
 inline double4x4 quaternion_rotate_matrix( const double4x4& mat, const double4& quat );
-
-
-#ifdef HLML_IMPLEMENTATION
 
 #pragma once
 
@@ -180,7 +213,7 @@ inline float4 quaternion_normalize( const float4& quat )
 
 inline float4 quaternion_conjugate( const float4& quat )
 {
-	return HLML_CONSTRUCT (float4) { ( quat.x * ( -1 ) ), ( quat.y * ( -1 ) ), ( quat.z * ( -1 ) ), quat.w };
+	return HLML_CONSTRUCT( float4 ) { ( quat.x * ( -1 ) ), ( quat.y * ( -1 ) ), ( quat.z * ( -1 ) ), quat.w };
 }
 
 inline float4 quaternion_inverse( const float4& quat )
@@ -191,7 +224,7 @@ inline float4 quaternion_inverse( const float4& quat )
 	float4 conjugate = quaternion_conjugate( quat );
 	float scalar = conjugate.w * magnitude;
 	float3 imaginary = HLML_CONSTRUCT( float3 ) { conjugate.x * magnitude, conjugate.y * magnitude, conjugate.z * magnitude };
-	return HLML_CONSTRUCT (float4) { imaginary.x, imaginary.y, imaginary.z, scalar };
+	return HLML_CONSTRUCT( float4 ) { imaginary.x, imaginary.y, imaginary.z, scalar };
 }
 
 inline float3 quaternion_rotate_vector( const float3& vect, const float angle, const float3& axis )
@@ -316,7 +349,7 @@ inline double4 quaternion_normalize( const double4& quat )
 
 inline double4 quaternion_conjugate( const double4& quat )
 {
-	return HLML_CONSTRUCT (double4) { ( quat.x * ( -1 ) ), ( quat.y * ( -1 ) ), ( quat.z * ( -1 ) ), quat.w };
+	return HLML_CONSTRUCT( double4 ) { ( quat.x * ( -1 ) ), ( quat.y * ( -1 ) ), ( quat.z * ( -1 ) ), quat.w };
 }
 
 inline double4 quaternion_inverse( const double4& quat )
@@ -327,7 +360,7 @@ inline double4 quaternion_inverse( const double4& quat )
 	double4 conjugate = quaternion_conjugate( quat );
 	double scalar = conjugate.w * magnitude;
 	double3 imaginary = HLML_CONSTRUCT( double3 ) { conjugate.x * magnitude, conjugate.y * magnitude, conjugate.z * magnitude };
-	return HLML_CONSTRUCT (double4) { imaginary.x, imaginary.y, imaginary.z, scalar };
+	return HLML_CONSTRUCT( double4 ) { imaginary.x, imaginary.y, imaginary.z, scalar };
 }
 
 inline double3 quaternion_rotate_vector( const double3& vect, const double angle, const double3& axis )
@@ -417,4 +450,3 @@ inline double4x4 quaternion_rotate_matrix( const double4x4& mat, const double4& 
 #if defined( __GNUC__ ) || defined( __clang__ )
 #pragma GCC diagnostic pop
 #endif
-#endif // HLML_IMPLEMENTATION
