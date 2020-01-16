@@ -111,7 +111,7 @@ inline float4 quaternion_inverse( const float4& quat );
 
 /// \relates float4
 /// \brief Performs a rotation on the quaternion by the given axis-angle and angle (in radians).
-inline float3 quaternion_rotate( const float3& vect, const float angle, const float3& axis );
+inline float3 quaternion_rotate_vector( const float3& vect, const float angle, const float3& axis );
 
 /// \relates float4
 /// \brief Returns a linearly interpolated float4 between types "a" and "b".
@@ -153,7 +153,7 @@ inline double4 quaternion_inverse( const double4& quat );
 
 /// \relates double4
 /// \brief Performs a rotation on the quaternion by the given axis-angle and angle (in radians).
-inline double3 quaternion_rotate( const double3& vect, const double angle, const double3& axis );
+inline double3 quaternion_rotate_vector( const double3& vect, const double angle, const double3& axis );
 
 /// \relates double4
 /// \brief Returns a linearly interpolated double4 between types "a" and "b".
@@ -166,6 +166,8 @@ inline double4 quaternion_slerp( const double4& lhs, const double4& rhs, const d
 inline double3x3 quaternion_rotate_matrix( const double3x3& mat, const double4& quat );
 
 inline double4x4 quaternion_rotate_matrix( const double4x4& mat, const double4& quat );
+
+
 
 #pragma once
 
@@ -276,15 +278,15 @@ inline float4 quaternion_slerp( const float4& lhs, const float4& rhs, const floa
 inline float3x3 quaternion_rotate_matrix( const float3x3& mat, const float4& quat )
 {
 	float3x3 quatMat = HLML_CONSTRUCT( float3x3 ) {
-		HLML_CONSTRUCT( float3 ) { 1.0f - 2.0f * ( quat.y * quat.y - quat.z * quat.z ),
-			2.0f * ( quat.x * quat.y - quat.z * quat.w ),
-			2.0f * ( quat.x * quat.z + quat.y * quat.w ) },
-		HLML_CONSTRUCT( float3 ) { 2.0f * ( quat.x * quat.y + quat.z * quat.w ),
-			1.0f - 2.0f * ( quat.x * quat.x - quat.z * quat.z ),
-			2.0f * ( quat.y * quat.z - quat.x * quat.w ) },
-		HLML_CONSTRUCT( float3 ) { 2.0f * ( quat.x * quat.z - quat.y * quat.w ),
-			2.0f * ( quat.y * quat.z + quat.x * quat.w ),
-			1.0f - 2.0f * ( quat.x * quat.x - quat.y * quat.y ) }
+		HLML_CONSTRUCT( float3 ) { 1.0f - 2.0f * quat.y * quat.y - 2.0f * quat.z * quat.z,
+			2.0f * quat.x * quat.y - 2.0f * quat.z * quat.w,
+			2.0f * quat.x * quat.z + 2.0f * quat.y * quat.w },
+		HLML_CONSTRUCT( float3 ) { 2.0f * quat.x * quat.y + 2.0f * quat.z * quat.w,
+			1.0f - 2.0f * quat.x * quat.x - 2.0f * quat.z * quat.z,
+			2.0f * quat.y * quat.z - 2.0f * quat.x * quat.w },
+		HLML_CONSTRUCT( float3 ) { 2.0f * quat.x * quat.z - 2.0f * quat.y * quat.w,
+			2.0f * quat.y * quat.z + 2.0f * quat.x * quat.w,
+			1.0f - 2.0f * quat.x * quat.x - 2.0f * quat.y * quat.y }
 	};
 
 	return mul( mat, quatMat );
@@ -293,17 +295,17 @@ inline float3x3 quaternion_rotate_matrix( const float3x3& mat, const float4& qua
 inline float4x4 quaternion_rotate_matrix( const float4x4& mat, const float4& quat )
 {
 	float4x4 quatMat = HLML_CONSTRUCT( float4x4 ) {
-		HLML_CONSTRUCT( float4 ) { 1.0f - 2.0f * ( quat.y * quat.y - quat.z * quat.z ),
-			2.0f * ( quat.x * quat.y - quat.z * quat.w ),
-			2.0f * ( quat.x * quat.z + quat.y * quat.w ),
+		HLML_CONSTRUCT( float4 ) { 1.0f - 2.0f * quat.y * quat.y - 2.0f * quat.z * quat.z,
+			2.0f * quat.x * quat.y - 2.0f * quat.z * quat.w,
+			2.0f * quat.x * quat.z + 2.0f * quat.y * quat.w,
 			0.0f },
-		HLML_CONSTRUCT( float4 ) { 2.0f * ( quat.x * quat.y + quat.z * quat.w ),
-			1.0f - 2.0f * ( quat.x * quat.x - quat.z * quat.z ),
-			2.0f * ( quat.y * quat.z - quat.x * quat.w ),
+		HLML_CONSTRUCT( float4 ) { 2.0f * quat.x * quat.y + 2.0f * quat.z * quat.w,
+			1.0f - 2.0f * quat.x * quat.x - 2.0f * quat.z * quat.z,
+			2.0f * quat.y * quat.z - 2.0f * quat.x * quat.w,
 			0.0f },
-		HLML_CONSTRUCT( float4 ) { 2.0f * ( quat.x * quat.z - quat.y * quat.w ),
-			2.0f * ( quat.y * quat.z + quat.x * quat.w ),
-			1.0f - 2.0f * ( quat.x * quat.x - quat.y * quat.y ),
+		HLML_CONSTRUCT( float4 ) { 2.0f * quat.x * quat.z - 2.0f * quat.y * quat.w,
+			2.0f * quat.y * quat.z + 2.0f * quat.x * quat.w,
+			1.0f - 2.0f * quat.x * quat.x - 2.0f * quat.y * quat.y,
 			0.0f },
 		HLML_CONSTRUCT( float4 ) { 0.0f, 0.0f, 0.0f, 1.0f }
 	};
@@ -412,15 +414,15 @@ inline double4 quaternion_slerp( const double4& lhs, const double4& rhs, const d
 inline double3x3 quaternion_rotate_matrix( const double3x3& mat, const double4& quat )
 {
 	double3x3 quatMat = HLML_CONSTRUCT( double3x3 ) {
-		HLML_CONSTRUCT( double3 ) { 1.0 - 2.0 * ( quat.y * quat.y - quat.z * quat.z ),
-			2.0 * ( quat.x * quat.y - quat.z * quat.w ),
-			2.0 * ( quat.x * quat.z + quat.y * quat.w ) },
-		HLML_CONSTRUCT( double3 ) { 2.0 * ( quat.x * quat.y + quat.z * quat.w ),
-			1.0 - 2.0 * ( quat.x * quat.x - quat.z * quat.z ),
-			2.0 * ( quat.y * quat.z - quat.x * quat.w ) },
-		HLML_CONSTRUCT( double3 ) { 2.0 * ( quat.x * quat.z - quat.y * quat.w ),
-			2.0 * ( quat.y * quat.z + quat.x * quat.w ),
-			1.0 - 2.0 * ( quat.x * quat.x - quat.y * quat.y ) }
+		HLML_CONSTRUCT( double3 ) { 1.0 - 2.0 * quat.y * quat.y - 2.0 * quat.z * quat.z,
+			2.0 * quat.x * quat.y - 2.0 * quat.z * quat.w,
+			2.0 * quat.x * quat.z + 2.0 * quat.y * quat.w },
+		HLML_CONSTRUCT( double3 ) { 2.0 * quat.x * quat.y + 2.0 * quat.z * quat.w,
+			1.0 - 2.0 * quat.x * quat.x - 2.0 * quat.z * quat.z,
+			2.0 * quat.y * quat.z - 2.0 * quat.x * quat.w },
+		HLML_CONSTRUCT( double3 ) { 2.0 * quat.x * quat.z - 2.0 * quat.y * quat.w,
+			2.0 * quat.y * quat.z + 2.0 * quat.x * quat.w,
+			1.0 - 2.0 * quat.x * quat.x - 2.0 * quat.y * quat.y }
 	};
 
 	return mul( mat, quatMat );
@@ -429,17 +431,17 @@ inline double3x3 quaternion_rotate_matrix( const double3x3& mat, const double4& 
 inline double4x4 quaternion_rotate_matrix( const double4x4& mat, const double4& quat )
 {
 	double4x4 quatMat = HLML_CONSTRUCT( double4x4 ) {
-		HLML_CONSTRUCT( double4 ) { 1.0 - 2.0 * ( quat.y * quat.y - quat.z * quat.z ),
-			2.0 * ( quat.x * quat.y - quat.z * quat.w ),
-			2.0 * ( quat.x * quat.z + quat.y * quat.w ),
+		HLML_CONSTRUCT( double4 ) { 1.0 - 2.0 * quat.y * quat.y - 2.0 * quat.z * quat.z,
+			2.0 * quat.x * quat.y - 2.0 * quat.z * quat.w,
+			2.0 * quat.x * quat.z + 2.0 * quat.y * quat.w,
 			0.0 },
-		HLML_CONSTRUCT( double4 ) { 2.0 * ( quat.x * quat.y + quat.z * quat.w ),
-			1.0 - 2.0 * ( quat.x * quat.x - quat.z * quat.z ),
-			2.0 * ( quat.y * quat.z - quat.x * quat.w ),
+		HLML_CONSTRUCT( double4 ) { 2.0 * quat.x * quat.y + 2.0 * quat.z * quat.w,
+			1.0 - 2.0 * quat.x * quat.x - 2.0 * quat.z * quat.z,
+			2.0 * quat.y * quat.z - 2.0 * quat.x * quat.w,
 			0.0 },
-		HLML_CONSTRUCT( double4 ) { 2.0 * ( quat.x * quat.z - quat.y * quat.w ),
-			2.0 * ( quat.y * quat.z + quat.x * quat.w ),
-			1.0 - 2.0 * ( quat.x * quat.x - quat.y * quat.y ),
+		HLML_CONSTRUCT( double4 ) { 2.0 * quat.x * quat.z - 2.0 * quat.y * quat.w,
+			2.0 * quat.y * quat.z + 2.0 * quat.x * quat.w,
+			1.0 - 2.0 * quat.x * quat.x - 2.0 * quat.y * quat.y,
 			0.0 },
 		HLML_CONSTRUCT( double4 ) { 0.0, 0.0, 0.0, 1.0 }
 	};
