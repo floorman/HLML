@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_int4 )
+TEMPER_TEST( TestAssignment_int4, void )
 {
 	int4 vec;
 
@@ -58,7 +58,7 @@ TEMPER_TEST( TestAssignment_int4 )
 }
 
 // also tests equality operators
-TEMPER_TEST( TestCtor_int4 )
+TEMPER_TEST( TestCtor_int4, void )
 {
 	int4 vec;
 
@@ -94,7 +94,7 @@ TEMPER_TEST( TestCtor_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArray_int4 )
+TEMPER_TEST( TestArray_int4, void )
 {
 	int4 a = int4( 0, 1, 2, 3 );
 
@@ -106,7 +106,7 @@ TEMPER_TEST( TestArray_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIncrement_int4 )
+TEMPER_TEST( TestIncrement_int4, void )
 {
 	int4 vec;
 
@@ -123,7 +123,7 @@ TEMPER_TEST( TestIncrement_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDecrement_int4 )
+TEMPER_TEST( TestDecrement_int4, void )
 {
 	int4 vec;
 
@@ -140,7 +140,7 @@ TEMPER_TEST( TestDecrement_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticAddition_int4 )
+TEMPER_TEST( TestArithmeticAddition_int4, void )
 {
 	int4 a = int4( 6 );
 	int4 b = int4( 2, 3, 4, 5 );
@@ -152,7 +152,7 @@ TEMPER_TEST( TestArithmeticAddition_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticSubtraction_int4 )
+TEMPER_TEST( TestArithmeticSubtraction_int4, void )
 {
 	int4 a = int4( 6 );
 	int4 b = int4( 2, 3, 4, 5 );
@@ -164,7 +164,7 @@ TEMPER_TEST( TestArithmeticSubtraction_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticMultiplication_int4 )
+TEMPER_TEST( TestArithmeticMultiplication_int4, void )
 {
 	int4 a = int4( 6 );
 	int4 b = int4( 2, 3, 4, 5 );
@@ -176,7 +176,7 @@ TEMPER_TEST( TestArithmeticMultiplication_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticDivision_int4 )
+TEMPER_TEST( TestArithmeticDivision_int4, void )
 {
 	int4 a = int4( 6 );
 	int4 b = int4( 2, 2, 3, 6 );
@@ -188,7 +188,7 @@ TEMPER_TEST( TestArithmeticDivision_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_int4 )
+TEMPER_TEST( TestRelational_int4, void )
 {
 	bool4 allTrue = bool4( true );
 
@@ -248,7 +248,7 @@ TEMPER_TEST( TestRelational_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_And_int4 )
+TEMPER_TEST( TestBitwise_And_int4, void )
 {
 	int4 a  = int4( 21, 21, 21, 21 );
 	int4 b  = int4( 7, 7, 7, 7 );
@@ -260,7 +260,7 @@ TEMPER_TEST( TestBitwise_And_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Or_int4 )
+TEMPER_TEST( TestBitwise_Or_int4, void )
 {
 	int4 a  = int4( 21, 21, 21, 21 );
 	int4 b  = int4( 7, 7, 7, 7 );
@@ -272,7 +272,7 @@ TEMPER_TEST( TestBitwise_Or_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Xor_int4 )
+TEMPER_TEST( TestBitwise_Xor_int4, void )
 {
 	int4 a  = int4( 21, 21, 21, 21 );
 	int4 b  = int4( 7, 7, 7, 7 );
@@ -284,7 +284,7 @@ TEMPER_TEST( TestBitwise_Xor_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftLeft_int4 )
+TEMPER_TEST( TestBitwise_ShiftLeft_int4, void )
 {
 	int4 a  = int4( 1, 1, 1, 1 );
 	int4 b  = int4( 2, 2, 2, 2 );
@@ -296,7 +296,7 @@ TEMPER_TEST( TestBitwise_ShiftLeft_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftRight_int4 )
+TEMPER_TEST( TestBitwise_ShiftRight_int4, void )
 {
 	int4 a  = int4( 16, 16, 16, 16 );
 	int4 b  = int4( 4, 4, 4, 4 );
@@ -308,7 +308,7 @@ TEMPER_TEST( TestBitwise_ShiftRight_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Unary_int4 )
+TEMPER_TEST( TestBitwise_Unary_int4, void )
 {
 	int4 a = int4( 0, 0, 0, 0 );
 
@@ -319,7 +319,7 @@ TEMPER_TEST( TestBitwise_Unary_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLength_Scalar_int4 )
+TEMPER_TEST( TestLength_Scalar_int4, void )
 {
 	int4 vec = int4( 2 );
 
@@ -329,7 +329,7 @@ TEMPER_TEST( TestLength_Scalar_int4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDot_Scalar_int4 )
+TEMPER_TEST( TestDot_Scalar_int4, void )
 {
 	int4 a = int4( 0, 1, 0, 0 );
 	int4 b = int4( 0, -1, 0, 0 );

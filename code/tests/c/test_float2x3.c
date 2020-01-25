@@ -49,7 +49,7 @@ static float2x2 g_matrixMulAnswer_float2x3 = (float2x2) {
 };
 
 
-TEMPER_TEST( TestAssignment_float2x3 )
+TEMPER_TEST( TestAssignment_float2x3, void )
 {
 	float2x3 mat;
 
@@ -66,7 +66,7 @@ TEMPER_TEST( TestAssignment_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_float2x3 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_float2x3, void )
 {
 	float2x3 answer = (float2x3) {
 		7.000000f, 7.000000f, 7.000000f,
@@ -90,7 +90,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_float2x3 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_float2x3, void )
 {
 	float2x3 answer = (float2x3) {
 		5.000000f, 5.000000f, 5.000000f,
@@ -114,7 +114,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_float2x3 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_float2x3, void )
 {
 	float2x3 answer = (float2x3) {
 		6.000000f, 6.000000f, 6.000000f,
@@ -138,7 +138,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_float2x3 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_float2x3, void )
 {
 	float2x3 answer = (float2x3) {
 		6.000000f, 6.000000f, 6.000000f,
@@ -162,7 +162,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_SSE_Addition_float2x3 )
+TEMPER_TEST( TestComponentWiseArithmetic_SSE_Addition_float2x3, void )
 {
 	float a00[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
 	float a01[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
@@ -238,7 +238,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_SSE_Addition_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_SSE_Subtraction_float2x3 )
+TEMPER_TEST( TestComponentWiseArithmetic_SSE_Subtraction_float2x3, void )
 {
 	float a00[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
 	float a01[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
@@ -314,7 +314,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_SSE_Subtraction_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_SSE_Multiplication_float2x3 )
+TEMPER_TEST( TestComponentWiseArithmetic_SSE_Multiplication_float2x3, void )
 {
 	float a00[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
 	float a01[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
@@ -390,7 +390,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_SSE_Multiplication_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_SSE_Division_float2x3 )
+TEMPER_TEST( TestComponentWiseArithmetic_SSE_Division_float2x3, void )
 {
 	float a00[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
 	float a01[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
@@ -466,7 +466,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_SSE_Division_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMultiplyMatrix_Scalar_float2x3 )
+TEMPER_TEST( TestMultiplyMatrix_Scalar_float2x3, void )
 {
 	float2x2 answer = g_matrixMulAnswer_float2x3;
 
@@ -479,7 +479,7 @@ TEMPER_TEST( TestMultiplyMatrix_Scalar_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMultiplyMatrix_SSE_float2x3 )
+TEMPER_TEST( TestMultiplyMatrix_SSE_float2x3, void )
 {
 	float a00[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
 	float a01[4] =	{ 6.000000f, 6.000000f, 6.000000f, 6.000000f };
@@ -544,7 +544,7 @@ TEMPER_TEST( TestMultiplyMatrix_SSE_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_float2x3 )
+TEMPER_TEST( TestRelational_float2x3, void )
 {
 	bool2x3 allTrue = { 		true, true, true,
 		true, true, true
@@ -614,7 +614,7 @@ TEMPER_TEST( TestRelational_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIdentity_Scalar_float2x3 )
+TEMPER_TEST( TestIdentity_Scalar_float2x3, void )
 {
 	float2x3 id;
 	id.rows[0] = (float3) { 1.000000f, 0.000000f, 0.000000f };
@@ -627,7 +627,7 @@ TEMPER_TEST( TestIdentity_Scalar_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIdentity_SSE_float2x3 )
+TEMPER_TEST( TestIdentity_SSE_float2x3, void )
 {
 	float2x3_sse_t matSSE;
 	float2x3_identity_sse( &matSSE );
@@ -672,7 +672,7 @@ TEMPER_TEST( TestIdentity_SSE_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranspose_Scalar_float2x3 )
+TEMPER_TEST( TestTranspose_Scalar_float2x3, void )
 {
 	float3x2 answerTransposed = (float3x2) {
 		0.000000f, 4.000000f,
@@ -691,7 +691,7 @@ TEMPER_TEST( TestTranspose_Scalar_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranspose_SSE_float2x3 )
+TEMPER_TEST( TestTranspose_SSE_float2x3, void )
 {
 	float3x2_sse_t results;
 	float2x3_sse_t in;
@@ -748,7 +748,7 @@ TEMPER_TEST( TestTranspose_SSE_float2x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestScale_Scalar_float2x3 )
+TEMPER_TEST( TestScale_Scalar_float2x3, void )
 {
 	float2 scaleVec = { 2.000000f, 2.000000f };
 	float2x3 mat;

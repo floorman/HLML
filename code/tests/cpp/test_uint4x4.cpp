@@ -51,7 +51,7 @@ static uint4x4 g_matrixMulAnswer_uint4x4 = uint4x4( 		72U, 72U, 72U, 72U,
  );
 
 
-TEMPER_TEST( TestAssignment_uint4x4 )
+TEMPER_TEST( TestAssignment_uint4x4, void )
 {
 	uint4x4 mat;
 
@@ -80,7 +80,7 @@ TEMPER_TEST( TestAssignment_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestCtor_uint4x4 )
+TEMPER_TEST( TestCtor_uint4x4, void )
 {
 	uint4x4 mat;
 
@@ -118,7 +118,7 @@ TEMPER_TEST( TestCtor_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArray_uint4x4 )
+TEMPER_TEST( TestArray_uint4x4, void )
 {
 	uint4x4 mat;
 	identity( mat );
@@ -131,7 +131,7 @@ TEMPER_TEST( TestArray_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIncrement_uint4x4 )
+TEMPER_TEST( TestIncrement_uint4x4, void )
 {
 	uint4x4 answer;
 	uint4x4 mat;
@@ -175,7 +175,7 @@ TEMPER_TEST( TestIncrement_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDecrement_uint4x4 )
+TEMPER_TEST( TestDecrement_uint4x4, void )
 {
 	uint4x4 answer;
 	uint4x4 mat;
@@ -219,7 +219,7 @@ TEMPER_TEST( TestDecrement_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_uint4x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		7U, 7U, 7U, 7U,
@@ -249,7 +249,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_uint4x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		5U, 5U, 5U, 5U,
@@ -279,7 +279,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_uint4x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		6U, 6U, 6U, 6U,
@@ -309,7 +309,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_uint4x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		6U, 6U, 6U, 6U,
@@ -339,7 +339,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMultiplyMatrix_Scalar_uint4x4 )
+TEMPER_TEST( TestMultiplyMatrix_Scalar_uint4x4, void )
 {
 	uint4x4 answer = g_matrixMulAnswer_uint4x4;
 
@@ -352,7 +352,7 @@ TEMPER_TEST( TestMultiplyMatrix_Scalar_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMultiplyVector_uint4x4 )
+TEMPER_TEST( TestMultiplyVector_uint4x4, void )
 {
 	uint4 answerVec = { 28U, 68U, 108U, 148U };
 
@@ -370,7 +370,7 @@ TEMPER_TEST( TestMultiplyVector_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_uint4x4 )
+TEMPER_TEST( TestRelational_uint4x4, void )
 {
 	bool4x4 allTrue = { 		true, true, true, true,
 		true, true, true, true,
@@ -450,7 +450,7 @@ TEMPER_TEST( TestRelational_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_And_uint4x4 )
+TEMPER_TEST( TestBitwise_And_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		5U, 5U, 5U, 5U,
@@ -478,7 +478,7 @@ TEMPER_TEST( TestBitwise_And_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Or_uint4x4 )
+TEMPER_TEST( TestBitwise_Or_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		23U, 23U, 23U, 23U,
@@ -506,7 +506,7 @@ TEMPER_TEST( TestBitwise_Or_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Xor_uint4x4 )
+TEMPER_TEST( TestBitwise_Xor_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		18U, 18U, 18U, 18U,
@@ -534,7 +534,7 @@ TEMPER_TEST( TestBitwise_Xor_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftLeft_uint4x4 )
+TEMPER_TEST( TestBitwise_ShiftLeft_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		4U, 4U, 4U, 4U,
@@ -562,7 +562,7 @@ TEMPER_TEST( TestBitwise_ShiftLeft_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftRight_uint4x4 )
+TEMPER_TEST( TestBitwise_ShiftRight_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		1U, 1U, 1U, 1U,
@@ -590,7 +590,7 @@ TEMPER_TEST( TestBitwise_ShiftRight_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Unary_uint4x4 )
+TEMPER_TEST( TestBitwise_Unary_uint4x4, void )
 {
 	uint4x4 answer = uint4x4(
 		(uint32_t) -1, (uint32_t) -1, (uint32_t) -1, (uint32_t) -1,
@@ -612,7 +612,7 @@ TEMPER_TEST( TestBitwise_Unary_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIdentity_Scalar_uint4x4 )
+TEMPER_TEST( TestIdentity_Scalar_uint4x4, void )
 {
 	uint4x4 id;
 	id[0] = uint4( 1U, 0U, 0U, 0U );
@@ -628,7 +628,7 @@ TEMPER_TEST( TestIdentity_Scalar_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranspose_Scalar_uint4x4 )
+TEMPER_TEST( TestTranspose_Scalar_uint4x4, void )
 {
 	uint4x4 answerTransposed = uint4x4(
 		0U, 4U, 8U, 12U,
@@ -650,7 +650,7 @@ TEMPER_TEST( TestTranspose_Scalar_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranslate_Scalar_uint4x4 )
+TEMPER_TEST( TestTranslate_Scalar_uint4x4, void )
 {
 	uint4x4 mat;
 	identity( mat );
@@ -666,7 +666,7 @@ TEMPER_TEST( TestTranslate_Scalar_uint4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestScale_Scalar_uint4x4 )
+TEMPER_TEST( TestScale_Scalar_uint4x4, void )
 {
 	uint3 scaleVec = { 2U, 2U, 2U };
 	uint4x4 mat;

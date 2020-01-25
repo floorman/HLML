@@ -51,7 +51,7 @@ static double4x4 g_matrixMulAnswer_double4x4 = double4x4( 		72.000000, 72.000000
  );
 
 
-TEMPER_TEST( TestAssignment_double4x4 )
+TEMPER_TEST( TestAssignment_double4x4, void )
 {
 	double4x4 mat;
 
@@ -80,7 +80,7 @@ TEMPER_TEST( TestAssignment_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestCtor_double4x4 )
+TEMPER_TEST( TestCtor_double4x4, void )
 {
 	double4x4 mat;
 
@@ -118,7 +118,7 @@ TEMPER_TEST( TestCtor_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArray_double4x4 )
+TEMPER_TEST( TestArray_double4x4, void )
 {
 	double4x4 mat;
 	identity( mat );
@@ -131,7 +131,7 @@ TEMPER_TEST( TestArray_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIncrement_double4x4 )
+TEMPER_TEST( TestIncrement_double4x4, void )
 {
 	double4x4 answer;
 	double4x4 mat;
@@ -175,7 +175,7 @@ TEMPER_TEST( TestIncrement_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDecrement_double4x4 )
+TEMPER_TEST( TestDecrement_double4x4, void )
 {
 	double4x4 answer;
 	double4x4 mat;
@@ -219,7 +219,7 @@ TEMPER_TEST( TestDecrement_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_double4x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_double4x4, void )
 {
 	double4x4 answer = double4x4(
 		7.000000, 7.000000, 7.000000, 7.000000,
@@ -249,7 +249,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_double4x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_double4x4, void )
 {
 	double4x4 answer = double4x4(
 		5.000000, 5.000000, 5.000000, 5.000000,
@@ -279,7 +279,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_double4x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_double4x4, void )
 {
 	double4x4 answer = double4x4(
 		6.000000, 6.000000, 6.000000, 6.000000,
@@ -309,7 +309,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_double4x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_double4x4, void )
 {
 	double4x4 answer = double4x4(
 		6.000000, 6.000000, 6.000000, 6.000000,
@@ -339,7 +339,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMultiplyMatrix_Scalar_double4x4 )
+TEMPER_TEST( TestMultiplyMatrix_Scalar_double4x4, void )
 {
 	double4x4 answer = g_matrixMulAnswer_double4x4;
 
@@ -352,7 +352,7 @@ TEMPER_TEST( TestMultiplyMatrix_Scalar_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMultiplyVector_double4x4 )
+TEMPER_TEST( TestMultiplyVector_double4x4, void )
 {
 	double4 answerVec = { 28.000000, 68.000000, 108.000000, 148.000000 };
 
@@ -370,7 +370,7 @@ TEMPER_TEST( TestMultiplyVector_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDivideMatrix_double4x4 )
+TEMPER_TEST( TestDivideMatrix_double4x4, void )
 {
 	double4x4 answer = double4x4( 		1.000000, 0.0, 0.0, 0.0,
 		0.0, 1.000000, 0.0, 0.0,
@@ -395,7 +395,7 @@ TEMPER_TEST( TestDivideMatrix_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_double4x4 )
+TEMPER_TEST( TestRelational_double4x4, void )
 {
 	bool4x4 allTrue = { 		true, true, true, true,
 		true, true, true, true,
@@ -475,7 +475,7 @@ TEMPER_TEST( TestRelational_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIdentity_Scalar_double4x4 )
+TEMPER_TEST( TestIdentity_Scalar_double4x4, void )
 {
 	double4x4 id;
 	id[0] = double4( 1.000000, 0.000000, 0.000000, 0.000000 );
@@ -491,7 +491,7 @@ TEMPER_TEST( TestIdentity_Scalar_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranspose_Scalar_double4x4 )
+TEMPER_TEST( TestTranspose_Scalar_double4x4, void )
 {
 	double4x4 answerTransposed = double4x4(
 		0.000000, 4.000000, 8.000000, 12.000000,
@@ -513,7 +513,7 @@ TEMPER_TEST( TestTranspose_Scalar_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDeterminant_Scalar_double4x4 )
+TEMPER_TEST( TestDeterminant_Scalar_double4x4, void )
 {
 	double4x4 mat = double4x4(
 		6.000000, 2.000000, 3.000000, 4.000000,
@@ -529,7 +529,7 @@ TEMPER_TEST( TestDeterminant_Scalar_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestInverse_Scalar_double4x4 )
+TEMPER_TEST( TestInverse_Scalar_double4x4, void )
 {
 	double4x4 id;
 	identity( id );
@@ -547,7 +547,7 @@ TEMPER_TEST( TestInverse_Scalar_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranslate_Scalar_double4x4 )
+TEMPER_TEST( TestTranslate_Scalar_double4x4, void )
 {
 	double4x4 mat;
 	identity( mat );
@@ -563,7 +563,7 @@ TEMPER_TEST( TestTranslate_Scalar_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRotate_double4x4 )
+TEMPER_TEST( TestRotate_double4x4, void )
 {
 	double4x4 mat;
 	identity( mat );
@@ -597,7 +597,7 @@ TEMPER_TEST( TestRotate_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestScale_Scalar_double4x4 )
+TEMPER_TEST( TestScale_Scalar_double4x4, void )
 {
 	double3 scaleVec = { 2.000000, 2.000000, 2.000000 };
 	double4x4 mat;
@@ -612,7 +612,7 @@ TEMPER_TEST( TestScale_Scalar_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestOrtho_double4x4 )
+TEMPER_TEST( TestOrtho_double4x4, void )
 {
 	double4x4 answerOrtho_LH_ZO = double4x4(
 		0.112500, 0.000000, 0.000000, 0.000000,
@@ -662,7 +662,7 @@ TEMPER_TEST( TestOrtho_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestPerspective_double4x4 )
+TEMPER_TEST( TestPerspective_double4x4, void )
 {
 	double4x4 answerPerspective_LH_ZO = double4x4(
 		0.347270, 0.000000, 0.000000, 0.000000,
@@ -704,7 +704,7 @@ TEMPER_TEST( TestPerspective_double4x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLookAt_double4x4 )
+TEMPER_TEST( TestLookAt_double4x4, void )
 {
 	double4x4 answerLookAt_LH = double4x4(
 		0.707107, 0.000000, -0.707107, 0.000000,

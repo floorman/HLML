@@ -52,7 +52,7 @@ static int3x3 g_matrixMulAnswer_int3x4 = (int3x3) {
 };
 
 
-TEMPER_TEST( TestAssignment_int3x4 )
+TEMPER_TEST( TestAssignment_int3x4, void )
 {
 	int3x4 mat;
 
@@ -76,7 +76,7 @@ TEMPER_TEST( TestAssignment_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_int3x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_int3x4, void )
 {
 	int3x4 answer = (int3x4) {
 		7, 7, 7, 7,
@@ -103,7 +103,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_int3x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_int3x4, void )
 {
 	int3x4 answer = (int3x4) {
 		5, 5, 5, 5,
@@ -130,7 +130,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_int3x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_int3x4, void )
 {
 	int3x4 answer = (int3x4) {
 		6, 6, 6, 6,
@@ -157,7 +157,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_int3x4 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_int3x4, void )
 {
 	int3x4 answer = (int3x4) {
 		6, 6, 6, 6,
@@ -184,7 +184,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMultiplyMatrix_Scalar_int3x4 )
+TEMPER_TEST( TestMultiplyMatrix_Scalar_int3x4, void )
 {
 	int3x3 answer = g_matrixMulAnswer_int3x4;
 
@@ -197,7 +197,7 @@ TEMPER_TEST( TestMultiplyMatrix_Scalar_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_int3x4 )
+TEMPER_TEST( TestRelational_int3x4, void )
 {
 	bool3x4 allTrue = { 		true, true, true, true,
 		true, true, true, true,
@@ -272,7 +272,7 @@ TEMPER_TEST( TestRelational_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_And_int3x4 )
+TEMPER_TEST( TestBitwise_And_int3x4, void )
 {
 	int3x4 answer  = (int3x4) {
 		5, 5, 5, 5,
@@ -296,7 +296,7 @@ TEMPER_TEST( TestBitwise_And_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Or_int3x4 )
+TEMPER_TEST( TestBitwise_Or_int3x4, void )
 {
 	int3x4 answer  = (int3x4) {
 		23, 23, 23, 23,
@@ -320,7 +320,7 @@ TEMPER_TEST( TestBitwise_Or_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Xor_int3x4 )
+TEMPER_TEST( TestBitwise_Xor_int3x4, void )
 {
 	int3x4 answer  = (int3x4) {
 		18, 18, 18, 18,
@@ -344,7 +344,7 @@ TEMPER_TEST( TestBitwise_Xor_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftLeft_int3x4 )
+TEMPER_TEST( TestBitwise_ShiftLeft_int3x4, void )
 {
 	int3x4 answer  = (int3x4) {
 		4, 4, 4, 4,
@@ -368,7 +368,7 @@ TEMPER_TEST( TestBitwise_ShiftLeft_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftRight_int3x4 )
+TEMPER_TEST( TestBitwise_ShiftRight_int3x4, void )
 {
 	int3x4 answer  = (int3x4) {
 		1, 1, 1, 1,
@@ -392,7 +392,7 @@ TEMPER_TEST( TestBitwise_ShiftRight_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Unary_int3x4 )
+TEMPER_TEST( TestBitwise_Unary_int3x4, void )
 {
 	int3x4 answer = (int3x4) {
 		(int32_t) -1, (int32_t) -1, (int32_t) -1, (int32_t) -1,
@@ -412,7 +412,7 @@ TEMPER_TEST( TestBitwise_Unary_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIdentity_Scalar_int3x4 )
+TEMPER_TEST( TestIdentity_Scalar_int3x4, void )
 {
 	int3x4 id;
 	id.rows[0] = (int4) { 1, 0, 0, 0 };
@@ -426,7 +426,7 @@ TEMPER_TEST( TestIdentity_Scalar_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranspose_Scalar_int3x4 )
+TEMPER_TEST( TestTranspose_Scalar_int3x4, void )
 {
 	int4x3 answerTransposed = (int4x3) {
 		0, 4, 8,
@@ -447,7 +447,7 @@ TEMPER_TEST( TestTranspose_Scalar_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranslate_Scalar_int3x4 )
+TEMPER_TEST( TestTranslate_Scalar_int3x4, void )
 {
 	int3x4 mat;
 	int3x4_identity( &mat );
@@ -463,7 +463,7 @@ TEMPER_TEST( TestTranslate_Scalar_int3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestScale_Scalar_int3x4 )
+TEMPER_TEST( TestScale_Scalar_int3x4, void )
 {
 	int2 scaleVec = { 2, 2 };
 	int3x4 mat;

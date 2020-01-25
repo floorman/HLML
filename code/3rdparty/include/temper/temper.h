@@ -281,63 +281,63 @@ typedef enum temperTimeUnit_t {
 typedef void( *temperTestCallback_t )( void* userdata );
 
 typedef struct temperTestContext_t {
-	void*							suiteFuncStartData;
-	void*							suiteFuncEndData;
+	void*									suiteFuncStartData;
+	void*									suiteFuncEndData;
 
-	void*							testFuncStartData;
-	void*							testFuncEndData;
+	void*									testFuncStartData;
+	void*									testFuncEndData;
 
-	temperTestCallback_t			suiteFuncStart;
-	temperTestCallback_t			suiteFuncEnd;
+	temperTestCallback_t					suiteFuncStart;
+	temperTestCallback_t					suiteFuncEnd;
 
-	temperTestCallback_t			testFuncStart;
-	temperTestCallback_t			testFuncEnd;
+	temperTestCallback_t					testFuncStart;
+	temperTestCallback_t					testFuncEnd;
 
-	double							testTime;
+	double									testTime;
 
-	temperFlags_t					flags;
-	temperTimeUnit_t				timeUnit;
+	temperFlags_t							flags;
+	temperTimeUnit_t						timeUnit;
 
-	uint32_t						numPassed;
-	uint32_t						numFailed;
-	uint32_t						numSkipped;
+	uint32_t								numPassed;
+	uint32_t								numFailed;
+	uint32_t								numSkipped;
 
-	uint32_t						line;
-	const char*						file;
-	const char*						msg;
+	uint32_t								line;
+	const char*								file;
+	const char*								msg;
 
-	const char*						filteredTest;
-	const char*						filteredSuite;
+	const char*								filteredTest;
+	const char*								filteredSuite;
 
-	const char*						timeUnitStr;
+	const char*								timeUnitStr;
 } temperTestContext_t;
 
-extern temperTestContext_t			g_testContext;
+extern temperTestContext_t					g_testContext;
 
 // initialises Temper
 // this is required to make Temper work properly
 #ifdef __cplusplus
 #define TEMPER_DEFS() \
-	temperTestContext_t				g_testContext	= {}
+	temperTestContext_t						g_testContext	= {}
 #else
 #define TEMPER_DEFS() \
-	temperTestContext_t				g_testContext	= { 0 }
+	temperTestContext_t						g_testContext	= { 0 }
 #endif
 
 // returns the program exit code according to Temper
-#define TEMPER_EXIT_CODE()			( ( g_testContext.numFailed == 0 ) ? 0 : 1 )
+#define TEMPER_EXIT_CODE()					( ( g_testContext.numFailed == 0 ) ? 0 : 1 )
 
 // forward declare a test suite
-#define TEMPER_SUITE_EXTERN( name )	void (name)( void )
+#define TEMPER_SUITE_EXTERN( name )			void (name)( void )
 
 // defines a test suite (with your code)
-#define TEMPER_SUITE( name )		void (name)( void ); void (name)( void )
+#define TEMPER_SUITE( name )				void (name)( void ); void (name)( void )
 
 // forward declare a test
-#define TEMPER_TEST_EXTERN( name )	temperTestResult_t (name)( void )
+#define TEMPER_TEST_EXTERN( name, parms )	temperTestResult_t (name)( parms )
 
 // defines a test (with your code)
-#define TEMPER_TEST( name )			temperTestResult_t (name)( void ); temperTestResult_t (name)( void )
+#define TEMPER_TEST( name, parms )			temperTestResult_t (name)( parms ); temperTestResult_t (name)( parms )
 
 static void TemperSetTextColorInternal( const temperTestConsoleColor_t color ) {
 	if ( ( g_testContext.flags & TEMPER_FLAG_COLORED_OUTPUT ) == 0 ) {

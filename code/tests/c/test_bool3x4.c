@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_bool3x4 )
+TEMPER_TEST( TestAssignment_bool3x4, void )
 {
 	bool3x4 mat;
 
@@ -56,7 +56,7 @@ TEMPER_TEST( TestAssignment_bool3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIdentity_Scalar_bool3x4 )
+TEMPER_TEST( TestIdentity_Scalar_bool3x4, void )
 {
 	bool3x4 id;
 	id.rows[0] = (bool4) { true, false, false, false };
@@ -70,7 +70,7 @@ TEMPER_TEST( TestIdentity_Scalar_bool3x4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranspose_Scalar_bool3x4 )
+TEMPER_TEST( TestTranspose_Scalar_bool3x4, void )
 {
 	bool4x3 answerTransposed = (bool4x3) {
 		false, true, true,

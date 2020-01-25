@@ -73,7 +73,7 @@ static void GenerateTestMultiplyScalar( stringBuilder_t* codeTests, stringBuilde
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListValues[0], parmListValues[1], parmListValues[2], parmListValues[3] );
 	String_Appendf( codeTests, "\tconst %s b = %s;\n", baseTypeString, scalar );
@@ -141,7 +141,7 @@ static void GenerateTestMultiplyQuaternion(  stringBuilder_t* codeTests, stringB
 	char testName[GEN_STRING_LENGTH_TEST_NAME] = { 0 };
 	snprintf( testName, GEN_STRING_LENGTH_TEST_NAME, "TestArithmetic%s_%s", "Multiply", fullTypeName );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListRhsValues[0], parmListRhsValues[1], parmListRhsValues[2], parmListRhsValues[3] );
 	String_Appendf( codeTests, "\tconst %s b = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListLhsValues[0], parmListLhsValues[1], parmListLhsValues[2], parmListLhsValues[3] );
@@ -195,7 +195,7 @@ static void GenerateTestLength(  stringBuilder_t* codeTests, stringBuilder_t* co
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListValues[0], parmListValues[1], parmListValues[2], parmListValues[3] );
 	String_Append( codeTests, "\n" );
@@ -251,7 +251,7 @@ static void GenerateTestNormalize(  stringBuilder_t* codeTests, stringBuilder_t*
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListRhsValues[0], parmListRhsValues[1], parmListRhsValues[2], parmListRhsValues[3] );
 	String_Append( codeTests, "\n" );
@@ -310,7 +310,7 @@ static void GenerateTestConjugate(  stringBuilder_t* codeTests, stringBuilder_t*
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListRhsValues[0], parmListRhsValues[1], parmListRhsValues[2], parmListRhsValues[3] );
 	String_Append( codeTests, "\n" );
@@ -369,7 +369,7 @@ static void GenerateTestInverse(  stringBuilder_t* codeTests, stringBuilder_t* c
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListRhsValues[0], parmListRhsValues[1], parmListRhsValues[2], parmListRhsValues[3] );
 	String_Append( codeTests, "\n" );
@@ -424,7 +424,7 @@ static void GenerateTestLerp(  stringBuilder_t* codeTests, stringBuilder_t* code
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListLhsValues[0], parmListLhsValues[1], parmListLhsValues[2], parmListLhsValues[3] );
 	String_Appendf( codeTests, "\tconst %s b = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListRhsValues[0], parmListRhsValues[1], parmListRhsValues[2], parmListRhsValues[3] );
@@ -482,7 +482,7 @@ static void GenerateTestSlerp(  stringBuilder_t* codeTests, stringBuilder_t* cod
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListLhsValues[0], parmListLhsValues[1], parmListLhsValues[2], parmListLhsValues[3] );
 	String_Appendf( codeTests, "\tconst %s b = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListRhsValues[0], parmListRhsValues[1], parmListRhsValues[2], parmListRhsValues[3] );
@@ -525,7 +525,7 @@ static void GenerateTestQuaternionVectorRotationByAngleAxis(  stringBuilder_t* c
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s3 vector = HLML_CONSTRUCT( %s3 ) { %s, %s, %s };\n", baseTypeString, baseTypeString, zeroStr, oneStr, zeroStr );
 	String_Appendf( codeTests, "\tconst %s3 axis = HLML_CONSTRUCT( %s3 ) { %s, %s, %s };\n", baseTypeString, baseTypeString, oneStr, zeroStr, zeroStr );

@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_float3 )
+TEMPER_TEST( TestAssignment_float3, void )
 {
 	float3 vec;
 
@@ -54,7 +54,7 @@ TEMPER_TEST( TestAssignment_float3 )
 }
 
 // also tests equality operators
-TEMPER_TEST( TestCtor_float3 )
+TEMPER_TEST( TestCtor_float3, void )
 {
 	float3 vec;
 
@@ -89,7 +89,7 @@ TEMPER_TEST( TestCtor_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArray_float3 )
+TEMPER_TEST( TestArray_float3, void )
 {
 	float3 a = float3( 0.000000f, 1.000000f, 2.000000f );
 
@@ -100,7 +100,7 @@ TEMPER_TEST( TestArray_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIncrement_float3 )
+TEMPER_TEST( TestIncrement_float3, void )
 {
 	float3 vec;
 
@@ -117,7 +117,7 @@ TEMPER_TEST( TestIncrement_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDecrement_float3 )
+TEMPER_TEST( TestDecrement_float3, void )
 {
 	float3 vec;
 
@@ -134,7 +134,7 @@ TEMPER_TEST( TestDecrement_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticAddition_float3 )
+TEMPER_TEST( TestArithmeticAddition_float3, void )
 {
 	float3 a = float3( 6.0f );
 	float3 b = float3( 2.000000f, 3.000000f, 4.000000f );
@@ -146,7 +146,7 @@ TEMPER_TEST( TestArithmeticAddition_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticSubtraction_float3 )
+TEMPER_TEST( TestArithmeticSubtraction_float3, void )
 {
 	float3 a = float3( 6.0f );
 	float3 b = float3( 2.000000f, 3.000000f, 4.000000f );
@@ -158,7 +158,7 @@ TEMPER_TEST( TestArithmeticSubtraction_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticMultiplication_float3 )
+TEMPER_TEST( TestArithmeticMultiplication_float3, void )
 {
 	float3 a = float3( 6.0f );
 	float3 b = float3( 2.000000f, 3.000000f, 4.000000f );
@@ -170,7 +170,7 @@ TEMPER_TEST( TestArithmeticMultiplication_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticDivision_float3 )
+TEMPER_TEST( TestArithmeticDivision_float3, void )
 {
 	float3 a = float3( 6.0f );
 	float3 b = float3( 2.000000f, 2.000000f, 3.000000f );
@@ -182,7 +182,7 @@ TEMPER_TEST( TestArithmeticDivision_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_float3 )
+TEMPER_TEST( TestRelational_float3, void )
 {
 	bool3 allTrue = bool3( true );
 
@@ -242,7 +242,7 @@ TEMPER_TEST( TestRelational_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLength_Scalar_float3 )
+TEMPER_TEST( TestLength_Scalar_float3, void )
 {
 	float3 vec = float3( 2.0f );
 
@@ -252,7 +252,7 @@ TEMPER_TEST( TestLength_Scalar_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLength_SSE_float3 )
+TEMPER_TEST( TestLength_SSE_float3, void )
 {
 	float components[3][4] =
 	{
@@ -294,7 +294,7 @@ TEMPER_TEST( TestLength_SSE_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestNormalized_Scalar_float3 )
+TEMPER_TEST( TestNormalized_Scalar_float3, void )
 {
 	float3 vec = float3( 5.000000f, 4.000000f, 3.000000f );
 	vec = normalized( vec );
@@ -304,7 +304,7 @@ TEMPER_TEST( TestNormalized_Scalar_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestNormalized_SSE_float3 )
+TEMPER_TEST( TestNormalized_SSE_float3, void )
 {
 	__m128 results;
 	float3_sse_t in;
@@ -328,7 +328,7 @@ TEMPER_TEST( TestNormalized_SSE_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDot_Scalar_float3 )
+TEMPER_TEST( TestDot_Scalar_float3, void )
 {
 	float3 a = float3( 0.000000f, 1.000000f, 0.000000f );
 	float3 b = float3( 0.000000f, -1.000000f, 0.000000f );
@@ -338,7 +338,7 @@ TEMPER_TEST( TestDot_Scalar_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDot_SSE_float3 )
+TEMPER_TEST( TestDot_SSE_float3, void )
 {
 	float componentsLHS[3][4] =
 	{
@@ -378,7 +378,7 @@ TEMPER_TEST( TestDot_SSE_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestCross_Scalar_float3 )
+TEMPER_TEST( TestCross_Scalar_float3, void )
 {
 	float3 left    = float3( -1.000000f, 0.000000f, 0.000000f );
 	float3 forward = float3( 0.000000f, 0.000000f, 1.000000f );
@@ -389,7 +389,7 @@ TEMPER_TEST( TestCross_Scalar_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestCross_SSE_float3 )
+TEMPER_TEST( TestCross_SSE_float3, void )
 {
 	float componentsLeft[3][4] =
 	{
@@ -441,7 +441,7 @@ TEMPER_TEST( TestCross_SSE_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestAngle_Scalar_float3 )
+TEMPER_TEST( TestAngle_Scalar_float3, void )
 {
 	float3 right = float3( 1.000000f, 0.000000f, 0.000000f );
 	float3 up    = float3( 0.000000f, 1.000000f, 0.000000f );
@@ -451,7 +451,7 @@ TEMPER_TEST( TestAngle_Scalar_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDistance_Scalar_float3 )
+TEMPER_TEST( TestDistance_Scalar_float3, void )
 {
 	float answerDistanceSqr = 105.0f;
 	float answerDistance    = 10.246951f;
@@ -468,7 +468,7 @@ TEMPER_TEST( TestDistance_Scalar_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDistance_SSE_float3 )
+TEMPER_TEST( TestDistance_SSE_float3, void )
 {
 	float componentsLHS[3][4] =
 	{
@@ -521,7 +521,7 @@ TEMPER_TEST( TestDistance_SSE_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSaturate_float3 )
+TEMPER_TEST( TestSaturate_float3, void )
 {
 	float3 answer = float3( 0.000000f, 1.000000f, 1.000000f );
 
@@ -533,7 +533,7 @@ TEMPER_TEST( TestSaturate_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLerp_float3 )
+TEMPER_TEST( TestLerp_float3, void )
 {
 	float3 answer = float3( 0.500000f, 0.500000f, 0.000000f );
 
@@ -546,7 +546,7 @@ TEMPER_TEST( TestLerp_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestStep_float3 )
+TEMPER_TEST( TestStep_float3, void )
 {
 	float3 answer = float3( 1.000000f, 1.000000f, 0.000000f );
 
@@ -558,7 +558,7 @@ TEMPER_TEST( TestStep_float3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSmoothstep_float3 )
+TEMPER_TEST( TestSmoothstep_float3, void )
 {
 	float3 answerInRangeSmoothstep   = float3( 0.104000f, 0.104000f, 0.104000f );
 	float3 answerClampedSmoothstep   = float3( 1.000000f, 1.000000f, 1.000000f );

@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestSign_int32_t )
+TEMPER_TEST( TestSign_int32_t, void )
 {
 	TEMPER_EXPECT_TRUE( signi( -5 ) == -1 );
 	TEMPER_EXPECT_TRUE( signi( 9 ) ==  1 );
@@ -40,7 +40,7 @@ TEMPER_TEST( TestSign_int32_t )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMinMax_int32_t )
+TEMPER_TEST( TestMinMax_int32_t, void )
 {
 	int32_t a = 5;
 	int32_t b = 9;
@@ -51,7 +51,7 @@ TEMPER_TEST( TestMinMax_int32_t )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestClamp_int32_t )
+TEMPER_TEST( TestClamp_int32_t, void )
 {
 	int32_t a;
 	int32_t low  = 1;

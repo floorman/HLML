@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_bool3 )
+TEMPER_TEST( TestAssignment_bool3, void )
 {
 	bool3 vec;
 

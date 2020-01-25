@@ -47,7 +47,7 @@ static int3x3 g_matrixMulAnswer_int3x2 = int3x3( 		18, 18, 18,
  );
 
 
-TEMPER_TEST( TestAssignment_int3x2 )
+TEMPER_TEST( TestAssignment_int3x2, void )
 {
 	int3x2 mat;
 
@@ -65,7 +65,7 @@ TEMPER_TEST( TestAssignment_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestCtor_int3x2 )
+TEMPER_TEST( TestCtor_int3x2, void )
 {
 	int3x2 mat;
 
@@ -98,7 +98,7 @@ TEMPER_TEST( TestCtor_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArray_int3x2 )
+TEMPER_TEST( TestArray_int3x2, void )
 {
 	int3x2 mat;
 	identity( mat );
@@ -110,7 +110,7 @@ TEMPER_TEST( TestArray_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIncrement_int3x2 )
+TEMPER_TEST( TestIncrement_int3x2, void )
 {
 	int3x2 answer;
 	int3x2 mat;
@@ -150,7 +150,7 @@ TEMPER_TEST( TestIncrement_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDecrement_int3x2 )
+TEMPER_TEST( TestDecrement_int3x2, void )
 {
 	int3x2 answer;
 	int3x2 mat;
@@ -190,7 +190,7 @@ TEMPER_TEST( TestDecrement_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_int3x2 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		7, 7,
@@ -217,7 +217,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Addition_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_int3x2 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		5, 5,
@@ -244,7 +244,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Subtraction_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_int3x2 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		6, 6,
@@ -271,7 +271,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Multiplication_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_int3x2 )
+TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		6, 6,
@@ -298,7 +298,7 @@ TEMPER_TEST( TestComponentWiseArithmetic_Scalar_Division_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMultiplyMatrix_Scalar_int3x2 )
+TEMPER_TEST( TestMultiplyMatrix_Scalar_int3x2, void )
 {
 	int3x3 answer = g_matrixMulAnswer_int3x2;
 
@@ -311,7 +311,7 @@ TEMPER_TEST( TestMultiplyMatrix_Scalar_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_int3x2 )
+TEMPER_TEST( TestRelational_int3x2, void )
 {
 	bool3x2 allTrue = { 		true, true,
 		true, true,
@@ -386,7 +386,7 @@ TEMPER_TEST( TestRelational_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_And_int3x2 )
+TEMPER_TEST( TestBitwise_And_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		5, 5,
@@ -411,7 +411,7 @@ TEMPER_TEST( TestBitwise_And_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Or_int3x2 )
+TEMPER_TEST( TestBitwise_Or_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		23, 23,
@@ -436,7 +436,7 @@ TEMPER_TEST( TestBitwise_Or_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Xor_int3x2 )
+TEMPER_TEST( TestBitwise_Xor_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		18, 18,
@@ -461,7 +461,7 @@ TEMPER_TEST( TestBitwise_Xor_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftLeft_int3x2 )
+TEMPER_TEST( TestBitwise_ShiftLeft_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		4, 4,
@@ -486,7 +486,7 @@ TEMPER_TEST( TestBitwise_ShiftLeft_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftRight_int3x2 )
+TEMPER_TEST( TestBitwise_ShiftRight_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		1, 1,
@@ -511,7 +511,7 @@ TEMPER_TEST( TestBitwise_ShiftRight_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Unary_int3x2 )
+TEMPER_TEST( TestBitwise_Unary_int3x2, void )
 {
 	int3x2 answer = int3x2(
 		(int32_t) -1, (int32_t) -1,
@@ -531,7 +531,7 @@ TEMPER_TEST( TestBitwise_Unary_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIdentity_Scalar_int3x2 )
+TEMPER_TEST( TestIdentity_Scalar_int3x2, void )
 {
 	int3x2 id;
 	id[0] = int2( 1, 0 );
@@ -546,7 +546,7 @@ TEMPER_TEST( TestIdentity_Scalar_int3x2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranspose_Scalar_int3x2 )
+TEMPER_TEST( TestTranspose_Scalar_int3x2, void )
 {
 	int2x3 answerTransposed = int2x3(
 		0, 4, 8,

@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_double4 )
+TEMPER_TEST( TestAssignment_double4, void )
 {
 	double4 vec;
 
@@ -58,7 +58,7 @@ TEMPER_TEST( TestAssignment_double4 )
 }
 
 // also tests equality operators
-TEMPER_TEST( TestCtor_double4 )
+TEMPER_TEST( TestCtor_double4, void )
 {
 	double4 vec;
 
@@ -94,7 +94,7 @@ TEMPER_TEST( TestCtor_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArray_double4 )
+TEMPER_TEST( TestArray_double4, void )
 {
 	double4 a = double4( 0.000000, 1.000000, 2.000000, 3.000000 );
 
@@ -106,7 +106,7 @@ TEMPER_TEST( TestArray_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIncrement_double4 )
+TEMPER_TEST( TestIncrement_double4, void )
 {
 	double4 vec;
 
@@ -123,7 +123,7 @@ TEMPER_TEST( TestIncrement_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDecrement_double4 )
+TEMPER_TEST( TestDecrement_double4, void )
 {
 	double4 vec;
 
@@ -140,7 +140,7 @@ TEMPER_TEST( TestDecrement_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticAddition_double4 )
+TEMPER_TEST( TestArithmeticAddition_double4, void )
 {
 	double4 a = double4( 6.0 );
 	double4 b = double4( 2.000000, 3.000000, 4.000000, 5.000000 );
@@ -152,7 +152,7 @@ TEMPER_TEST( TestArithmeticAddition_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticSubtraction_double4 )
+TEMPER_TEST( TestArithmeticSubtraction_double4, void )
 {
 	double4 a = double4( 6.0 );
 	double4 b = double4( 2.000000, 3.000000, 4.000000, 5.000000 );
@@ -164,7 +164,7 @@ TEMPER_TEST( TestArithmeticSubtraction_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticMultiplication_double4 )
+TEMPER_TEST( TestArithmeticMultiplication_double4, void )
 {
 	double4 a = double4( 6.0 );
 	double4 b = double4( 2.000000, 3.000000, 4.000000, 5.000000 );
@@ -176,7 +176,7 @@ TEMPER_TEST( TestArithmeticMultiplication_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticDivision_double4 )
+TEMPER_TEST( TestArithmeticDivision_double4, void )
 {
 	double4 a = double4( 6.0 );
 	double4 b = double4( 2.000000, 2.000000, 3.000000, 6.000000 );
@@ -188,7 +188,7 @@ TEMPER_TEST( TestArithmeticDivision_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_double4 )
+TEMPER_TEST( TestRelational_double4, void )
 {
 	bool4 allTrue = bool4( true );
 
@@ -248,7 +248,7 @@ TEMPER_TEST( TestRelational_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLength_Scalar_double4 )
+TEMPER_TEST( TestLength_Scalar_double4, void )
 {
 	double4 vec = double4( 2.0 );
 
@@ -258,7 +258,7 @@ TEMPER_TEST( TestLength_Scalar_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestNormalized_Scalar_double4 )
+TEMPER_TEST( TestNormalized_Scalar_double4, void )
 {
 	double4 vec = double4( 5.000000, 4.000000, 3.000000, 2.000000 );
 	vec = normalized( vec );
@@ -268,7 +268,7 @@ TEMPER_TEST( TestNormalized_Scalar_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDot_Scalar_double4 )
+TEMPER_TEST( TestDot_Scalar_double4, void )
 {
 	double4 a = double4( 0.000000, 1.000000, 0.000000, 0.000000 );
 	double4 b = double4( 0.000000, -1.000000, 0.000000, 0.000000 );
@@ -278,7 +278,7 @@ TEMPER_TEST( TestDot_Scalar_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestCross_Scalar_double4 )
+TEMPER_TEST( TestCross_Scalar_double4, void )
 {
 	double4 left    = double4( -1.000000, 0.000000, 0.000000, 0.000000 );
 	double4 forward = double4( 0.000000, 0.000000, 1.000000, 0.000000 );
@@ -289,7 +289,7 @@ TEMPER_TEST( TestCross_Scalar_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestAngle_Scalar_double4 )
+TEMPER_TEST( TestAngle_Scalar_double4, void )
 {
 	double4 right = double4( 1.000000, 0.000000, 0.000000, 0.000000 );
 	double4 up    = double4( 0.000000, 1.000000, 0.000000, 0.000000 );
@@ -299,7 +299,7 @@ TEMPER_TEST( TestAngle_Scalar_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSaturate_double4 )
+TEMPER_TEST( TestSaturate_double4, void )
 {
 	double4 answer = double4( 0.000000, 1.000000, 1.000000, 1.000000 );
 
@@ -311,7 +311,7 @@ TEMPER_TEST( TestSaturate_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLerp_double4 )
+TEMPER_TEST( TestLerp_double4, void )
 {
 	double4 answer = double4( 0.500000, 0.500000, 0.000000, 0.000000 );
 
@@ -324,7 +324,7 @@ TEMPER_TEST( TestLerp_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestStep_double4 )
+TEMPER_TEST( TestStep_double4, void )
 {
 	double4 answer = double4( 1.000000, 1.000000, 0.000000, 0.000000 );
 
@@ -336,7 +336,7 @@ TEMPER_TEST( TestStep_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSmoothstep_double4 )
+TEMPER_TEST( TestSmoothstep_double4, void )
 {
 	double4 answerInRangeSmoothstep   = double4( 0.104000, 0.104000, 0.104000, 0.104000 );
 	double4 answerClampedSmoothstep   = double4( 1.000000, 1.000000, 1.000000, 1.000000 );

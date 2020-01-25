@@ -49,7 +49,7 @@ static void GenerateTestAssignment( stringBuilder_t* codeTests, stringBuilder_t*
 	char parmListVarying[64] = { 0 };
 	Gen_GetParmListVector( type, numComponents, values, parmListVarying );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	String_Appendf( codeTests, "\t%s vec;\n", fullTypeName );
 	String_Append(  codeTests, "\n" );
@@ -104,7 +104,7 @@ static void GenerateTestConstruct( stringBuilder_t* codeTests, stringBuilder_t* 
 	const char* floateqStr = Gen_GetFuncNameFloateq( type );
 
 	String_Append(  codeTests, "// also tests equality operators\n" );
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	String_Appendf( codeTests, "\t%s vec;\n", fullTypeName );
 	String_Append(  codeTests, "\n" );
@@ -178,7 +178,7 @@ static void GenerateTestArray( stringBuilder_t* codeTests, stringBuilder_t* code
 	Gen_GetNumericLiteral( type, 2, valuesStr[2], 1 );
 	Gen_GetNumericLiteral( type, 3, valuesStr[3], 1 );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	String_Appendf( codeTests, "\t%s a = %s( %s );\n", fullTypeName, fullTypeName, parmList );
 	String_Append(  codeTests, "\n" );
@@ -254,7 +254,7 @@ static void GenerateTestArithmetic( stringBuilder_t* codeTests, stringBuilder_t*
 			char compFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 			Gen_GetFuncNameComponentWiseArithmeticVector( language, type, 1, numComponents, op, compFuncStr );
 
-			String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+			String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 			String_Append(  codeTests, "{\n" );
 			String_Appendf( codeTests, "\t%s a = (%s)", fullTypeName, fullTypeName );
 			Gen_GetValuesArray1D( type, numComponents, valuesBaseNumber, codeTests );
@@ -280,7 +280,7 @@ static void GenerateTestArithmetic( stringBuilder_t* codeTests, stringBuilder_t*
 			char testName[GEN_STRING_LENGTH_TEST_NAME] = { 0 };
 			snprintf( testName, GEN_STRING_LENGTH_TEST_NAME, "TestArithmetic%s_%s", suffices[i], fullTypeName );
 
-			String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+			String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 			String_Append(  codeTests, "{\n" );
 			String_Appendf( codeTests, "\t%s a = %s( %s );\n", fullTypeName, fullTypeName, baseNumberStr );
 			String_Appendf( codeTests, "\t%s b = %s( %s );\n", fullTypeName, fullTypeName, parmListValues[i] );
@@ -329,7 +329,7 @@ static void GenerateTestIncrement( stringBuilder_t* codeTests, stringBuilder_t* 
 		char testName[GEN_STRING_LENGTH_TEST_NAME] = { 0 };
 		snprintf( testName, GEN_STRING_LENGTH_TEST_NAME, "Test%s_%s", suffices[i], fullTypeName );
 
-		String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+		String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 		String_Append(  codeTests, "{\n" );
 		String_Appendf( codeTests, "\t%s vec;\n", fullTypeName );
 		String_Append(  codeTests, "\n" );
@@ -401,7 +401,7 @@ static void GenerateTestRelational( stringBuilder_t* codeTests, stringBuilder_t*
 	char equalsFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameEquals( language, GEN_TYPE_BOOL, 1, numComponents, equalsFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s allTrue = (%s)", boolTypeName, boolTypeName );
@@ -607,7 +607,7 @@ static void GenerateTestBitwise( stringBuilder_t* codeTests, stringBuilder_t* co
 
 		snprintf( testName, GEN_STRING_LENGTH_TEST_NAME, "TestBitwise_%s_%s", suffices[i], fullTypeName );
 
-		String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+		String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 		String_Append(  codeTests, "{\n" );
 		if ( language == GEN_LANGUAGE_C ) {
 			String_Appendf( codeTests, "\t%s answer = (%s) { ", fullTypeName, fullTypeName );
@@ -652,7 +652,7 @@ static void GenerateTestBitwise( stringBuilder_t* codeTests, stringBuilder_t* co
 		char unaryFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 		Gen_GetFuncNameBitwise( language, type, 1, numComponents, GEN_OP_BITWISE_UNARY, unaryFuncStr );
 
-		String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+		String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 		String_Append(  codeTests, "{\n" );
 		if ( language == GEN_LANGUAGE_C ) {
 			String_Appendf( codeTests, "\t%s answer = (%s) { ", fullTypeName, fullTypeName );
@@ -734,7 +734,7 @@ static void GenerateTestLength( stringBuilder_t* codeTests, stringBuilder_t* cod
 	char lengthFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameLength( language, type, numComponents, lengthFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s vec = (%s) { ", fullTypeName, fullTypeName );
@@ -784,7 +784,7 @@ static void GenerateTestLength( stringBuilder_t* codeTests, stringBuilder_t* cod
 		char lengthFuncStrSSE[GEN_STRING_LENGTH_FUNCTION_NAME];
 		Gen_SSE_GetFuncNameLength( language, type, numComponents, lengthFuncStrSSE );
 
-		String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+		String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 		String_Append(  codeTests, "{\n" );
 		String_Appendf( codeTests, "\t%s components[%d][4] =\n", memberTypeString, numComponents );
 		Gen_GetValuesArray2D( type, numComponents, 4, *values, codeTests );
@@ -860,7 +860,7 @@ static void GenerateTestNormalized( stringBuilder_t* codeTests, stringBuilder_t*
 	char lengthFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameLength( language, type, numComponents, lengthFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s vec = (%s) { %s };\n", fullTypeName, fullTypeName, parmList );
@@ -901,7 +901,7 @@ static void GenerateTestNormalized( stringBuilder_t* codeTests, stringBuilder_t*
 		char lengthFuncStrSSE[GEN_STRING_LENGTH_FUNCTION_NAME];
 		Gen_SSE_GetFuncNameLength( language, type, numComponents, lengthFuncStrSSE );
 
-		String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+		String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 		String_Append(  codeTests, "{\n" );
 		String_Appendf( codeTests, "\t%s results;\n", registerName );
 		String_Appendf( codeTests, "\t%s in;\n", sseTypeName );
@@ -975,7 +975,7 @@ static void GenerateTestDot( stringBuilder_t* codeTests, stringBuilder_t* codeSu
 	char dotFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameDot( language, type, numComponents, dotFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s a = (%s) { %s };\n", fullTypeName, fullTypeName, parmListA );
@@ -1029,7 +1029,7 @@ static void GenerateTestDot( stringBuilder_t* codeTests, stringBuilder_t* codeSu
 		char dotFuncStrSSE[GEN_STRING_LENGTH_FUNCTION_NAME];
 		Gen_SSE_GetFuncNameDot( language, type, numComponents, dotFuncStrSSE );
 
-		String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+		String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 		String_Append(  codeTests, "{\n" );
 		String_Appendf( codeTests, "\t%s componentsLHS[%d][4] =\n", memberTypeString, numComponents );
 		Gen_GetValuesArray2D( type, numComponents, 4, *valuesLHS, codeTests );
@@ -1111,7 +1111,7 @@ static void GenerateTestCross( stringBuilder_t* codeTests, stringBuilder_t* code
 	char equalsFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameEquals( language, type, 1, numComponents, equalsFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s left    = (%s) { %s };\n", fullTypeName, fullTypeName, parmListLeft );
@@ -1148,7 +1148,7 @@ static void GenerateTestCross( stringBuilder_t* codeTests, stringBuilder_t* code
 		char crossFuncStrSSE[GEN_STRING_LENGTH_FUNCTION_NAME];
 		Gen_SSE_GetFuncNameCross( language, type, numComponents, crossFuncStrSSE );
 
-		String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+		String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 		String_Append(  codeTests, "{\n" );
 		String_Appendf( codeTests, "\t%s componentsLeft[%d][4] =\n", memberTypeString, numComponents );
 		String_Append(  codeTests, "\t{\n" );
@@ -1265,7 +1265,7 @@ static void GenerateTestAngle( stringBuilder_t* codeTests, stringBuilder_t* code
 	char angleFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameAngle( language, type, numComponents, angleFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s right = (%s) { %s };\n", fullTypeName, fullTypeName, parmListRight );
@@ -1342,7 +1342,7 @@ static void GenerateTestDistance( stringBuilder_t* codeTests, stringBuilder_t* c
 	char distanceFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameDistance( language, type, numComponents, distanceFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	String_Appendf( codeTests, "\t%s answerDistanceSqr = %s;\n", floatingPointStr, answerDistanceSqrStr );
 	String_Appendf( codeTests, "\t%s answerDistance    = %s;\n", floatingPointStr, answerDistanceStr );
@@ -1402,7 +1402,7 @@ static void GenerateTestDistance( stringBuilder_t* codeTests, stringBuilder_t* c
 		char distanceFuncStrSSE[GEN_STRING_LENGTH_FUNCTION_NAME];
 		Gen_SSE_GetFuncNameDistance( language, type, numComponents, distanceFuncStrSSE );
 
-		String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+		String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 		String_Append(  codeTests, "{\n" );
 		String_Appendf( codeTests, "\t%s componentsLHS[%d][4] =\n", memberTypeString, numComponents );
 		Gen_GetValuesArray2D( type, numComponents, 4, *valuesLHS, codeTests );
@@ -1484,7 +1484,7 @@ static void GenerateTestPacking( stringBuilder_t* codeTests, stringBuilder_t* co
 	Gen_GetFuncNameEquals( language, type, 1, numComponents, equalsFuncStr );
 
 	// tests pack and unpack
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	String_Appendf( codeTests, "\t%s answerPacked = %s;\n", memberTypeString, answerPackedStr );
 	if ( language == GEN_LANGUAGE_C ) {
@@ -1542,7 +1542,7 @@ static void GenerateTestSaturate( stringBuilder_t* codeTests, stringBuilder_t* c
 	char equalsFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameEquals( language, type, 1, numComponents, equalsFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s answer = (%s) { %s };\n", fullTypeName, fullTypeName, parmListAnswer );
@@ -1602,7 +1602,7 @@ static void GenerateTestLerp( stringBuilder_t* codeTests, stringBuilder_t* codeS
 	char equalsFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameEquals( language, type, 1, numComponents, equalsFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s answer = (%s) { %s };\n", fullTypeName, fullTypeName, parmListAnswer );
@@ -1662,7 +1662,7 @@ static void GenerateTestStep( stringBuilder_t* codeTests, stringBuilder_t* codeS
 	char equalsFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameEquals( language, type, 1, numComponents, equalsFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s answer = (%s) { %s };\n", fullTypeName, fullTypeName, parmListAnswer );
@@ -1747,7 +1747,7 @@ static void GenerateTestSmoothstep( stringBuilder_t* codeTests, stringBuilder_t*
 	char equalsFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameEquals( language, type, 1, numComponents, equalsFuncStr );
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s )\n", testName );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
 	String_Append(  codeTests, "{\n" );
 	if ( language == GEN_LANGUAGE_C ) {
 		String_Appendf( codeTests, "\t%s answerInRangeSmoothstep   = (%s) { %s };\n", fullTypeName, fullTypeName, parmListAnswerInRangeSmoothstep );

@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_double3 )
+TEMPER_TEST( TestAssignment_double3, void )
 {
 	double3 vec;
 
@@ -53,7 +53,7 @@ TEMPER_TEST( TestAssignment_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticAddition_double3 )
+TEMPER_TEST( TestArithmeticAddition_double3, void )
 {
 	double3 a = (double3)	{ 6.000000, 6.000000, 6.000000 };
 	double3 b = (double3)	{ 2.000000, 3.000000, 4.000000 };
@@ -66,7 +66,7 @@ TEMPER_TEST( TestArithmeticAddition_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticSubtraction_double3 )
+TEMPER_TEST( TestArithmeticSubtraction_double3, void )
 {
 	double3 a = (double3)	{ 6.000000, 6.000000, 6.000000 };
 	double3 b = (double3)	{ 2.000000, 3.000000, 4.000000 };
@@ -79,7 +79,7 @@ TEMPER_TEST( TestArithmeticSubtraction_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticMultiplication_double3 )
+TEMPER_TEST( TestArithmeticMultiplication_double3, void )
 {
 	double3 a = (double3)	{ 6.000000, 6.000000, 6.000000 };
 	double3 b = (double3)	{ 2.000000, 3.000000, 4.000000 };
@@ -92,7 +92,7 @@ TEMPER_TEST( TestArithmeticMultiplication_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticDivision_double3 )
+TEMPER_TEST( TestArithmeticDivision_double3, void )
 {
 	double3 a = (double3)	{ 6.000000, 6.000000, 6.000000 };
 	double3 b = (double3)	{ 2.000000, 2.000000, 3.000000 };
@@ -105,7 +105,7 @@ TEMPER_TEST( TestArithmeticDivision_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_double3 )
+TEMPER_TEST( TestRelational_double3, void )
 {
 	bool3 allTrue = (bool3)	{ true, true, true };
 
@@ -165,7 +165,7 @@ TEMPER_TEST( TestRelational_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLength_Scalar_double3 )
+TEMPER_TEST( TestLength_Scalar_double3, void )
 {
 	double3 vec = (double3) { 2.0, 2.0, 2.0 };
 
@@ -175,7 +175,7 @@ TEMPER_TEST( TestLength_Scalar_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestNormalized_Scalar_double3 )
+TEMPER_TEST( TestNormalized_Scalar_double3, void )
 {
 	double3 vec = (double3) { 5.000000, 4.000000, 3.000000 };
 	vec = double3_normalized( &vec );
@@ -186,7 +186,7 @@ TEMPER_TEST( TestNormalized_Scalar_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDot_Scalar_double3 )
+TEMPER_TEST( TestDot_Scalar_double3, void )
 {
 	double3 a = (double3) { 0.000000, 1.000000, 0.000000 };
 	double3 b = (double3) { 0.000000, -1.000000, 0.000000 };
@@ -196,7 +196,7 @@ TEMPER_TEST( TestDot_Scalar_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestCross_Scalar_double3 )
+TEMPER_TEST( TestCross_Scalar_double3, void )
 {
 	double3 left    = (double3) { -1.000000, 0.000000, 0.000000 };
 	double3 forward = (double3) { 0.000000, 0.000000, 1.000000 };
@@ -208,7 +208,7 @@ TEMPER_TEST( TestCross_Scalar_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestAngle_Scalar_double3 )
+TEMPER_TEST( TestAngle_Scalar_double3, void )
 {
 	double3 right = (double3) { 1.000000, 0.000000, 0.000000 };
 	double3 up    = (double3) { 0.000000, 1.000000, 0.000000 };
@@ -219,7 +219,7 @@ double angleDeg = double3_angle( &up, &right );
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDistance_Scalar_double3 )
+TEMPER_TEST( TestDistance_Scalar_double3, void )
 {
 	double answerDistanceSqr = 105.0;
 	double answerDistance    = 10.246951;
@@ -236,7 +236,7 @@ TEMPER_TEST( TestDistance_Scalar_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSaturate_double3 )
+TEMPER_TEST( TestSaturate_double3, void )
 {
 	double3 answer = (double3) { 0.000000, 1.000000, 1.000000 };
 
@@ -248,7 +248,7 @@ TEMPER_TEST( TestSaturate_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLerp_double3 )
+TEMPER_TEST( TestLerp_double3, void )
 {
 	double3 answer = (double3) { 0.500000, 0.500000, 0.000000 };
 
@@ -261,7 +261,7 @@ TEMPER_TEST( TestLerp_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestStep_double3 )
+TEMPER_TEST( TestStep_double3, void )
 {
 	double3 answer = (double3) { 1.000000, 1.000000, 0.000000 };
 
@@ -274,7 +274,7 @@ TEMPER_TEST( TestStep_double3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSmoothstep_double3 )
+TEMPER_TEST( TestSmoothstep_double3, void )
 {
 	double3 answerInRangeSmoothstep   = (double3) { 0.104000, 0.104000, 0.104000 };
 	double3 answerClampedSmoothstep   = (double3) { 1.000000, 1.000000, 1.000000 };

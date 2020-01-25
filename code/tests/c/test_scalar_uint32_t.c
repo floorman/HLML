@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestMinMax_uint32_t )
+TEMPER_TEST( TestMinMax_uint32_t, void )
 {
 	uint32_t a = 5U;
 	uint32_t b = 9U;
@@ -43,7 +43,7 @@ TEMPER_TEST( TestMinMax_uint32_t )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestClamp_uint32_t )
+TEMPER_TEST( TestClamp_uint32_t, void )
 {
 	uint32_t a;
 	uint32_t low  = 1U;

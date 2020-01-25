@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestArithmeticMultiplyScalar_double4 )
+TEMPER_TEST( TestArithmeticMultiplyScalar_double4, void )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 2.0 ), ( 3.0 ), ( 4.0 ), ( 5.0 ) };
 	const double b = 6.0;
@@ -47,7 +47,7 @@ TEMPER_TEST( TestArithmeticMultiplyScalar_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticMultiply_double4 )
+TEMPER_TEST( TestArithmeticMultiply_double4, void )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 2.0 ), ( 3.0 ), ( 4.0 ), ( 5.0 ) };
 	const double4 b = HLML_CONSTRUCT( double4 ) { ( 1.0 ), ( 3.0 ), ( 5.0 ), ( 7.0 ) };
@@ -66,7 +66,7 @@ TEMPER_TEST( TestArithmeticMultiply_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticLength_double4 )
+TEMPER_TEST( TestArithmeticLength_double4, void )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 2.0 ), ( 3.0 ), ( 4.0 ), ( 5.0 ) };
 
@@ -77,7 +77,7 @@ TEMPER_TEST( TestArithmeticLength_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticNormalize_double4 )
+TEMPER_TEST( TestArithmeticNormalize_double4, void )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 2.0 ), ( 3.0 ), ( 4.0 ), ( 5.0 ) };
 
@@ -91,7 +91,7 @@ TEMPER_TEST( TestArithmeticNormalize_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticConjugate_double4 )
+TEMPER_TEST( TestArithmeticConjugate_double4, void )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 2.0 ), ( 3.0 ), ( 4.0 ), ( 5.0 ) };
 
@@ -105,7 +105,7 @@ TEMPER_TEST( TestArithmeticConjugate_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticInverse_double4 )
+TEMPER_TEST( TestArithmeticInverse_double4, void )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 2.0 ), ( 3.0 ), ( 4.0 ), ( 5.0 ) };
 
@@ -119,7 +119,7 @@ TEMPER_TEST( TestArithmeticInverse_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticVectorRotationByAngleAxis_double4 )
+TEMPER_TEST( TestArithmeticVectorRotationByAngleAxis_double4, void )
 {
 	const double3 vector = HLML_CONSTRUCT( double3 ) { 0.0, 1.0, 0.0 };
 	const double3 axis = HLML_CONSTRUCT( double3 ) { 1.0, 0.0, 0.0 };
@@ -134,7 +134,7 @@ TEMPER_TEST( TestArithmeticVectorRotationByAngleAxis_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticLerp_double4 )
+TEMPER_TEST( TestArithmeticLerp_double4, void )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 0.0 ), ( 0.0 ), ( 0.0 ), ( 0.0 ) };
 	const double4 b = HLML_CONSTRUCT( double4 ) { ( 1.0 ), ( 1.0 ), ( 1.0 ), ( 1.0 ) };
@@ -149,7 +149,7 @@ TEMPER_TEST( TestArithmeticLerp_double4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticSlerp_double4 )
+TEMPER_TEST( TestArithmeticSlerp_double4, void )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 0.0 ), ( 0.0 ), ( 0.0 ), ( 0.0 ) };
 	const double4 b = HLML_CONSTRUCT( double4 ) { ( 1.0 ), ( 1.0 ), ( 1.0 ), ( 1.0 ) };

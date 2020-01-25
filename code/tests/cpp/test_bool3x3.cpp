@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_bool3x3 )
+TEMPER_TEST( TestAssignment_bool3x3, void )
 {
 	bool3x3 mat;
 
@@ -53,7 +53,7 @@ TEMPER_TEST( TestAssignment_bool3x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestCtor_bool3x3 )
+TEMPER_TEST( TestCtor_bool3x3, void )
 {
 	bool3x3 mat;
 
@@ -86,7 +86,7 @@ TEMPER_TEST( TestCtor_bool3x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArray_bool3x3 )
+TEMPER_TEST( TestArray_bool3x3, void )
 {
 	bool3x3 mat;
 	identity( mat );
@@ -98,7 +98,7 @@ TEMPER_TEST( TestArray_bool3x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIdentity_Scalar_bool3x3 )
+TEMPER_TEST( TestIdentity_Scalar_bool3x3, void )
 {
 	bool3x3 id;
 	id[0] = bool3( true, false, false );
@@ -113,7 +113,7 @@ TEMPER_TEST( TestIdentity_Scalar_bool3x3 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestTranspose_Scalar_bool3x3 )
+TEMPER_TEST( TestTranspose_Scalar_bool3x3, void )
 {
 	bool3x3 answerTransposed = bool3x3(
 		false, true, true,

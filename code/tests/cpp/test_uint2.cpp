@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_uint2 )
+TEMPER_TEST( TestAssignment_uint2, void )
 {
 	uint2 vec;
 
@@ -50,7 +50,7 @@ TEMPER_TEST( TestAssignment_uint2 )
 }
 
 // also tests equality operators
-TEMPER_TEST( TestCtor_uint2 )
+TEMPER_TEST( TestCtor_uint2, void )
 {
 	uint2 vec;
 
@@ -83,7 +83,7 @@ TEMPER_TEST( TestCtor_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArray_uint2 )
+TEMPER_TEST( TestArray_uint2, void )
 {
 	uint2 a = uint2( 0U, 1U );
 
@@ -93,7 +93,7 @@ TEMPER_TEST( TestArray_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestIncrement_uint2 )
+TEMPER_TEST( TestIncrement_uint2, void )
 {
 	uint2 vec;
 
@@ -110,7 +110,7 @@ TEMPER_TEST( TestIncrement_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDecrement_uint2 )
+TEMPER_TEST( TestDecrement_uint2, void )
 {
 	uint2 vec;
 
@@ -127,7 +127,7 @@ TEMPER_TEST( TestDecrement_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticAddition_uint2 )
+TEMPER_TEST( TestArithmeticAddition_uint2, void )
 {
 	uint2 a = uint2( 6U );
 	uint2 b = uint2( 2U, 3U );
@@ -139,7 +139,7 @@ TEMPER_TEST( TestArithmeticAddition_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticSubtraction_uint2 )
+TEMPER_TEST( TestArithmeticSubtraction_uint2, void )
 {
 	uint2 a = uint2( 6U );
 	uint2 b = uint2( 2U, 3U );
@@ -151,7 +151,7 @@ TEMPER_TEST( TestArithmeticSubtraction_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticMultiplication_uint2 )
+TEMPER_TEST( TestArithmeticMultiplication_uint2, void )
 {
 	uint2 a = uint2( 6U );
 	uint2 b = uint2( 2U, 3U );
@@ -163,7 +163,7 @@ TEMPER_TEST( TestArithmeticMultiplication_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticDivision_uint2 )
+TEMPER_TEST( TestArithmeticDivision_uint2, void )
 {
 	uint2 a = uint2( 6U );
 	uint2 b = uint2( 2U, 2U );
@@ -175,7 +175,7 @@ TEMPER_TEST( TestArithmeticDivision_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_uint2 )
+TEMPER_TEST( TestRelational_uint2, void )
 {
 	bool2 allTrue = bool2( true );
 
@@ -235,7 +235,7 @@ TEMPER_TEST( TestRelational_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_And_uint2 )
+TEMPER_TEST( TestBitwise_And_uint2, void )
 {
 	uint2 a  = uint2( 21U, 21U );
 	uint2 b  = uint2( 7U, 7U );
@@ -247,7 +247,7 @@ TEMPER_TEST( TestBitwise_And_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Or_uint2 )
+TEMPER_TEST( TestBitwise_Or_uint2, void )
 {
 	uint2 a  = uint2( 21U, 21U );
 	uint2 b  = uint2( 7U, 7U );
@@ -259,7 +259,7 @@ TEMPER_TEST( TestBitwise_Or_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Xor_uint2 )
+TEMPER_TEST( TestBitwise_Xor_uint2, void )
 {
 	uint2 a  = uint2( 21U, 21U );
 	uint2 b  = uint2( 7U, 7U );
@@ -271,7 +271,7 @@ TEMPER_TEST( TestBitwise_Xor_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftLeft_uint2 )
+TEMPER_TEST( TestBitwise_ShiftLeft_uint2, void )
 {
 	uint2 a  = uint2( 1U, 1U );
 	uint2 b  = uint2( 2U, 2U );
@@ -283,7 +283,7 @@ TEMPER_TEST( TestBitwise_ShiftLeft_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftRight_uint2 )
+TEMPER_TEST( TestBitwise_ShiftRight_uint2, void )
 {
 	uint2 a  = uint2( 16U, 16U );
 	uint2 b  = uint2( 4U, 4U );
@@ -295,7 +295,7 @@ TEMPER_TEST( TestBitwise_ShiftRight_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Unary_uint2 )
+TEMPER_TEST( TestBitwise_Unary_uint2, void )
 {
 	uint2 a = uint2( 0U, 0U );
 
@@ -306,7 +306,7 @@ TEMPER_TEST( TestBitwise_Unary_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLength_Scalar_uint2 )
+TEMPER_TEST( TestLength_Scalar_uint2, void )
 {
 	uint2 vec = uint2( 2U );
 
@@ -316,7 +316,7 @@ TEMPER_TEST( TestLength_Scalar_uint2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDistance_Scalar_uint2 )
+TEMPER_TEST( TestDistance_Scalar_uint2, void )
 {
 	float answerDistanceSqr = 104.0f;
 	float answerDistance    = 10.198039f;

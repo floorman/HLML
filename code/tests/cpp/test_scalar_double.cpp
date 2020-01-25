@@ -35,7 +35,7 @@ SOFTWARE.
 static double g_deg_double = 90.0;
 static double g_rad_double = 1.57079637;
 
-TEMPER_TEST( TestFloateq_double )
+TEMPER_TEST( TestFloateq_double, void )
 {
 	double a = 5.0;
 	double b = 5.0;
@@ -49,7 +49,7 @@ TEMPER_TEST( TestFloateq_double )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSign_double )
+TEMPER_TEST( TestSign_double, void )
 {
 	TEMPER_EXPECT_TRUE( signd( -5.0 ) == -1 );
 	TEMPER_EXPECT_TRUE( signd( 9.0 ) ==  1 );
@@ -57,7 +57,7 @@ TEMPER_TEST( TestSign_double )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDegreesRadians_Scalar_double )
+TEMPER_TEST( TestDegreesRadians_Scalar_double, void )
 {
 	TEMPER_EXPECT_TRUE( doubleeq( radians( g_deg_double ), 1.57079637 ) );
 	TEMPER_EXPECT_TRUE( doubleeq( degrees( g_rad_double ), 90.0 ) );
@@ -65,7 +65,7 @@ TEMPER_TEST( TestDegreesRadians_Scalar_double )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestMinMax_double )
+TEMPER_TEST( TestMinMax_double, void )
 {
 	double a = 5.0;
 	double b = 9.0;
@@ -76,7 +76,7 @@ TEMPER_TEST( TestMinMax_double )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestClamp_double )
+TEMPER_TEST( TestClamp_double, void )
 {
 	double a;
 	double low  = 1.0;
@@ -91,7 +91,7 @@ TEMPER_TEST( TestClamp_double )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSaturate_double )
+TEMPER_TEST( TestSaturate_double, void )
 {
 	double a;
 
@@ -104,7 +104,7 @@ TEMPER_TEST( TestSaturate_double )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLerp_Scalar_double )
+TEMPER_TEST( TestLerp_Scalar_double, void )
 {
 	double a = 1.0;
 	double b = 3.0;

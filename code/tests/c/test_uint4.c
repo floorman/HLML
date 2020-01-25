@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_uint4 )
+TEMPER_TEST( TestAssignment_uint4, void )
 {
 	uint4 vec;
 
@@ -57,7 +57,7 @@ TEMPER_TEST( TestAssignment_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticAddition_uint4 )
+TEMPER_TEST( TestArithmeticAddition_uint4, void )
 {
 	uint4 a = (uint4)	{ 6U, 6U, 6U, 6U };
 	uint4 b = (uint4)	{ 2U, 3U, 4U, 5U };
@@ -71,7 +71,7 @@ TEMPER_TEST( TestArithmeticAddition_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticSubtraction_uint4 )
+TEMPER_TEST( TestArithmeticSubtraction_uint4, void )
 {
 	uint4 a = (uint4)	{ 6U, 6U, 6U, 6U };
 	uint4 b = (uint4)	{ 2U, 3U, 4U, 5U };
@@ -85,7 +85,7 @@ TEMPER_TEST( TestArithmeticSubtraction_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticMultiplication_uint4 )
+TEMPER_TEST( TestArithmeticMultiplication_uint4, void )
 {
 	uint4 a = (uint4)	{ 6U, 6U, 6U, 6U };
 	uint4 b = (uint4)	{ 2U, 3U, 4U, 5U };
@@ -99,7 +99,7 @@ TEMPER_TEST( TestArithmeticMultiplication_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticDivision_uint4 )
+TEMPER_TEST( TestArithmeticDivision_uint4, void )
 {
 	uint4 a = (uint4)	{ 6U, 6U, 6U, 6U };
 	uint4 b = (uint4)	{ 2U, 2U, 3U, 6U };
@@ -113,7 +113,7 @@ TEMPER_TEST( TestArithmeticDivision_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_uint4 )
+TEMPER_TEST( TestRelational_uint4, void )
 {
 	bool4 allTrue = (bool4)	{ true, true, true, true };
 
@@ -173,7 +173,7 @@ TEMPER_TEST( TestRelational_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_And_uint4 )
+TEMPER_TEST( TestBitwise_And_uint4, void )
 {
 	uint4 answer = (uint4) { 5U, 5U, 5U, 5U };
 
@@ -187,7 +187,7 @@ TEMPER_TEST( TestBitwise_And_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Or_uint4 )
+TEMPER_TEST( TestBitwise_Or_uint4, void )
 {
 	uint4 answer = (uint4) { 23U, 23U, 23U, 23U };
 
@@ -201,7 +201,7 @@ TEMPER_TEST( TestBitwise_Or_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Xor_uint4 )
+TEMPER_TEST( TestBitwise_Xor_uint4, void )
 {
 	uint4 answer = (uint4) { 18U, 18U, 18U, 18U };
 
@@ -215,7 +215,7 @@ TEMPER_TEST( TestBitwise_Xor_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftLeft_uint4 )
+TEMPER_TEST( TestBitwise_ShiftLeft_uint4, void )
 {
 	uint4 answer = (uint4) { 4U, 4U, 4U, 4U };
 
@@ -229,7 +229,7 @@ TEMPER_TEST( TestBitwise_ShiftLeft_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_ShiftRight_uint4 )
+TEMPER_TEST( TestBitwise_ShiftRight_uint4, void )
 {
 	uint4 answer = (uint4) { 1U, 1U, 1U, 1U };
 
@@ -243,7 +243,7 @@ TEMPER_TEST( TestBitwise_ShiftRight_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestBitwise_Unary_uint4 )
+TEMPER_TEST( TestBitwise_Unary_uint4, void )
 {
 	uint4 answer = (uint4) { (uint32_t) -1, (uint32_t) -1, (uint32_t) -1, (uint32_t) -1 };
 
@@ -256,7 +256,7 @@ TEMPER_TEST( TestBitwise_Unary_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLength_Scalar_uint4 )
+TEMPER_TEST( TestLength_Scalar_uint4, void )
 {
 	uint4 vec = (uint4) { 2U, 2U, 2U, 2U };
 
@@ -266,7 +266,7 @@ TEMPER_TEST( TestLength_Scalar_uint4 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestPacking_uint4 )
+TEMPER_TEST( TestPacking_uint4, void )
 {
 	uint32_t answerPacked = 0xFFFF00FF;
 	uint4 vec = (uint4) { 255U, 255U, 0U, 255U };

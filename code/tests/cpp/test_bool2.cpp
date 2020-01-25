@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_bool2 )
+TEMPER_TEST( TestAssignment_bool2, void )
 {
 	bool2 vec;
 
@@ -50,7 +50,7 @@ TEMPER_TEST( TestAssignment_bool2 )
 }
 
 // also tests equality operators
-TEMPER_TEST( TestCtor_bool2 )
+TEMPER_TEST( TestCtor_bool2, void )
 {
 	bool2 vec;
 
@@ -83,7 +83,7 @@ TEMPER_TEST( TestCtor_bool2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArray_bool2 )
+TEMPER_TEST( TestArray_bool2, void )
 {
 	bool2 a = bool2( false, true );
 

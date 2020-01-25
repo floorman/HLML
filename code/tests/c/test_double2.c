@@ -32,7 +32,7 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestAssignment_double2 )
+TEMPER_TEST( TestAssignment_double2, void )
 {
 	double2 vec;
 
@@ -49,7 +49,7 @@ TEMPER_TEST( TestAssignment_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticAddition_double2 )
+TEMPER_TEST( TestArithmeticAddition_double2, void )
 {
 	double2 a = (double2)	{ 6.000000, 6.000000 };
 	double2 b = (double2)	{ 2.000000, 3.000000 };
@@ -61,7 +61,7 @@ TEMPER_TEST( TestArithmeticAddition_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticSubtraction_double2 )
+TEMPER_TEST( TestArithmeticSubtraction_double2, void )
 {
 	double2 a = (double2)	{ 6.000000, 6.000000 };
 	double2 b = (double2)	{ 2.000000, 3.000000 };
@@ -73,7 +73,7 @@ TEMPER_TEST( TestArithmeticSubtraction_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticMultiplication_double2 )
+TEMPER_TEST( TestArithmeticMultiplication_double2, void )
 {
 	double2 a = (double2)	{ 6.000000, 6.000000 };
 	double2 b = (double2)	{ 2.000000, 3.000000 };
@@ -85,7 +85,7 @@ TEMPER_TEST( TestArithmeticMultiplication_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestArithmeticDivision_double2 )
+TEMPER_TEST( TestArithmeticDivision_double2, void )
 {
 	double2 a = (double2)	{ 6.000000, 6.000000 };
 	double2 b = (double2)	{ 2.000000, 2.000000 };
@@ -97,7 +97,7 @@ TEMPER_TEST( TestArithmeticDivision_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestRelational_double2 )
+TEMPER_TEST( TestRelational_double2, void )
 {
 	bool2 allTrue = (bool2)	{ true, true };
 
@@ -157,7 +157,7 @@ TEMPER_TEST( TestRelational_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLength_Scalar_double2 )
+TEMPER_TEST( TestLength_Scalar_double2, void )
 {
 	double2 vec = (double2) { 2.0, 2.0 };
 
@@ -167,7 +167,7 @@ TEMPER_TEST( TestLength_Scalar_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestNormalized_Scalar_double2 )
+TEMPER_TEST( TestNormalized_Scalar_double2, void )
 {
 	double2 vec = (double2) { 5.000000, 4.000000 };
 	vec = double2_normalized( &vec );
@@ -178,7 +178,7 @@ TEMPER_TEST( TestNormalized_Scalar_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDot_Scalar_double2 )
+TEMPER_TEST( TestDot_Scalar_double2, void )
 {
 	double2 a = (double2) { 0.000000, 1.000000 };
 	double2 b = (double2) { 0.000000, -1.000000 };
@@ -188,7 +188,7 @@ TEMPER_TEST( TestDot_Scalar_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestAngle_Scalar_double2 )
+TEMPER_TEST( TestAngle_Scalar_double2, void )
 {
 	double2 right = (double2) { 1.000000, 0.000000 };
 	double2 up    = (double2) { 0.000000, 1.000000 };
@@ -199,7 +199,7 @@ double angleDeg = double2_angle( &up, &right );
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestDistance_Scalar_double2 )
+TEMPER_TEST( TestDistance_Scalar_double2, void )
 {
 	double answerDistanceSqr = 104.0;
 	double answerDistance    = 10.198039;
@@ -216,7 +216,7 @@ TEMPER_TEST( TestDistance_Scalar_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSaturate_double2 )
+TEMPER_TEST( TestSaturate_double2, void )
 {
 	double2 answer = (double2) { 0.000000, 1.000000 };
 
@@ -228,7 +228,7 @@ TEMPER_TEST( TestSaturate_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestLerp_double2 )
+TEMPER_TEST( TestLerp_double2, void )
 {
 	double2 answer = (double2) { 0.500000, 0.500000 };
 
@@ -241,7 +241,7 @@ TEMPER_TEST( TestLerp_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestStep_double2 )
+TEMPER_TEST( TestStep_double2, void )
 {
 	double2 answer = (double2) { 1.000000, 1.000000 };
 
@@ -254,7 +254,7 @@ TEMPER_TEST( TestStep_double2 )
 	TEMPER_PASS();
 }
 
-TEMPER_TEST( TestSmoothstep_double2 )
+TEMPER_TEST( TestSmoothstep_double2, void )
 {
 	double2 answerInRangeSmoothstep   = (double2) { 0.104000, 0.104000 };
 	double2 answerClampedSmoothstep   = (double2) { 1.000000, 1.000000 };
