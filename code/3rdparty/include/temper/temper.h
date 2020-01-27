@@ -624,14 +624,14 @@ static double TemperGetTimestampInternal( void ) {
 		} \
 	} while ( 0 )
 
-#define TEMPER_RUN_TEST_INTERNAL( test ) \
+#define TEMPER_RUN_TEST_INTERNAL( test, ... ) \
 	do { \
 		if ( g_testContext.testFuncStart ) { \
 			g_testContext.testFuncStart( g_testContext.testFuncStartData ); \
 		} \
 \
 		double start = TemperGetTimestampInternal(); \
-		result = test(); /* run the test! */ \
+		result = test( __VA_ARGS__ ); /* run the test! */ \
 		double end = TemperGetTimestampInternal(); \
 \
 		g_testContext.testTime = end - start; \
@@ -642,16 +642,16 @@ static double TemperGetTimestampInternal( void ) {
 	} while ( 0 )
 
 // runs the test
-#define TEMPER_RUN_TEST( test ) \
+#define TEMPER_RUN_TEST( test, ... ) \
 	do { \
 		if ( ( ( g_testContext.flags & TEMPER_FLAG_ABORT_ON_FAIL ) == 0 ) || g_testContext.numFailed == 0 ) { \
 			temperTestResult_t result = TEMPER_RESULT_SKIPPED; \
 			if ( g_testContext.filteredTest ) { \
 				if ( strcmp( g_testContext.filteredTest, #test ) == 0 ) { \
-					TEMPER_RUN_TEST_INTERNAL( test ); \
+					TEMPER_RUN_TEST_INTERNAL( test, ##__VA_ARGS__ ); \
 				} \
 			} else { \
-				TEMPER_RUN_TEST_INTERNAL( test ); \
+				TEMPER_RUN_TEST_INTERNAL( test, ##__VA_ARGS__ ); \
 			} \
 \
 			switch ( result ) { \

@@ -32,10 +32,11 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestArithmeticMultiplyScalar_float4, void )
+
+TEMPER_TEST( TestArithmeticMultiplyScalar_float4, float scalar )
 {
 	const float4 a = HLML_CONSTRUCT( float4 ) { ( 2.0f ), ( 3.0f ), ( 4.0f ), ( 5.0f ) };
-	const float b = 6.0f;
+	const float b = scalar;
 
 	float4 c = quaternion_mul( a, b );
 
@@ -166,7 +167,7 @@ TEMPER_TEST( TestArithmeticSlerp_float4, void )
 
 TEMPER_SUITE( Test_quaternion_float4 )
 {
-	TEMPER_RUN_TEST( TestArithmeticMultiplyScalar_float4 );
+	TEMPER_RUN_TEST( TestArithmeticMultiplyScalar_float4, 6.0f );
 	TEMPER_RUN_TEST( TestArithmeticMultiply_float4 );
 	TEMPER_RUN_TEST( TestArithmeticLength_float4 );
 	TEMPER_RUN_TEST( TestArithmeticNormalize_float4 );

@@ -73,10 +73,11 @@ static void GenerateTestMultiplyScalar( stringBuilder_t* codeTests, stringBuilde
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Appendf( codeTests, "TEMPER_TEST( %s, void )\n", testName );
+	String_Append( codeTests, "\n" );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, %s scalar )\n", testName, baseTypeString );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListValues[0], parmListValues[1], parmListValues[2], parmListValues[3] );
-	String_Appendf( codeTests, "\tconst %s b = %s;\n", baseTypeString, scalar );
+	String_Appendf( codeTests, "\tconst %s b = scalar;\n", baseTypeString );
 	String_Append( codeTests, "\n" );
 	String_Appendf( codeTests, "\t%s c = %s( %sa, b );\n", fullTypeName, mulQuaternionFuncStr, parmRefStr );
 	String_Append( codeTests, "\n" );
@@ -90,7 +91,7 @@ static void GenerateTestMultiplyScalar( stringBuilder_t* codeTests, stringBuilde
 	String_Append( codeTests, "}\n" );
 	String_Append( codeTests, "\n" );
 
-	String_Appendf( codeSuite, "\tTEMPER_RUN_TEST( %s );\n", testName );
+	String_Appendf( codeSuite, "\tTEMPER_RUN_TEST( %s, %s );\n", testName, scalar );
 }
 
 static void GenerateTestMultiplyQuaternion(  stringBuilder_t* codeTests, stringBuilder_t* codeSuite, const genLanguage_t language, const genType_t type, const char* fullTypeName, const char* baseTypeString ) {

@@ -32,10 +32,11 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-TEMPER_TEST( TestArithmeticMultiplyScalar_double4, void )
+
+TEMPER_TEST( TestArithmeticMultiplyScalar_double4, double scalar )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 2.0 ), ( 3.0 ), ( 4.0 ), ( 5.0 ) };
-	const double b = 6.0;
+	const double b = scalar;
 
 	double4 c = double4_quaternion_mul( &a, b );
 
@@ -166,7 +167,7 @@ TEMPER_TEST( TestArithmeticSlerp_double4, void )
 
 TEMPER_SUITE( Test_quaternion_double4 )
 {
-	TEMPER_RUN_TEST( TestArithmeticMultiplyScalar_double4 );
+	TEMPER_RUN_TEST( TestArithmeticMultiplyScalar_double4, 6.0 );
 	TEMPER_RUN_TEST( TestArithmeticMultiply_double4 );
 	TEMPER_RUN_TEST( TestArithmeticLength_double4 );
 	TEMPER_RUN_TEST( TestArithmeticNormalize_double4 );
