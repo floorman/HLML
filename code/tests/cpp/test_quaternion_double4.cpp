@@ -32,18 +32,17 @@ SOFTWARE.
 // EDITING THIS FILE MAY CAUSE SIDE EFFECTS.
 // DO SO AT YOUR OWN RISK.
 
-
-TEMPER_TEST( TestArithmeticMultiplyScalar_double4, double scalar )
+TEMPER_TEST( TestArithmeticMultiplyScalar_double4, double scalar, double4 answer )
 {
 	const double4 a = HLML_CONSTRUCT( double4 ) { ( 2.0 ), ( 3.0 ), ( 4.0 ), ( 5.0 ) };
 	const double b = scalar;
 
 	double4 c = quaternion_mul( a, b );
 
-	TEMPER_EXPECT_TRUE( doubleeq( c.x, ( 12.0 ) ) );
-	TEMPER_EXPECT_TRUE( doubleeq( c.y, ( 18.0 ) ) );
-	TEMPER_EXPECT_TRUE( doubleeq( c.z, ( 24.0 ) ) );
-	TEMPER_EXPECT_TRUE( doubleeq( c.w, ( 30.0 ) ) );
+	TEMPER_EXPECT_TRUE( doubleeq( c.x, answer.x ) );
+	TEMPER_EXPECT_TRUE( doubleeq( c.y, answer.y ) );
+	TEMPER_EXPECT_TRUE( doubleeq( c.z, answer.z ) );
+	TEMPER_EXPECT_TRUE( doubleeq( c.w, answer.w ) );
 
 	TEMPER_PASS();
 }
@@ -167,7 +166,10 @@ TEMPER_TEST( TestArithmeticSlerp_double4, void )
 
 TEMPER_SUITE( Test_quaternion_double4 )
 {
-	TEMPER_RUN_TEST( TestArithmeticMultiplyScalar_double4, 6.0 );
+	TEMPER_RUN_TEST( TestArithmeticMultiplyScalar_double4, -10.0, HLML_CONSTRUCT( double4 ) { ( -20.0 ), ( -30.0 ), ( -40.0 ), ( -50.0 ) } );
+	TEMPER_RUN_TEST( TestArithmeticMultiplyScalar_double4, 0.0, HLML_CONSTRUCT( double4 ) { ( 0.0 ), ( 0.0 ), ( 0.0 ), ( 0.0 ) } );
+	TEMPER_RUN_TEST( TestArithmeticMultiplyScalar_double4, 6.0, HLML_CONSTRUCT( double4 ) { ( 12.0 ), ( 18.0 ), ( 24.0 ), ( 30.0 ) } );
+	TEMPER_RUN_TEST( TestArithmeticMultiplyScalar_double4, 1000.0, HLML_CONSTRUCT( double4 ) { ( 2000.0 ), ( 3000.0 ), ( 4000.0 ), ( 5000.0 ) } );
 	TEMPER_RUN_TEST( TestArithmeticMultiply_double4 );
 	TEMPER_RUN_TEST( TestArithmeticLength_double4 );
 	TEMPER_RUN_TEST( TestArithmeticNormalize_double4 );

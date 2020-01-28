@@ -336,10 +336,10 @@ extern temperTestContext_t					g_testContext;
 #define TEMPER_SUITE( name )				void (name)( void ); void (name)( void )
 
 // forward declare a test
-#define TEMPER_TEST_EXTERN( name, parms )	temperTestResult_t (name)( parms )
+#define TEMPER_TEST_EXTERN( name, ... )	temperTestResult_t (name)( __VA_ARGS__ )
 
 // defines a test (with your code)
-#define TEMPER_TEST( name, parms )			temperTestResult_t (name)( parms ); temperTestResult_t (name)( parms )
+#define TEMPER_TEST( name, ... )			temperTestResult_t (name)( __VA_ARGS__ ); temperTestResult_t (name)( __VA_ARGS__ )
 
 static void TemperSetTextColorInternal( const temperTestConsoleColor_t color ) {
 	if ( ( g_testContext.flags & TEMPER_FLAG_COLORED_OUTPUT ) == 0 ) {

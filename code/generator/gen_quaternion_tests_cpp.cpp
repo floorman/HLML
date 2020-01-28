@@ -31,27 +31,48 @@ along with The HLML Generator.  If not, see <http://www.gnu.org/licenses/>.
 #include "allocator.h"
 
 static void GenerateTestMultiplyScalar( stringBuilder_t* codeTests, stringBuilder_t* codeSuite,  const genLanguage_t language, const genType_t type, const char* fullTypeName, const char* baseTypeString ) {
-	// number picked at random
-	char scalar[GEN_STRING_LENGTH_NUMERIC_LITERAL];
-	Gen_GetNumericLiteral( type, 6, scalar, 1 );
-
+	// numbers picked at random
+	char negativeFiftyStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char negativeFourtyStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char negativeThirtyStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char negativeTwentyStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char negativeTenStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char zeroStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
 	char twoStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
 	char threeStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
 	char fourStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
 	char fiveStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char sixStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
 	char twelveStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
 	char eighteenStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
 	char twentyFourStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
 	char thirtyStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
-
+	char oneThousandStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char twoThousandStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char threeThousandStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char fourThousandStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	char fiveThousandStr[GEN_STRING_LENGTH_NUMERIC_LITERAL];
+	
+	Gen_GetNumericLiteral( type, -50, negativeFiftyStr, 1 );
+	Gen_GetNumericLiteral( type, -40, negativeFourtyStr, 1 );
+	Gen_GetNumericLiteral( type, -30, negativeThirtyStr, 1 );
+	Gen_GetNumericLiteral( type, -20, negativeTwentyStr, 1 );
+	Gen_GetNumericLiteral( type, -10, negativeTenStr, 1 );
+	Gen_GetNumericLiteral( type, 0, zeroStr, 1 );
 	Gen_GetNumericLiteral( type, 2, twoStr, 1 );
 	Gen_GetNumericLiteral( type, 3, threeStr, 1 );
 	Gen_GetNumericLiteral( type, 4, fourStr, 1 );
 	Gen_GetNumericLiteral( type, 5, fiveStr, 1 );
+	Gen_GetNumericLiteral( type, 6, sixStr, 1 );
 	Gen_GetNumericLiteral( type, 12, twelveStr, 1 );
 	Gen_GetNumericLiteral( type, 18, eighteenStr, 1 );
 	Gen_GetNumericLiteral( type, 24, twentyFourStr, 1 );
 	Gen_GetNumericLiteral( type, 30, thirtyStr, 1 );
+	Gen_GetNumericLiteral( type, 1000, oneThousandStr, 1 );
+	Gen_GetNumericLiteral( type, 2000, twoThousandStr, 1 );
+	Gen_GetNumericLiteral( type, 3000, threeThousandStr, 1 );
+	Gen_GetNumericLiteral( type, 4000, fourThousandStr, 1 );
+	Gen_GetNumericLiteral( type, 5000, fiveThousandStr, 1 );
 	
 	char parmListValues[4][GEN_STRING_LENGTH_PARM_LIST_VECTOR];
 	snprintf( parmListValues[0], 64, "( %s )", twoStr );
@@ -59,11 +80,30 @@ static void GenerateTestMultiplyScalar( stringBuilder_t* codeTests, stringBuilde
 	snprintf( parmListValues[2], 64, "( %s )", fourStr );
 	snprintf( parmListValues[3], 64, "( %s )", fiveStr );
 
-	char parmListAnswers[4][GEN_STRING_LENGTH_PARM_LIST_VECTOR];
-	snprintf( parmListAnswers[0], 64, "( %s )", twelveStr );
-	snprintf( parmListAnswers[1], 64, "( %s )", eighteenStr );
-	snprintf( parmListAnswers[2], 64, "( %s )", twentyFourStr );
-	snprintf( parmListAnswers[3], 64, "( %s )", thirtyStr );
+	char parmListAnswers[4][4][GEN_STRING_LENGTH_PARM_LIST_VECTOR];
+	// Scalar: -10
+	snprintf( parmListAnswers[0][0], 64, "( %s )", negativeTwentyStr );
+	snprintf( parmListAnswers[0][1], 64, "( %s )", negativeThirtyStr );
+	snprintf( parmListAnswers[0][2], 64, "( %s )", negativeFourtyStr );
+	snprintf( parmListAnswers[0][3], 64, "( %s )", negativeFiftyStr );
+	
+	// Scalar: 0
+	snprintf( parmListAnswers[1][0], 64, "( %s )", zeroStr );
+	snprintf( parmListAnswers[1][1], 64, "( %s )", zeroStr );
+	snprintf( parmListAnswers[1][2], 64, "( %s )", zeroStr );
+	snprintf( parmListAnswers[1][3], 64, "( %s )", zeroStr );
+	
+	// Scalar: 6
+	snprintf( parmListAnswers[2][0], 64, "( %s )", twelveStr );
+	snprintf( parmListAnswers[2][1], 64, "( %s )", eighteenStr );
+	snprintf( parmListAnswers[2][2], 64, "( %s )", twentyFourStr );
+	snprintf( parmListAnswers[2][3], 64, "( %s )", thirtyStr );
+	
+	// Scalar: 1000
+	snprintf( parmListAnswers[3][0], 64, "( %s )", twoThousandStr );
+	snprintf( parmListAnswers[3][1], 64, "( %s )", threeThousandStr );
+	snprintf( parmListAnswers[3][2], 64, "( %s )", fourThousandStr );
+	snprintf( parmListAnswers[3][3], 64, "( %s )", fiveThousandStr );
 
 	char mulQuaternionFuncStr[GEN_STRING_LENGTH_FUNCTION_NAME];
 	Gen_GetFuncNameQuaternionMultiplyScalar( language, type, mulQuaternionFuncStr );
@@ -73,8 +113,7 @@ static void GenerateTestMultiplyScalar( stringBuilder_t* codeTests, stringBuilde
 
 	const char* parmRefStr = GEN_TYPE_PARM_REFERENCE_MODIFIERS[language];
 
-	String_Append( codeTests, "\n" );
-	String_Appendf( codeTests, "TEMPER_TEST( %s, %s scalar )\n", testName, baseTypeString );
+	String_Appendf( codeTests, "TEMPER_TEST( %s, %s scalar, %s answer )\n", testName, baseTypeString, fullTypeName );
 	String_Append( codeTests, "{\n" );
 	String_Appendf( codeTests, "\tconst %s a = HLML_CONSTRUCT( %s ) { %s, %s, %s, %s };\n", fullTypeName, fullTypeName, parmListValues[0], parmListValues[1], parmListValues[2], parmListValues[3] );
 	String_Appendf( codeTests, "\tconst %s b = scalar;\n", baseTypeString );
@@ -82,16 +121,19 @@ static void GenerateTestMultiplyScalar( stringBuilder_t* codeTests, stringBuilde
 	String_Appendf( codeTests, "\t%s c = %s( %sa, b );\n", fullTypeName, mulQuaternionFuncStr, parmRefStr );
 	String_Append( codeTests, "\n" );
 
-	String_Appendf( codeTests, "\tTEMPER_EXPECT_TRUE( %s%s( c.x, %s ) );\n", baseTypeString, "eq", parmListAnswers[0] );
-	String_Appendf( codeTests, "\tTEMPER_EXPECT_TRUE( %s%s( c.y, %s ) );\n", baseTypeString, "eq", parmListAnswers[1] );
-	String_Appendf( codeTests, "\tTEMPER_EXPECT_TRUE( %s%s( c.z, %s ) );\n", baseTypeString, "eq", parmListAnswers[2] );
-	String_Appendf( codeTests, "\tTEMPER_EXPECT_TRUE( %s%s( c.w, %s ) );\n", baseTypeString, "eq", parmListAnswers[3] );
+	String_Appendf( codeTests, "\tTEMPER_EXPECT_TRUE( %s%s( c.x, answer.x ) );\n", baseTypeString, "eq" );
+	String_Appendf( codeTests, "\tTEMPER_EXPECT_TRUE( %s%s( c.y, answer.y ) );\n", baseTypeString, "eq" );
+	String_Appendf( codeTests, "\tTEMPER_EXPECT_TRUE( %s%s( c.z, answer.z ) );\n", baseTypeString, "eq" );
+	String_Appendf( codeTests, "\tTEMPER_EXPECT_TRUE( %s%s( c.w, answer.w ) );\n", baseTypeString, "eq" );
 	String_Append( codeTests, "\n" );
 	String_Append( codeTests, "\tTEMPER_PASS();\n" );
 	String_Append( codeTests, "}\n" );
 	String_Append( codeTests, "\n" );
 
-	String_Appendf( codeSuite, "\tTEMPER_RUN_TEST( %s, %s );\n", testName, scalar );
+	String_Appendf( codeSuite, "\tTEMPER_RUN_TEST( %s, %s, HLML_CONSTRUCT( %s ) { %s, %s, %s, %s } );\n", testName, negativeTenStr, fullTypeName, parmListAnswers[0][0], parmListAnswers[0][1], parmListAnswers[0][2], parmListAnswers[0][3] );
+	String_Appendf( codeSuite, "\tTEMPER_RUN_TEST( %s, %s, HLML_CONSTRUCT( %s ) { %s, %s, %s, %s } );\n", testName, zeroStr, fullTypeName, parmListAnswers[1][0], parmListAnswers[1][1], parmListAnswers[1][2], parmListAnswers[1][3] );
+	String_Appendf( codeSuite, "\tTEMPER_RUN_TEST( %s, %s, HLML_CONSTRUCT( %s ) { %s, %s, %s, %s } );\n", testName, sixStr, fullTypeName, parmListAnswers[2][0], parmListAnswers[2][1], parmListAnswers[2][2], parmListAnswers[2][3] );
+	String_Appendf( codeSuite, "\tTEMPER_RUN_TEST( %s, %s, HLML_CONSTRUCT( %s ) { %s, %s, %s, %s } );\n", testName, oneThousandStr, fullTypeName, parmListAnswers[3][0], parmListAnswers[3][1], parmListAnswers[3][2], parmListAnswers[3][3] );
 }
 
 static void GenerateTestMultiplyQuaternion(  stringBuilder_t* codeTests, stringBuilder_t* codeSuite, const genLanguage_t language, const genType_t type, const char* fullTypeName, const char* baseTypeString ) {
